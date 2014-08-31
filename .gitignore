@@ -1,0 +1,5 @@
+psenv
+*.pyc
+staticfiles
+__pycache__
+.env
