@@ -1,6 +1,7 @@
 from selenium import webdriver
 from django.test import LiveServerTestCase
 
+
 class AdminTest(LiveServerTestCase):
 
     def setUp(self):
