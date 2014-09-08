@@ -29,9 +29,9 @@ class Game(models.Model):
         ('3DS', '3DS'),
         ('PC', 'PC'),
     )
-    title = models.CharField(max_length=300, verbose_name=_('Title'))
-    synopsis = models.TextField()
-    platform = models.CharField(max_length=10)
+    title = models.CharField(_('Title'), max_length=300)
+    synopsis = models.TextField(_('Synopsis'))
+    platform = models.CharField(_('Platform'), max_length=10)
     developer = models.ManyToManyField(Company, verbose_name=_('Developer'),
                                        related_name='gameclaim_developers')
     publisher = models.ManyToManyField(Company, verbose_name=_('publisher'),
@@ -45,10 +45,22 @@ class Game(models.Model):
 
 
 class ListEntry(models.Model):
-    user = models.ForeignKey(User, verbose_name=_('User'))
-    game = models.ForeignKey(Game, verbose_name=_('Game'))
+    user = models.ForeignKey(User)
+    game = models.ForeignKey(Game)
     score = models.IntegerField(_('Score'))
-    review = models.TextField(_('Review'))
 
     def __str__(self):
-        return "{0}'s {1} entry".format(self.user.username, game.title)
+        return "{0}'s {1} entry".format(self.user.username, self.game.title)
+
+
+class GameReview(models.Model):
+    entry = models.ForeignKey(ListEntry)
+    text = models.TextField(_('Text'))
+    date_created = models.DateTimeField(auto_now_add=True)
+
+
+class GameRecommendation(models.Model):
+    game1 = models.ForeignKey(Game, related_name='gamerecommendation_game1')
+    game2 = models.ForeignKey(Game, related_name='gamerecommendation_game2')
+    text = models.TextField(_('Text'))
+    date_created = models.DateTimeField(auto_now_add=True)
