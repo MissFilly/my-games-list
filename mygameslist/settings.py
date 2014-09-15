@@ -37,6 +37,7 @@ INSTALLED_APPS = (
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'compressor',
     'mygameslist.app',
 )
 
@@ -84,4 +85,16 @@ STATIC_URL = '/static/'
 
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
+)
+STATICFILES_FINDERS = (
+    "django.contrib.staticfiles.finders.FileSystemFinder",
+    "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+    "compressor.finders.CompressorFinder",
+)
+
+COMPRESS_ENABLED=True
+if not 'COMPRESS_OFFLINE' in os.environ:
+    COMPRESS_OFFLINE=True
+COMPRESS_PRECOMPILERS = (
+    ('text/less','lessc {infile} {outfile}'),
 )

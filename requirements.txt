@@ -1,6 +1,7 @@
 Django==1.7
 dj-database-url==0.3.0
 dj-static==0.0.6
+-e git://github.com/goinnn/django-multiselectfield@a01e3a27c3da3b6254b2fcb1de23b6b4c24270da#egg=django_multiselectfield-origin/HEAD
 django-toolbelt==0.0.1
 gunicorn==19.1.1
 psycopg2==2.5.3

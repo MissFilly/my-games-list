@@ -14,25 +14,25 @@ class Company(models.Model):
         return self.name
 
 
+class Genre(models.Model):
+    name = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.name
+
+
+class Platform(models.Model):
+    name = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.name
+
+
 class Game(models.Model):
-    PLATFORM_CHOICES = (
-        ('PS', 'PlayStation'),
-        ('PS2', 'PlayStation 2'),
-        ('PS3', 'PlayStation 3'),
-        ('PS4', 'PlayStation 4'),
-        ('PSP', 'PSP'),
-        ('PSVITA', 'PlayStation Vita'),
-        ('XBOX', 'Xbox'),
-        ('XBOX360', 'Xbox 360'),
-        ('XBOXONE', 'Xbox One'),
-        ('WII', 'Wii'),
-        ('WIIU', 'Wii U'),
-        ('3DS', '3DS'),
-        ('PC', 'PC'),
-    )
     title = models.CharField(_('Title'), max_length=300)
     synopsis = models.TextField(_('Synopsis'))
-    platform = models.CharField(_('Platform'), max_length=10)
+    genre = models.ManyToManyField(Genre)
+    platform = models.ManyToManyField(Platform)
     developer = models.ManyToManyField(Company, verbose_name=_('Developer'),
                                        related_name='gameclaim_developers')
     publisher = models.ManyToManyField(Company, verbose_name=_('publisher'),
@@ -47,9 +47,31 @@ class Game(models.Model):
 
 
 class ListEntry(models.Model):
+    SCORE_CHOICES = (
+        (10, '(10) {0}'.format(_('Masterpiece'))),
+        (9, '(9) {0}'.format(_('Great'))),
+        (8, '(8) {0}'.format(_('Very good'))),
+        (7, '(7) {0}'.format(_('Good'))),
+        (6, '(6) {0}'.format(_('Fine'))),
+        (5, '(5) {0}'.format(_('Average'))),
+        (4, '(4) {0}'.format(_('Bad'))),
+        (3, '(3) {0}'.format(_('Very bad'))),
+        (2, '(2) {0}'.format(_('Horrible'))),
+        (1, '(1) {0}'.format(_('Appalling'))),
+    )
+    REPLAY_VALUE_CHOICES = (
+        ('VH', _('Very high')),
+        ('HI', _('High')),
+        ('ME', _('Medium')),
+        ('LO', _('Low')),
+        ('VL', _('Very low')),
+    )
     user = models.ForeignKey(User)
     game = models.ForeignKey(Game)
-    score = models.IntegerField(_('Score'))
+    score = models.CharField(_('Score'), max_length=2,
+                             choices=SCORE_CHOICES)
+    replay_value = models.CharField(_('Replay value'), max_length=2,
+                                    choices=REPLAY_VALUE_CHOICES)
 
     class Meta:
         verbose_name_plural = 'list entries'
