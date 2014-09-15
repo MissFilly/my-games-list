@@ -1,9 +1,13 @@
 Django==1.7
+Pillow==2.5.3
 dj-database-url==0.3.0
 dj-static==0.0.6
--e git://github.com/goinnn/django-multiselectfield@a01e3a27c3da3b6254b2fcb1de23b6b4c24270da#egg=django_multiselectfield-origin/HEAD
+django-appconf==0.6
+django-compressor==1.4
 django-toolbelt==0.0.1
 gunicorn==19.1.1
+nodeenv==0.11.1
 psycopg2==2.5.3
 selenium==2.42.1
+six==1.7.3
 static3==0.5.1

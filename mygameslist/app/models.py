@@ -40,6 +40,7 @@ class Game(models.Model):
     release_date = models.DateField(_('First release date'))
     score = models.DecimalField(_('Score'), max_digits=4, decimal_places=2,
                                 null=True, blank=True)
+    cover_img = models.ImageField(upload_to='covers')
     active = models.BooleanField(default=True)
 
     def __str__(self):

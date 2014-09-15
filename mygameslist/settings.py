@@ -92,6 +92,9 @@ STATICFILES_FINDERS = (
     "compressor.finders.CompressorFinder",
 )
 
+MEDIA_ROOT = 'media'
+MEDIA_URL = '/media/'
+
 COMPRESS_ENABLED=True
 if not 'COMPRESS_OFFLINE' in os.environ:
     COMPRESS_OFFLINE=True

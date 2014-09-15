@@ -1,5 +1,6 @@
 psenv
 *.pyc
 staticfiles
+media
 __pycache__
 .env
