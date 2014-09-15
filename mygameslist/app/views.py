@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.shortcuts import render
 from django.views.generic.detail import DetailView
 from django.contrib.auth.models import User
@@ -20,3 +21,10 @@ class UserProfileDetail(DetailView):
 class GameDetailView(DetailView):
     model = Game
     template_name = 'game_detail.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(GameDetailView, self).get_context_data(**kwargs)
+        context['reviews'] = GameReview.objects.filter(game=self.object)
+        context['recommendations'] = GameRecommendation.objects.filter(
+            Q(game1=self.object) | Q(game2=self.object))
+        return context

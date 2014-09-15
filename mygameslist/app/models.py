@@ -67,8 +67,17 @@ class ListEntry(models.Model):
         ('LO', _('Low')),
         ('VL', _('Very low')),
     )
+    STATUS_CHOICES = (
+        ('PL', _('Playing')),
+        ('CO', _('Completed')),
+        ('OH', _('On-hold')),
+        ('DR', _('Dropped')),
+        ('WA', _('Want to play')),
+    )
     user = models.ForeignKey(User)
     game = models.ForeignKey(Game)
+    status = models.CharField(_('Status'), max_length=2,
+                              choices=STATUS_CHOICES)
     score = models.CharField(_('Score'), max_length=2,
                              choices=SCORE_CHOICES)
     replay_value = models.CharField(_('Replay value'), max_length=2,

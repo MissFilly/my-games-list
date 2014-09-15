@@ -16,8 +16,23 @@
         <p>{{ object.synopsis }}</p>
         <hr />
         <h3>{% trans 'Reviews' %}</h3>
+        {% if reviews %}
+          {% for r in reviews %}
+            <p>{{ r.text|linebreaks }}</p>
+          {% endfor %}
+        {% else %}
+          <p>{% trans 'There are no reviews for this game yet.' %}</p>
+        {% endif %}
         <hr />
         <h3>{% trans 'Recommendations' %}</h3>
+        {% if reviews %}
+          {% for r in recommendations %}
+            <p>{{ r.text|linebreaks }}</p>
+          {% endfor %}
+        {% else %}
+          <p>{% trans 'There are no recommendations for this game yet.' %}</p>
+        {% endif %}
+        <hr />
     </div>
 
 </div>
