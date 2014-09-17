@@ -6,6 +6,7 @@ from django_countries.fields import CountryField
 
 class UserProfile(models.Model):
     GENDER_CHOICES = (('F', _('Female')), ('M', _('Male')))
+    avatar = models.ImageField(upload_to='avatars', blank=True, null=True)
     user = models.OneToOneField(User)
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES,
                               verbose_name=_('Gender'))
@@ -92,6 +93,8 @@ class ListEntry(models.Model):
                              choices=SCORE_CHOICES)
     replay_value = models.CharField(_('Replay value'), max_length=2,
                                     choices=REPLAY_VALUE_CHOICES)
+    date_created = models.DateTimeField(auto_now_add=True)
+    last_modified = models.DateTimeField(auto_now=True)
 
     class Meta:
         verbose_name_plural = 'list entries'

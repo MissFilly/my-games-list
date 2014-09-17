@@ -1,0 +1,69 @@
+{% extends 'base.html' %}
+{% load i18n %}
+
+{% block page_header %}
+  {% blocktrans with username=object.username %}
+    {{ username }}'s profile
+  {% endblocktrans %}
+{% endblock %}
+
+{% block content %}
+
+<div class="row">
+
+    <div class="col-md-3">
+        <img class="img-responsive" src="{{ object.userprofile.avatar.url }}" alt="">
+        <table class="table">
+          <tr>
+            <td>{% trans 'Joined' %}</td>
+            <td>{{ object.date_joined|date:"N d, Y" }}</td>
+          </tr>
+          <tr>
+            <td>{% trans 'Last seen' %}</td>
+            <td>{{ object.last_login|date:"N d, Y" }}</td>
+          </tr>
+          <tr>
+            <td>{% trans 'Gender' %}</td>
+            <td>{{ object.userprofile.get_gender_display }}</td>
+          </tr>
+          <tr>
+            <td>{% trans 'Country' %}</td>
+            <td>{{ object.userprofile.get_country_display }}</td>
+          </tr>
+        </table>
+    </div>
+
+    <div class="col-md-9">
+        <h3>{% trans 'Last list updates' %}</h3>
+        <p>{{ object.synopsis }}</p>
+        <hr />
+        <h3>{% trans 'Reviews' %}</h3>
+        {% with reviews=object.gamereview_set.all %}
+          {% if reviews %}
+            {% for r in reviews %}
+              <p>{{ r.text|linebreaks }}</p>
+            {% endfor %}
+          {% else %}
+            <p>{% trans "This user hasn't written any reviews yet." %}</p>
+          {% endif %}
+        {% endwith %}
+        <hr />
+        <h3>{% trans 'Recommendations' %}</h3>
+        {% with recommendations=object.gamerecommendation_set.all %}
+          {% if reviews %}
+            {% for r in recommendations %}
+              <p>{{ r.text|linebreaks }}</p>
+            {% endfor %}
+          {% else %}
+            <p>{% trans "This user hasn't written any recommendations yet." %}</p>
+          {% endif %}
+        {% endwith %}
+        <hr />
+    </div>
+
+</div>
+<!-- /.row -->
+
+<hr>
+
+{% endblock %}
