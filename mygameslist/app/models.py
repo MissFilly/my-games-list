@@ -1,6 +1,16 @@
 from django.db import models
 from django.utils.translation import ugettext as _
 from django.contrib.auth.models import User
+from django_countries.fields import CountryField
+
+
+class UserProfile(models.Model):
+    GENDER_CHOICES = (('F', _('Female')), ('M', _('Male')))
+    user = models.OneToOneField(User)
+    gender = models.CharField(max_length=1, choices=GENDER_CHOICES,
+                              verbose_name=_('Gender'))
+    country = CountryField()
+    about = models.TextField(verbose_name=_('About'))
 
 
 class Company(models.Model):

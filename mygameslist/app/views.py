@@ -1,8 +1,8 @@
 from django.db.models import Q
 from django.shortcuts import render
 from django.views.generic.detail import DetailView
-from django.contrib.auth.models import User
-from .models import Game, GameReview, GameRecommendation
+from .models import Game, GameReview, GameRecommendation, \
+                    UserProfile
 
 
 def home(request):
@@ -12,8 +12,8 @@ def home(request):
     return render(request, 'index.html', context)
 
 
-class UserProfileDetail(DetailView):
-    model = User
+class UserDetailView(DetailView):
+    model = UserProfile
     template_name = 'user_profile.html'
     slug_field = 'username'
 

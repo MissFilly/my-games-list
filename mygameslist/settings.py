@@ -38,6 +38,7 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'compressor',
+    'django_countries',
     'mygameslist.app',
 )
 
@@ -95,9 +96,9 @@ STATICFILES_FINDERS = (
 MEDIA_ROOT = 'media'
 MEDIA_URL = '/media/'
 
-COMPRESS_ENABLED=True
+COMPRESS_ENABLED = True
 if not 'COMPRESS_OFFLINE' in os.environ:
-    COMPRESS_OFFLINE=True
+    COMPRESS_OFFLINE = True
 COMPRESS_PRECOMPILERS = (
-    ('text/less','lessc {infile} {outfile}'),
+    ('text/less', 'lessc {infile} {outfile}'),
 )
