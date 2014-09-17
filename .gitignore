@@ -3,5 +3,6 @@ psenv
 staticfiles
 media
 migrations
+fixtures
 __pycache__
 .env

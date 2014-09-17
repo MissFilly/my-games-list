@@ -89,8 +89,7 @@ class ListEntry(models.Model):
     game = models.ForeignKey(Game)
     status = models.CharField(_('Status'), max_length=2,
                               choices=STATUS_CHOICES)
-    score = models.CharField(_('Score'), max_length=2,
-                             choices=SCORE_CHOICES)
+    score = models.IntegerField(_('Score'), choices=SCORE_CHOICES)
     replay_value = models.CharField(_('Replay value'), max_length=2,
                                     choices=REPLAY_VALUE_CHOICES)
     date_created = models.DateTimeField(auto_now_add=True)

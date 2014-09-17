@@ -102,3 +102,7 @@ if not 'COMPRESS_OFFLINE' in os.environ:
 COMPRESS_PRECOMPILERS = (
     ('text/less', 'lessc {infile} {outfile}'),
 )
+
+FIXTURE_DIRS = (
+   os.path.join(BASE_DIR, 'fixtures'),
+)

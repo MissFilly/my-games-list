@@ -3,7 +3,7 @@ from django.shortcuts import render
 from django.contrib.auth.models import User
 from django.views.generic.detail import DetailView
 from .models import Game, GameReview, GameRecommendation, \
-    UserProfile
+    UserProfile, ListEntry
 
 
 def home(request):
@@ -28,4 +28,11 @@ class GameDetailView(DetailView):
         context['reviews'] = GameReview.objects.filter(game=self.object)
         context['recommendations'] = GameRecommendation.objects.filter(
             Q(game1=self.object) | Q(game2=self.object))
+
+        user = self.request.user
+        if user.is_authenticated():
+            context['object_in_user_list'] = ListEntry.objects.filter(
+                user=user,
+                game=self.object
+            ).exists()
         return context
