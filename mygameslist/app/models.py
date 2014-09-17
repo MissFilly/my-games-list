@@ -1,6 +1,7 @@
 from django.db import models
 from django.utils.translation import ugettext as _
 from django.contrib.auth.models import User
+from django.core.urlresolvers import reverse
 from django_countries.fields import CountryField
 
 
@@ -56,6 +57,9 @@ class Game(models.Model):
 
     def __str__(self):
         return self.title
+
+    def get_absolute_url(self):
+        return reverse('game_detail', kwargs={'pk': self.pk})
 
 
 class ListEntry(models.Model):

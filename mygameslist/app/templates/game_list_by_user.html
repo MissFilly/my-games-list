@@ -13,14 +13,16 @@
 
 <div class="row">
 
-    <div class="col-md-12">
-
-      <div class="btn-group" id="catpicker">
+    <div class="col-md-12 text-center">
+      <div class="btn-group text-center" id="catpicker">
         <a href="#" id="allcat" class="current btn btn-primary">{% trans 'All' %}</a>
         {% for e in entries %}
           <a href="#" id="{{ e.grouper }}" class="filter btn btn-primary">{{ e.grouper }}</a>
         {% endfor %}
       </div>
+    </div>
+
+    <div class="col-md-12">
 
       {% for e in entries %}
         <section class="discounted-item {{ e.grouper }}">
@@ -33,7 +35,7 @@
             </tr>
           {% for entry in e.list %}
             <tr>
-              <td>{{ entry.game.title }}</td>
+              <td><a href="{{ entry.game.get_absolute_url }}">{{ entry.game.title }}</a></td>
               <td>{{ entry.get_replay_value_display }}</td>
               <td>{{ entry.score }}</td>
             </tr>
@@ -46,8 +48,6 @@
 
 </div>
 <!-- /.row -->
-
-<hr>
 
 {% endblock %}
 
