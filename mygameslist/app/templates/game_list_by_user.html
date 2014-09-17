@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load i18n staticfiles %}
+
+{% block page_header %}
+  {% blocktrans with username=user_profile.username %}
+    {{ username }}'s games list
+  {% endblocktrans %}
+{% endblock %}
+
+{% block content %}
+
+{% regroup object_list by get_status_display as entries %}
+
+<div class="row">
+
+    <div class="col-md-12">
+
+      <div class="btn-group" id="catpicker">
+        <a href="#" id="allcat" class="current btn btn-primary">{% trans 'All' %}</a>
+        {% for e in entries %}
+          <a href="#" id="{{ e.grouper }}" class="filter btn btn-primary">{{ e.grouper }}</a>
+        {% endfor %}
+      </div>
+
+      {% for e in entries %}
+        <section class="discounted-item {{ e.grouper }}">
+          <h3 class="section-title">{{ e.grouper }}</h3>
+          <table class="table">
+            <tr>
+              <th>{% trans 'Game title' %}</th>
+              <th>{% trans 'Replay value' %}</th>
+              <th>{% trans 'Score' %}</th>
+            </tr>
+          {% for entry in e.list %}
+            <tr>
+              <td>{{ entry.game.title }}</td>
+              <td>{{ entry.get_replay_value_display }}</td>
+              <td>{{ entry.score }}</td>
+            </tr>
+          {% endfor %}
+          </table>
+        </section>
+      {% endfor %}
+
+    </div>
+
+</div>
+<!-- /.row -->
+
+<hr>
+
+{% endblock %}
+
+{% block extrascripts %}
+<script src="{% static 'js/filter.js' %}"></script>
+{% endblock %}

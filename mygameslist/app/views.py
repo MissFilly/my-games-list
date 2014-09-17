@@ -1,7 +1,8 @@
 from django.db.models import Q
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.models import User
 from django.views.generic.detail import DetailView
+from django.views.generic.list import ListView
 from .models import Game, GameReview, GameRecommendation, \
     UserProfile, ListEntry
 
@@ -36,4 +37,18 @@ class GameDetailView(DetailView):
                 user=user,
                 game=self.object
             ).exists()
+        return context
+
+
+class GameListByUserView(ListView):
+    model = ListEntry
+    template_name = 'game_list_by_user.html'
+
+    def get_queryset(self):
+        self.user_profile = get_object_or_404(User, username=self.kwargs['slug'])
+        return ListEntry.objects.filter(user=self.user_profile)
+
+    def get_context_data(self, **kwargs):
+        context = super(GameListByUserView, self).get_context_data(**kwargs)
+        context['user_profile'] = self.user_profile
         return context
