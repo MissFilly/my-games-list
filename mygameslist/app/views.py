@@ -25,9 +25,10 @@ class GameDetailView(DetailView):
 
     def get_context_data(self, **kwargs):
         context = super(GameDetailView, self).get_context_data(**kwargs)
-        context['reviews'] = GameReview.objects.filter(game=self.object)
+        game = self.object
+        context['reviews'] = GameReview.objects.filter(game=game)
         context['recommendations'] = GameRecommendation.objects.filter(
-            Q(game1=self.object) | Q(game2=self.object))
+            Q(game1=game) | Q(game2=game))
 
         user = self.request.user
         if user.is_authenticated():

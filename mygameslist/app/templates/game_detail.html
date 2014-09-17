@@ -17,23 +17,31 @@
     </div>
 
     <div class="col-md-9">
-        <h3>{% trans 'Synopsis' %}</h3>
+      <section>
+        <h3 class="section-title">{% trans 'Synopsis' %}</h3>
         <p>{{ object.synopsis }}</p>
         <hr />
-        <h3>{% trans 'Reviews' %}</h3>
+      </section>
+      
+      <section>
+        <h3 class="section-title">{% trans 'Reviews' %}</h3>
           {% for r in reviews %}
             <p>{{ r.text|linebreaks }}</p>
           {% empty %}
             <p>{% trans 'There are no reviews for this game yet.' %}</p>
           {% endfor %}
         <hr />
-        <h3>{% trans 'Recommendations' %}</h3>
+      </section>
+
+      <section>
+        <h3 class="section-title">{% trans 'Recommendations' %}</h3>
           {% for r in recommendations %}
             <p>{{ r.text|linebreaks }}</p>
           {% empty %}
             <p>{% trans 'There are no recommendations for this game yet.' %}</p>
           {% endfor %}
         <hr />
+      </section>
     </div>
 
 </div>

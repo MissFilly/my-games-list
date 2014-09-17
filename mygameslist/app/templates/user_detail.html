@@ -34,10 +34,13 @@
     </div>
 
     <div class="col-md-9">
+      <section>
         <h3>{% trans 'Last list updates' %}</h3>
         <p>{{ object.synopsis }}</p>
         <hr />
+      </section>
 
+      <section>
         <h3>{% trans 'Reviews' %}</h3>
         {% with reviews=object.gamereview_set.all %}
           {% for r in reviews %}
@@ -47,7 +50,9 @@
           {% endfor %}
         {% endwith %}
         <hr />
-        
+      </section>
+      
+      <section>
         <h3>{% trans 'Recommendations' %}</h3>
         {% with recommendations=object.gamerecommendation_set.all %}
           {% for r in recommendations %}
@@ -57,6 +62,7 @@
           {% endfor %}
         {% endwith %}
         <hr />
+      </section>
     </div>
 
 </div>
