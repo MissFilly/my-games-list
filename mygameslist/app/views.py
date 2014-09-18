@@ -1,10 +1,13 @@
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404
+from django.core.urlresolvers import reverse, reverse_lazy
 from django.contrib.auth.models import User
+from django.views.generic.edit import CreateView
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 from .models import Game, GameReview, GameRecommendation, \
     UserProfile, ListEntry
+from .forms import ListEntryForm
 
 
 def home(request):
@@ -27,9 +30,9 @@ class GameDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super(GameDetailView, self).get_context_data(**kwargs)
         game = self.object
-        context['reviews'] = GameReview.objects.filter(game=game)
+        context['reviews'] = GameReview.objects.filter(entry__game=game)
         context['recommendations'] = GameRecommendation.objects.filter(
-            Q(game1=game) | Q(game2=game))
+            Q(game1_entry__game=game) | Q(game2_entry__game=game))
 
         user = self.request.user
         if user.is_authenticated():
@@ -45,10 +48,25 @@ class GameListByUserView(ListView):
     template_name = 'game_list_by_user.html'
 
     def get_queryset(self):
-        self.user_profile = get_object_or_404(User, username=self.kwargs['slug'])
+        self.user_profile = get_object_or_404(
+            User, username=self.kwargs['slug'])
         return ListEntry.objects.filter(user=self.user_profile)
 
     def get_context_data(self, **kwargs):
         context = super(GameListByUserView, self).get_context_data(**kwargs)
         context['user_profile'] = self.user_profile
         return context
+
+
+class ListEntryCreate(CreateView):
+    model = ListEntry
+    form_class = ListEntryForm
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        form.instance.game = get_object_or_404(Game, pk=self.kwargs['pk'])
+        return super(ListEntryCreate, self).form_valid(form)
+
+    def get_success_url(self):
+        return reverse('game_list_by_user',
+                       kwargs={'slug': self.request.user.username, })

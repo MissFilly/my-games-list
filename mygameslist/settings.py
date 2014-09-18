@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/dev/ref/settings/
 import os
 import dj_database_url
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+BASE_PROJ = os.path.join(BASE_DIR, 'mygameslist')
 
 
 # Quick-start development settings - unsuitable for production
@@ -24,6 +25,10 @@ SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 DEBUG = True
 
 TEMPLATE_DEBUG = True
+
+TEMPLATE_DIRS = (
+    os.path.join(BASE_PROJ, 'templates'),
+)
 
 ALLOWED_HOSTS = ['*']
 
@@ -39,6 +44,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'compressor',
     'django_countries',
+    'crispy_forms',
     'mygameslist.app',
 )
 
@@ -104,5 +110,7 @@ COMPRESS_PRECOMPILERS = (
 )
 
 FIXTURE_DIRS = (
-   os.path.join(BASE_DIR, 'fixtures'),
+    os.path.join(BASE_DIR, 'fixtures'),
 )
+
+CRISPY_TEMPLATE_PACK = 'bootstrap3'

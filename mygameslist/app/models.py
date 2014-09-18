@@ -101,6 +101,7 @@ class ListEntry(models.Model):
 
     class Meta:
         verbose_name_plural = 'list entries'
+        unique_together = ('user', 'game')
 
     def __str__(self):
         return "{0}'s entry for {1}".format(self.user.username,
@@ -108,8 +109,7 @@ class ListEntry(models.Model):
 
 
 class GameReview(models.Model):
-    user = models.ForeignKey(User)
-    game = models.ForeignKey(Game)
+    entry = models.ForeignKey(ListEntry)
     text = models.TextField(_('Text'))
     date_created = models.DateTimeField(auto_now_add=True)
 
@@ -119,9 +119,10 @@ class GameReview(models.Model):
 
 
 class GameRecommendation(models.Model):
-    user = models.ForeignKey(User)
-    game1 = models.ForeignKey(Game, related_name='gamerecommendation_game1')
-    game2 = models.ForeignKey(Game, related_name='gamerecommendation_game2')
+    game1_entry = models.ForeignKey(
+        ListEntry, related_name='gamerecommendation_game1entry')
+    game2_entry = models.ForeignKey(
+        ListEntry, related_name='gamerecommendation_game2entry')
     text = models.TextField(_('Text'))
     date_created = models.DateTimeField(auto_now_add=True)
 
