@@ -1,0 +1,33 @@
+.navbar {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    margin-bottom: 0px;
+
+    .navbar-brand {
+        padding-top: @navbar-padding-vertical;
+        padding-bottom: @navbar-padding-vertical;
+    }
+}
+
+.navbar-default {
+    .navbar-nav {
+    	> li > a:not(.btn) {
+    		border: 1px solid transparent;
+    	}
+        > li > a.btn {
+            background-color: @pink-dark;
+
+            &:hover,
+            &:focus {
+                background-color: darken(@pink-dark, 10%);
+            }
+        }
+    }
+}
+
+.search-bar-wrapper {
+    background-color: @brand-primary;
+    margin-bottom: @navbar-margin-bottom;
+	padding-top: @navbar-padding-vertical / 2;
+    padding-bottom: @navbar-padding-vertical / 2;
+}

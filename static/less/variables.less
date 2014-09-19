@@ -1,19 +1,32 @@
 @font-family-base: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
 
-@blue-dark: #2E3A5A;
-@blue: #475577;
-@orange: #F37934;
+// @blue-dark: #2E3A5A;
+@blue-dark:   #092D3D;
+// @blue:        #475577;
+@blue:        #3D738A;
+@orange:      #F37934;
+@pink:        #FF6563;
+@pink-dark:   #E53D3D;
+@gray-custom: #DFE5E9;
 
-@brand-primary: @orange;
+@brand-primary:      @pink;
+@btn-default-color:  white;
+@btn-default-bg:     @blue;
+@btn-default-border: darken(@blue, 10%);
 
 // Typography
 @font-size-h1: floor((@font-size-base * 2.15));
 @font-size-h3: ceil((@font-size-base * 1.25));
 
+@icon-font-path: "fonts/";
+
 // Basics of a navbar
 @navbar-default-bg:     @blue-dark;
 @navbar-default-border: 0px none;
 @navbar-border-radius:  0px;
+
+// Basics of panels
+@panel-bg: @gray-custom;
 
 // Navbar links
 @navbar-height:                   40px;

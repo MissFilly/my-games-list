@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load i18n %}
+{% load url from future %}
 
 {% block page_header %}{{ object }}{% endblock %}
 
@@ -10,7 +11,7 @@
     <div class="col-md-3">
         <img class="img-responsive" src="{{ object.cover_img.url }}" alt="">
         {% if not object_in_user_list %}
-        <a href="#" class="btn btn-default btn-block">{% trans 'Add to my list' %}</a>
+        <a href="{% url 'entry_create' object.pk %}" class="btn btn-default btn-block">{% trans 'Add to my list' %}</a>
         {% else %}
         <p>This game is in your list.</p>
         {% endif %}

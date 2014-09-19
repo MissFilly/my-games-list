@@ -8,6 +8,7 @@ from django.views.generic.list import ListView
 from .models import Game, GameReview, GameRecommendation, \
     UserProfile, ListEntry
 from .forms import ListEntryForm
+from .mixins import LoginRequiredMixin
 
 
 def home(request):
@@ -58,26 +59,32 @@ class GameListByUserView(ListView):
         return context
 
 
-class ListEntryCreate(CreateView):
+class ListEntryCreate(LoginRequiredMixin, CreateView):
     model = ListEntry
     form_class = ListEntryForm
 
     def dispatch(self, request, *args, **kwargs):
-        entry = ListEntry.objects.filter(user=request.user,
-                                         game__pk=self.kwargs['pk'])
-        if entry.exists():
-            return redirect(reverse(
-                'game_list_by_user',
-                kwargs={'slug': request.user.username, }))
-        else:
-            return super(ListEntryCreate, self).dispatch(request,
-                                                         *args, **kwargs)
+        self.game = get_object_or_404(Game, pk=kwargs['pk'])
+        if request.user.is_authenticated():
+            entry = ListEntry.objects.filter(user=request.user,
+                                             game=self.game)
+            if entry.exists():
+                return redirect(reverse(
+                    'game_list_by_user',
+                    kwargs={'slug': request.user.username, }))
+        return super(ListEntryCreate, self).dispatch(request,
+                                                     *args, **kwargs)
 
     def form_valid(self, form):
         form.instance.user = self.request.user
-        form.instance.game = get_object_or_404(Game, pk=self.kwargs['pk'])
+        form.instance.game = self.game
         return super(ListEntryCreate, self).form_valid(form)
 
     def get_success_url(self):
         return reverse('game_list_by_user',
                        kwargs={'slug': self.request.user.username, })
+
+    def get_context_data(self, **kwargs):
+        context = super(ListEntryCreate, self).get_context_data(**kwargs)
+        context['game'] = self.game
+        return context

@@ -75,7 +75,16 @@
 
     <div class="search-bar-wrapper">
       <div class="container">
-        Test text
+        <form class="navbar-form navbar-left pull-right" role="search">
+          <div class="input-group">
+            <input class="form-control input-sm" type="text" placeholder="{% trans 'Search game&#8230;' %}">
+            <span class="input-group-btn">
+              <button class="btn btn-default btn-sm" type="button">
+                <span class="glyphicon glyphicon-search"></span>
+              </button>
+            </span>
+          </div>
+        </form>
       </div>
     </div>
 
@@ -96,7 +105,7 @@
     <!-- /.container -->
 
     <!-- Footer -->
-    <footer class="navbar-bottom">
+    <footer class="footer">
       <div class="container">
         <div class="row">
             <div class="col-lg-12">
