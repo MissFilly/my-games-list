@@ -1,5 +1,5 @@
 from django.db.models import Q
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.contrib.auth.models import User
 from django.views.generic.edit import CreateView
@@ -61,6 +61,17 @@ class GameListByUserView(ListView):
 class ListEntryCreate(CreateView):
     model = ListEntry
     form_class = ListEntryForm
+
+    def dispatch(self, request, *args, **kwargs):
+        entry = ListEntry.objects.filter(user=request.user,
+                                         game__pk=self.kwargs['pk'])
+        if entry.exists():
+            return redirect(reverse(
+                'game_list_by_user',
+                kwargs={'slug': request.user.username, }))
+        else:
+            return super(ListEntryCreate, self).dispatch(request,
+                                                         *args, **kwargs)
 
     def form_valid(self, form):
         form.instance.user = self.request.user
