@@ -109,7 +109,7 @@ class ListEntry(models.Model):
 
 
 class GameReview(models.Model):
-    entry = models.ForeignKey(ListEntry)
+    entry = models.OneToOneField(ListEntry)
     text = models.TextField(_('Text'))
     date_created = models.DateTimeField(auto_now_add=True)
 
@@ -125,6 +125,9 @@ class GameRecommendation(models.Model):
         ListEntry, related_name='gamerecommendation_game2entry')
     text = models.TextField(_('Text'))
     date_created = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ('game1_entry', 'game2_entry')
 
     def __str__(self):
         return "{0}'s review for {1} - {2}".format(

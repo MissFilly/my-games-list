@@ -2,13 +2,13 @@ from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.contrib.auth.models import User
-from django.views.generic.edit import CreateView
+from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 from .models import Game, GameReview, GameRecommendation, \
     UserProfile, ListEntry
 from .forms import ListEntryForm, GameReviewForm
-from .mixins import LoginRequiredMixin
+from .mixins import LoginRequiredMixin, GameReviewEntryMixin
 
 
 def home(request):
@@ -37,10 +37,8 @@ class GameDetailView(DetailView):
 
         user = self.request.user
         if user.is_authenticated():
-            context['object_in_user_list'] = ListEntry.objects.filter(
-                user=user,
-                game=self.object
-            ).exists()
+            context['entry'] = ListEntry.objects.get(user=user,
+                                                     game=self.object)
         return context
 
 
@@ -70,8 +68,8 @@ class ListEntryCreate(LoginRequiredMixin, CreateView):
                                              game=self.game)
             if entry.exists():
                 return redirect(reverse(
-                    'game_list_by_user',
-                    kwargs={'slug': request.user.username, }))
+                    'entry_update',
+                    kwargs={'pk': kwargs['pk'], }))
         return super(ListEntryCreate, self).dispatch(request,
                                                      *args, **kwargs)
 
@@ -90,15 +88,44 @@ class ListEntryCreate(LoginRequiredMixin, CreateView):
         return context
 
 
-class GameReviewCreate(LoginRequiredMixin, CreateView):
+class GameReviewCreate(GameReviewEntryMixin, CreateView):
     model = GameReview
     form_class = GameReviewForm
 
+    # Uncomment to redirect to UpdateView if the review for this game and
+    # user already exists.
+
+    # def dispatch(self, request, *args, **kwargs):
+    # if request.user.is_authenticated():
+    #     try:
+    #         review = GameReview.objects.get(entry__game__pk=kwargs['pk'],
+    #                                         entry__user=request.user)
+    #         return redirect(reverse('review_update',
+    #                                 kwargs={'pk': review.pk}))
+    #     except GameReview.DoesNotExist:
+    #         pass
+    # return super(GameReviewCreate, self).dispatch(request,
+    #                                               *args, **kwargs)
+
     def form_valid(self, form):
-        form.instance.user = self.request.user
+        form.instance.entry = self.entry
         return super(GameReviewCreate, self).form_valid(form)
 
     def get_form_kwargs(self):
         kwargs = super(GameReviewCreate, self).get_form_kwargs()
         kwargs['user'] = self.request.user
         return kwargs
+
+    def get_context_data(self, **kwargs):
+        context = super(GameReviewCreate, self).get_context_data(**kwargs)
+        context['game'] = self.entry.game
+        return context
+
+
+class GameReviewUpdate(UpdateView):
+    model = GameReview
+    form_class = GameReviewForm
+
+
+class GameReviewByUser(ListView):
+    pass

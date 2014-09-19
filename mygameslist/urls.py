@@ -2,7 +2,7 @@ from django.conf import settings
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from .app.views import UserDetailView, GameDetailView, GameListByUserView, \
-    ListEntryCreate, GameReviewCreate
+    ListEntryCreate, GameReviewCreate, GameReviewUpdate
 
 urlpatterns = patterns(
     '',
@@ -14,10 +14,12 @@ urlpatterns = patterns(
     url(r'^admin/', include(admin.site.urls)),
     url(r'^media/(?P<path>.*)$', 'django.views.static.serve',
         {'document_root': settings.MEDIA_ROOT}),
-    url(r'^game/(?P<pk>\d+)/$', GameDetailView.as_view(), name='game_detail'),
+    url(r'^(?P<pk>\d+)/detail/$', GameDetailView.as_view(), name='game_detail'),
     url(r'^list/(?P<slug>[-_\w]+)/$',
         GameListByUserView.as_view(), name='game_list_by_user'),
-    url(r'^add/(?P<pk>\d+)/$', ListEntryCreate.as_view(), name='entry_create'),
-    url(r'^write_review/(?P<pk>\d+)/$',
-        GameReviewCreate.as_view(), name='entry_create'),
+    url(r'^(?P<pk>\d+)/entry_create/$', ListEntryCreate.as_view(), name='entry_create'),
+    url(r'^(?P<pk>\d+)/review/$',
+        GameReviewCreate.as_view(), name='review_create'),
+    url(r'^review/(?P<pk>\d+)/update/$',
+        GameReviewUpdate.as_view(), name='review_update'),
 )

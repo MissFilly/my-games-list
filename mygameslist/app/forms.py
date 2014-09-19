@@ -26,16 +26,12 @@ class ListEntryChoiceField(forms.ModelChoiceField):
 
 
 class GameReviewForm(forms.ModelForm):
-    entry = ListEntryChoiceField(queryset=ListEntry.objects.none(),
-                                 label=_('Game'))
 
     def __init__(self, user=None, *args, **kwargs):
         super(GameReviewForm, self).__init__(*args, **kwargs)
-        if user:
-            self.fields['entry'].queryset = ListEntry.objects.filter(user=user)
         self.helper = FormHelper()
         self.helper.add_input(Submit('submit', _('Submit')))
 
     class Meta:
         model = GameReview
-        exclude = ('user',)
+        exclude = ('user', 'entry', )
