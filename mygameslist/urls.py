@@ -7,6 +7,8 @@ from .app.views import UserDetailView, GameDetailView, GameListByUserView, \
 urlpatterns = patterns(
     '',
     url(r'^$', 'mygameslist.app.views.home', name='home'),
+    url(r'^accounts/logout/$',
+        'django.contrib.auth.views.logout', {'next_page': '/'}),
     url(r'^accounts/', include('allauth.urls')),
     url(r'^user/(?P<slug>[\w-]+)/$', UserDetailView.as_view()),
     url(r'^admin/', include(admin.site.urls)),
