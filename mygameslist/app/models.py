@@ -114,8 +114,8 @@ class GameReview(models.Model):
     date_created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return "{0}'s review for {1}".format(self.user.username,
-                                             self.game.title)
+        return "{0}'s review for {1}".format(self.entry.user.username,
+                                             self.entry.game.title)
 
 
 class GameRecommendation(models.Model):

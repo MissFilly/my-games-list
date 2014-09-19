@@ -7,7 +7,7 @@ from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 from .models import Game, GameReview, GameRecommendation, \
     UserProfile, ListEntry
-from .forms import ListEntryForm
+from .forms import ListEntryForm, GameReviewForm
 from .mixins import LoginRequiredMixin
 
 
@@ -88,3 +88,17 @@ class ListEntryCreate(LoginRequiredMixin, CreateView):
         context = super(ListEntryCreate, self).get_context_data(**kwargs)
         context['game'] = self.game
         return context
+
+
+class GameReviewCreate(LoginRequiredMixin, CreateView):
+    model = GameReview
+    form_class = GameReviewForm
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        return super(GameReviewCreate, self).form_valid(form)
+
+    def get_form_kwargs(self):
+        kwargs = super(GameReviewCreate, self).get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs

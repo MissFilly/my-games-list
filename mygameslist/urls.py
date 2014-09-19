@@ -2,7 +2,7 @@ from django.conf import settings
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from .app.views import UserDetailView, GameDetailView, GameListByUserView, \
-    ListEntryCreate
+    ListEntryCreate, GameReviewCreate
 
 urlpatterns = patterns(
     '',
@@ -18,4 +18,6 @@ urlpatterns = patterns(
     url(r'^list/(?P<slug>[-_\w]+)/$',
         GameListByUserView.as_view(), name='game_list_by_user'),
     url(r'^add/(?P<pk>\d+)/$', ListEntryCreate.as_view(), name='entry_create'),
+    url(r'^write_review/(?P<pk>\d+)/$',
+        GameReviewCreate.as_view(), name='entry_create'),
 )
