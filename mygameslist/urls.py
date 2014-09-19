@@ -7,6 +7,7 @@ from .app.views import UserDetailView, GameDetailView, GameListByUserView, \
 urlpatterns = patterns(
     '',
     url(r'^$', 'mygameslist.app.views.home', name='home'),
+    url(r'^accounts/', include('allauth.urls')),
     url(r'^user/(?P<slug>[\w-]+)/$', UserDetailView.as_view()),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^media/(?P<path>.*)$', 'django.views.static.serve',

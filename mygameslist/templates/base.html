@@ -59,11 +59,14 @@
                           <a href="#">{% trans 'My recommendations' %}</a>
                       </li>
                       <li>
-                          <a href="#">{% trans 'Logout' %}</a>
+                          <a href="{% url 'account_logout' %}">{% trans 'Logout' %}</a>
                       </li>
                     {% else %}
                       <li>
-                          <a href="#" class="btn btn-primary">{% trans 'Login' %}</a>
+                        <a href="{% url 'account_login' %}">{% trans 'Login' %}</a>
+                      </li>
+                      <li>
+                        <a href="{% url 'account_signup' %}" class="btn btn-primary">{% trans 'Sign up' %}</a>
                       </li>
                     {% endif %}
                 </ul>
