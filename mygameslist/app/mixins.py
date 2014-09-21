@@ -11,9 +11,10 @@ class LoginRequiredMixin(object):
         return super(LoginRequiredMixin, self).dispatch(*args, **kwargs)
 
 
-class GameReviewEntryMixin(LoginRequiredMixin):
+class EntryMixin(LoginRequiredMixin):
 
     def dispatch(self, request, *args, **kwargs):
         self.entry = get_object_or_404(ListEntry, game__pk=kwargs['pk'],
                                        user=request.user)
-        return super(GameReviewEntryMixin, self).dispatch(request, *args, **kwargs)
+        return super(EntryMixin, self).dispatch(request, *args,
+                                                **kwargs)

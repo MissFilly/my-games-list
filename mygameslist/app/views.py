@@ -7,8 +7,8 @@ from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 from .models import Game, GameReview, GameRecommendation, \
     UserProfile, ListEntry
-from .forms import ListEntryForm, GameReviewForm
-from .mixins import LoginRequiredMixin, GameReviewEntryMixin
+from .forms import ListEntryForm, GameReviewForm, GameRecommendationForm
+from .mixins import LoginRequiredMixin, EntryMixin
 
 
 def home(request):
@@ -32,13 +32,16 @@ class GameDetailView(DetailView):
         context = super(GameDetailView, self).get_context_data(**kwargs)
         game = self.object
         context['reviews'] = GameReview.objects.filter(entry__game=game)
-        context['recommendations'] = GameRecommendation.objects.filter(
-            Q(game1_entry__game=game) | Q(game2_entry__game=game))
+        # context['recommendations'] = GameRecommendation.objects.filter(
+        # Q(game1_entry__game=game) | Q(game2_entry__game=game))
 
         user = self.request.user
         if user.is_authenticated():
-            context['entry'] = ListEntry.objects.get(user=user,
-                                                     game=self.object)
+            try:
+                context['entry'] = ListEntry.objects.get(user=user,
+                                                         game=self.object)
+            except:
+                pass
         return context
 
 
@@ -88,33 +91,25 @@ class ListEntryCreate(LoginRequiredMixin, CreateView):
         return context
 
 
-class GameReviewCreate(GameReviewEntryMixin, CreateView):
+class GameReviewCreate(EntryMixin, CreateView):
     model = GameReview
     form_class = GameReviewForm
 
-    # Uncomment to redirect to UpdateView if the review for this game and
-    # user already exists.
-
-    # def dispatch(self, request, *args, **kwargs):
-    # if request.user.is_authenticated():
-    #     try:
-    #         review = GameReview.objects.get(entry__game__pk=kwargs['pk'],
-    #                                         entry__user=request.user)
-    #         return redirect(reverse('review_update',
-    #                                 kwargs={'pk': review.pk}))
-    #     except GameReview.DoesNotExist:
-    #         pass
-    # return super(GameReviewCreate, self).dispatch(request,
-    #                                               *args, **kwargs)
+    def dispatch(self, request, *args, **kwargs):
+        if request.user.is_authenticated():
+            try:
+                review = GameReview.objects.get(entry__game__pk=kwargs['pk'],
+                                                entry__user=request.user)
+                return redirect(reverse('review_update',
+                                        kwargs={'pk': review.pk}))
+            except GameReview.DoesNotExist:
+                pass
+        return super(GameReviewCreate, self).dispatch(request,
+                                                      *args, **kwargs)
 
     def form_valid(self, form):
         form.instance.entry = self.entry
         return super(GameReviewCreate, self).form_valid(form)
-
-    def get_form_kwargs(self):
-        kwargs = super(GameReviewCreate, self).get_form_kwargs()
-        kwargs['user'] = self.request.user
-        return kwargs
 
     def get_context_data(self, **kwargs):
         context = super(GameReviewCreate, self).get_context_data(**kwargs)
@@ -129,3 +124,40 @@ class GameReviewUpdate(UpdateView):
 
 class GameReviewByUser(ListView):
     pass
+
+
+class GameRecommendationCreate(EntryMixin, CreateView):
+    model = GameRecommendation
+    form_class = GameRecommendationForm
+
+    # def dispatch(self, request, *args, **kwargs):
+    #     if request.user.is_authenticated():
+    #         try:
+    #             recomm = GameRecommendation.objects.get(
+    #                 entry__game__pk=kwargs['pk'],
+    #                 entry__user=request.user)
+    #             return redirect(reverse('review_update',
+    #                                     kwargs={'pk': review.pk}))
+    #         except GameReview.DoesNotExist:
+    #             pass
+    #     return super(GameReviewCreate, self).dispatch(request,
+    #                                                   *args, **kwargs)
+
+    def form_valid(self, form):
+        self.object = form.save(commit=False)
+        similar = form.cleaned_data.get('similar')
+        self.object.save()
+        self.object.entries.add(self.entry, similar)
+        return super(GameRecommendationCreate, self).form_valid(form)
+
+    def get_form_kwargs(self):
+        kwargs = super(GameRecommendationCreate, self).get_form_kwargs()
+        kwargs['user'] = self.request.user
+        kwargs['entry'] = self.entry
+        return kwargs
+
+    def get_context_data(self, **kwargs):
+        context = super(GameRecommendationCreate,
+                        self).get_context_data(**kwargs)
+        context['game'] = self.entry.game
+        return context

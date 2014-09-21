@@ -119,16 +119,12 @@ class GameReview(models.Model):
 
 
 class GameRecommendation(models.Model):
-    game1_entry = models.ForeignKey(
-        ListEntry, related_name='gamerecommendation_game1entry')
-    game2_entry = models.ForeignKey(
-        ListEntry, related_name='gamerecommendation_game2entry')
+    entries = models.ManyToManyField(ListEntry)
     text = models.TextField(_('Text'))
     date_created = models.DateTimeField(auto_now_add=True)
 
-    class Meta:
-        unique_together = ('game1_entry', 'game2_entry')
-
     def __str__(self):
-        return "{0}'s review for {1} - {2}".format(
-               self.user.username, self.game1.title, self.game2.title)
+        return "{0}'s recommendation for {1} - {2}".format(
+            self.entries.first().user.username,
+            self.entries.first().game,
+            self.entries.last().game)

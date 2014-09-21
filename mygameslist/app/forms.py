@@ -27,11 +27,34 @@ class ListEntryChoiceField(forms.ModelChoiceField):
 
 class GameReviewForm(forms.ModelForm):
 
-    def __init__(self, user=None, *args, **kwargs):
+    def __init__(self, *args, **kwargs):
         super(GameReviewForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.add_input(Submit('submit', _('Submit')))
 
     class Meta:
         model = GameReview
-        exclude = ('user', 'entry', )
+        exclude = ('entry', )
+
+
+class ListEntryChoiceField(forms.ModelChoiceField):
+
+    def label_from_instance(self, obj):
+        return obj.game
+
+
+class GameRecommendationForm(forms.ModelForm):
+    similar = ListEntryChoiceField(queryset=ListEntry.objects.none(),
+                                   label=_('Similar recommendation'))
+
+    def __init__(self, user, entry, *args, **kwargs):
+        super(GameRecommendationForm, self).__init__(*args, **kwargs)
+        similar = self.fields['similar']
+        # Exclude entry for which the recommendation is being made
+        similar.queryset = ListEntry.objects.filter(user=user).exclude(pk=entry.pk)
+        self.helper = FormHelper()
+        self.helper.add_input(Submit('submit', _('Submit')))
+
+    class Meta:
+        model = GameRecommendation
+        fields = ['similar', 'text', ]
