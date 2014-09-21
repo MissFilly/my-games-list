@@ -51,10 +51,25 @@ class GameRecommendationForm(forms.ModelForm):
         super(GameRecommendationForm, self).__init__(*args, **kwargs)
         similar = self.fields['similar']
         # Exclude entry for which the recommendation is being made
-        similar.queryset = ListEntry.objects.filter(user=user).exclude(pk=entry.pk)
+        similar.queryset = ListEntry.objects.filter(
+            user=user).exclude(pk=entry.pk)
+        self.entry = entry
         self.helper = FormHelper()
         self.helper.add_input(Submit('submit', _('Submit')))
 
     class Meta:
         model = GameRecommendation
         fields = ['similar', 'text', ]
+
+    def clean(self):
+        cleaned_data = super(GameRecommendationForm, self).clean()
+        similar = cleaned_data.get('similar')
+
+        if self.entry and similar:
+            query = GameRecommendation.objects.filter(
+                entries__pk=self.entry.pk)
+            query = GameRecommendation.objects.filter(entries__pk=similar.pk)
+            if query.exists():
+                raise forms.ValidationError(
+                    _("You have already recommended this game."))
+        return cleaned_data

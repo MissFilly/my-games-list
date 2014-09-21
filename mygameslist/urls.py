@@ -13,7 +13,7 @@ urlpatterns = patterns(
     url(r'^admin/', include(admin.site.urls)),
     url(r'^media/(?P<path>.*)$', 'django.views.static.serve',
         {'document_root': settings.MEDIA_ROOT}),
-    
+
     url(r'^(?P<pk>\d+)/detail/$', GameDetailView.as_view(),
         name='game_detail'),
     url(r'^list/(?P<slug>[-_\w]+)/$', GameListByUserView.as_view(),
