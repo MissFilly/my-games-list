@@ -10,18 +10,63 @@
 
     <div class="col-md-3">
         <img class="img-responsive" src="{{ object.cover_img.url }}" alt="">
-        {% if not entry %}
-        <a href="{% url 'entry_create' object.pk %}" class="btn btn-default btn-block">{% trans 'Add to my list' %}</a>
-        {% else %}
-          {% if not entry.gamereview %}
-            <a href="{% url 'review_create' object.pk %}" class="btn btn-default btn-block">{% trans 'Write review' %}</a>
+        <table class="table table-no-borders">
+          <tr>
+            <td class="text-right">{% trans 'Genre' %}</td>
+            <td>
+              {% for g in object.genre.all %}
+                  {{ g }}{% if not forloop.last %},{% endif %}
+              {% endfor %}
+            </td>
+          </tr>
+          <tr>
+            <td class="text-right">{% trans 'Platform' %}</td>
+            <td>
+              {% for p in object.platform.all %}
+                  {{ p }}{% if not forloop.last %},{% endif %}
+              {% endfor %}
+            </td>
+          </tr>
+          <tr>
+            <td class="text-right">{% trans 'Developer' %}</td>
+            <td>
+              {% for d in object.developer.all %}
+                  {{ d }}{% if not forloop.last %},{% endif %}
+              {% endfor %}
+            </td>
+          </tr>
+          <tr>
+            <td class="text-right">{% trans 'Publisher' %}</td>
+            <td>
+              {% for p in object.publisher.all %}
+                  {{ p }}{% if not forloop.last %},{% endif %}
+              {% endfor %}
+            </td>
+          </tr>
+          <tr>
+            <td class="text-right">{% trans 'First release date' %}</td>
+            <td>{{ object.release_date|date:"N d, Y" }}</td>
+          </tr>
+        </table>
+        {% if detail_page %}
+          {% if not entry %}
+          <a href="{% url 'entry_create' object.pk %}" class="btn btn-default btn-block">{% trans 'Add to my list' %}</a>
           {% else %}
-            <a href="{% url 'review_update' entry.gamereview.pk %}" class="btn btn-default btn-block">{% trans 'Edit my review' %}</a>
+            {% if not entry.gamereview %}
+              <a href="{% url 'review_create' object.pk %}" class="btn btn-default btn-block">{% trans 'Write review' %}</a>
+            {% else %}
+              <a href="{% url 'review_update' entry.gamereview.pk %}" class="btn btn-default btn-block">{% trans 'Edit my review' %}</a>
+            {% endif %}
           {% endif %}
         {% endif %}
     </div>
 
     <div class="col-md-9">
+      <ul class="nav nav-pills">
+        <li {% if detail_page %}class="active"{% endif %}><a href="{{ object.get_absolute_url }}">{% trans 'Details' %}</a></li>
+        <li {% if reviews_page %}class="active"{% endif %}><a href="{% url 'game_review_by_game' object.pk %}">{% trans 'Reviews' %}</a></li>
+        <li {% if recommendations_page %}class="active"{% endif %}><a href="{% url 'game_recommendation_by_game' object.pk %}">{% trans 'Recommendations' %}</a></li>
+      </ul>
       {% block game_content %}
         <section>
           <h3 class="section-title">{% trans 'Synopsis' %}</h3>
@@ -30,9 +75,39 @@
         </section>
         
         <section>
-          <h3 class="section-title">{% trans 'Reviews' %}</h3>
+          <h3 class="section-title">{% trans 'Latest reviews' %}</h3>
             {% for r in reviews %}
-              <p>{{ r.text|linebreaks }}</p>
+              {% with user_profile=r.entry.user %}
+                <section>
+                  <table class="table table-no-borders">
+                    <tr>
+                      <td class="col-md-1">
+                        <a href="{{ user_profile.get_absolute_url }}">
+                          <img class="img-responsive" src="{{ user_profile.userprofile.avatar.url }}">
+                        </a>
+                      </td>
+                      <td class="col-md-5">
+                        <p>{% trans 'By' %} <a href="{{ user_profile.userprofile.get_absolute_url }}">{{ user_profile.username }}</a></p>
+                        <p><a href="{% url 'game_review_by_user' user_profile.username %}">{% trans 'View other reviews by this user' %}</a></p>
+                      </td>
+                      <td class="text-right col-md-6">
+                        <p>
+                          {% blocktrans with status=r.entry.get_status_display %}
+                            Status: {{ status }}
+                          {% endblocktrans %}
+                        </p>
+                        <p>
+                          {% blocktrans with score=r.entry.score %}
+                            Given score: {{ score }}
+                          {% endblocktrans %}
+                        </p>
+                      </td>
+                    </tr>
+                  </table>
+                  {{ r.text|linebreaks }}
+                  {% if not forloop.last %}<hr />{% endif %}
+                </section>
+              {% endwith %}
             {% empty %}
               <p>{% trans 'There are no reviews for this game yet.' %}</p>
             {% endfor %}
@@ -40,9 +115,32 @@
         </section>
 
         <section>
-          <h3 class="section-title">{% trans 'Recommendations' %}</h3>
+          <h3 class="section-title">{% trans 'Latest recommendations' %}</h3>
             {% for r in recommendations %}
-              <p>{{ r.text|linebreaks }}</p>
+              {% for e in r.entries.all %}
+                {% if e.game != game %}
+                  {% with similar=e.game user_profile=e.user %}
+                    <section>
+                      <table class="table table-no-borders">
+                        <tr>
+                          <td class="col-md-1">
+                            <a href="{{ similar.get_absolute_url }}">
+                              <img class="img-responsive" src="{{ similar.cover_img.url }}">
+                            </a>
+                          </td>
+                          <td class="col-md-11">
+                            <p><a href="{{ similar.get_absolute_url }}">{{ similar.title }}</a></p>
+                            <p>{% trans 'By' %} <a href="{{ user_profile.userprofile.get_absolute_url }}">{{ user_profile.username }}</a></p>
+                            <p><a href="{% url 'game_recommendation_by_user' user_profile.username %}">{% trans 'View other recommendations by this user' %}</a></p>
+                          </td>
+                        </tr>
+                      </table>
+                      {{ r.text|linebreaks }}
+                    </section>
+                    {% if not forloop.last %}<hr />{% endif %}
+                  {% endwith %}
+                {% endif %}
+              {% endfor %}
             {% empty %}
               <p>{% trans 'There are no recommendations for this game yet.' %}</p>
             {% endfor %}

@@ -1,0 +1,38 @@
+{% extends 'game_detail.html' %}
+{% load i18n %}
+
+{% block page_header %}
+  {% blocktrans with title=object.title %}
+    Reviews for {{ title }}
+  {% endblocktrans %}
+{% endblock %}
+
+{% block game_content %}
+  {% for obj in object_list %}
+      {% for e in obj.entries.all %}
+        {% if e.game != object %}
+          {% with similar=e.game user_profile=e.user %}
+            <section>
+              <table class="table table-no-borders">
+                <tr>
+                  <td class="col-md-1">
+                    <a href="{{ similar.get_absolute_url }}">
+                      <img class="img-responsive" src="{{ similar.cover_img.url }}">
+                    </a>
+                  </td>
+                  <td class="col-md-11">
+                    <p><a href="{{ similar.get_absolute_url }}">{{ similar.title }}</a></p>
+                    <p>{% trans 'By' %} <a href="{{ user_profile.userprofile.get_absolute_url }}">{{ user_profile.username }}</a></p>
+                    <p><a href="{% url 'game_recommendation_by_user' user_profile.username %}">{% trans 'View other recommendations by this user' %}</a></p>
+                  </td>
+                </tr>
+              </table>
+              {{ obj.text|linebreaks }}
+              <hr />
+            </section>
+            <hr />
+          {% endwith %}
+        {% endif %}
+      {% endfor %}
+  {% endfor %}
+{% endblock %}

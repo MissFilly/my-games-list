@@ -20,7 +20,7 @@
           </td>
           <td class="col-md-5">
             <p>{% trans 'By' %} <a href="{{ user_profile.userprofile.get_absolute_url }}">{{ user_profile.username }}</a></p>
-            <p><a href="{% url 'game_review_by_user' user_profile.username %}">{% trans 'View other reviews for this game' %}</a></p>
+            <p><a href="{% url 'game_review_by_user' user_profile.username %}">{% trans 'View other reviews by this user' %}</a></p>
           </td>
           <td class="text-right col-md-6">
             <p>
