@@ -14,6 +14,9 @@ class UserProfile(models.Model):
     country = CountryField()
     about = models.TextField(verbose_name=_('About'))
 
+    def get_absolute_url(self):
+        return reverse('user_profile', kwargs={'slug': self.user.username})
+
 
 class Company(models.Model):
     name = models.CharField(_('Name'), max_length=200)
@@ -52,7 +55,8 @@ class Game(models.Model):
     release_date = models.DateField(_('First release date'))
     score = models.DecimalField(_('Score'), max_digits=4, decimal_places=2,
                                 null=True, blank=True)
-    cover_img = models.ImageField(upload_to='covers')
+    cover_img = models.ImageField(
+        upload_to='covers', default='settings.MEDIA_ROOT/default/profile.png')
     active = models.BooleanField(default=True)
 
     def __str__(self):

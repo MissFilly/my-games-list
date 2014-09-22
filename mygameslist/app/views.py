@@ -145,6 +145,20 @@ class GameReviewByUserView(ListView):
         return context
 
 
+class GameReviewByGameView(ListView):
+    model = GameReview
+    template_name = 'app/review_by_game.html'
+
+    def get_queryset(self):
+        self.game = get_object_or_404(Game, pk=self.kwargs['pk'])
+        return GameReview.objects.filter(entry__game=self.game)
+
+    def get_context_data(self, **kwargs):
+        context = super(GameReviewByGameView, self).get_context_data(**kwargs)
+        context['object'] = self.game
+        return context
+
+
 class GameRecommendationCreate(EntryMixin, CreateView):
     model = GameRecommendation
     form_class = GameRecommendationForm

@@ -1,26 +1,26 @@
-{% extends 'user_detail.html' %}
+{% extends 'game_detail.html' %}
 {% load i18n %}
 
 {% block page_header %}
-  {% blocktrans with username=object.username %}
-    {{ username }}'s profile
+  {% blocktrans with title=object.title %}
+    Reviews for {{ title }}
   {% endblocktrans %}
 {% endblock %}
 
-{% block user_profile_content %}
+{% block game_content %}
   {% for obj in object_list %}
-    {% with game=obj.entry.game %}
+    {% with user_profile=obj.entry.user %}
     <section>
       <table class="table table-no-borders">
         <tr>
           <td class="col-md-1">
-            <a href="{{ game.get_absolute_url }}">
-              <img class="img-responsive" src="{{ game.cover_img.url }}">
+            <a href="{{ user_profile.get_absolute_url }}">
+              <img class="img-responsive" src="{{ user_profile.userprofile.avatar.url }}">
             </a>
           </td>
           <td class="col-md-5">
-            <p><a href="{{ game.get_absolute_url }}">{{ game.title }}</a></p>
-            <p><a href="{% url 'game_review_by_game' game.pk %}">{% trans 'View other reviews for this game' %}</a></p>
+            <p>{% trans 'By' %} <a href="{{ user_profile.userprofile.get_absolute_url }}">{{ user_profile.username }}</a></p>
+            <p><a href="{% url 'game_review_by_user' user_profile.username %}">{% trans 'View other reviews for this game' %}</a></p>
           </td>
           <td class="text-right col-md-6">
             <p>

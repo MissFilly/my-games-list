@@ -13,21 +13,21 @@
 
     <div class="col-md-3">
         <img class="img-responsive" src="{{ object.userprofile.avatar.url }}" alt="">
-        <table class="table">
+        <table class="table table-no-borders">
           <tr>
-            <td>{% trans 'Joined' %}</td>
+            <td class="text-right">{% trans 'Joined' %}</td>
             <td>{{ object.date_joined|date:"N d, Y" }}</td>
           </tr>
           <tr>
-            <td>{% trans 'Last seen' %}</td>
+            <td class="text-right">{% trans 'Last seen' %}</td>
             <td>{{ object.last_login|date:"N d, Y" }}</td>
           </tr>
           <tr>
-            <td>{% trans 'Gender' %}</td>
+            <td class="text-right">{% trans 'Gender' %}</td>
             <td>{{ object.userprofile.get_gender_display }}</td>
           </tr>
           <tr>
-            <td>{% trans 'Country' %}</td>
+            <td class="text-right">{% trans 'Country' %}</td>
             <td>{{ object.userprofile.get_country_display }}</td>
           </tr>
         </table>

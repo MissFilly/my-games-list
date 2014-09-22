@@ -9,14 +9,33 @@
 
 {% block user_profile_content %}
   {% for obj in object_list %}
-    <section>
-      <h3>
-        {% blocktrans with game1=obj.entries.all.0.game.title game2=obj.entries.all.1.game.title %}
-          If you liked {{ game1 }} you might like {{ game2 }}
-        {% endblocktrans %}
-      </h3>
-      <p>{{ obj.text|linebreaks }}</p>
-      <hr />
-    </section>
+    {% with game1=obj.entries.all.0.game game2=obj.entries.all.1.game %}
+      <section>
+        <table class="table table-no-borders">
+          <tr>
+            <td class="col-md-1">
+              <a href="{{ game1.get_absolute_url }}">
+                <img class="img-responsive" src="{{ game1.cover_img.url }}">
+              </a>
+            </td>
+            <td class="col-md-5">
+              <p>{% trans 'If you liked' %}</p>
+              <p><a href="{{ game1.get_absolute_url }}">{{ game1.title }}</a></p>
+            </td>
+            <td class="text-right col-md-5">
+              <p>{% trans '... then you might like' %}</p>
+              <p><a href="{{ game2.get_absolute_url }}">{{ game2.title }}</a></p>
+            </td>
+            <td class="col-md-1">
+              <a href="{{ game2.get_absolute_url }}">
+                <img class="img-responsive" src="{{ game2.cover_img.url }}">
+              </a>
+            </td>
+          </tr>
+        </table>
+        {{ obj.text|linebreaks }}
+        <hr />
+      </section>
+    {% endwith %}
   {% endfor %}
 {% endblock %}
