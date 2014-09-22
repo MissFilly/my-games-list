@@ -29,9 +29,9 @@
           <h3 class="section-title">{{ e.grouper }}</h3>
           <table class="table">
             <tr>
-              <th>{% trans 'Game title' %}</th>
-              <th>{% trans 'Replay value' %}</th>
-              <th>{% trans 'Score' %}</th>
+              <th class="col-md-4">{% trans 'Game title' %}</th>
+              <th class="col-md-4">{% trans 'Replay value' %}</th>
+              <th class="col-md-4">{% trans 'Score' %}</th>
             </tr>
           {% for entry in e.list %}
             <tr>

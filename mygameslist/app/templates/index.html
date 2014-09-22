@@ -86,31 +86,7 @@
 
   <div class="col-md-4">
     <h3 class="text-center">{% trans 'Top games this week' %}</h3>
-    <table class="table table-no-borders">
-      <tr>
-        <td class="col-md-1">
-          <a href="{{ game.get_absolute_url }}">
-            <img class="img-responsive" src="{{ game.cover_img.url }}">
-          </a>
-        </td>
-        <td class="col-md-5">
-          <p><a href="{{ game.get_absolute_url }}">{{ game.title }}</a></p>
-          <p>{% trans 'By' %} <a href="{{ user_profile.userprofile.get_absolute_url }}">{{ user_profile.username }}</a></p>
-        </td>
-        <td class="text-right col-md-6">
-          <p>
-            {% blocktrans with status=r.entry.get_status_display %}
-              Status: {{ status }}
-            {% endblocktrans %}
-          </p>
-          <p>
-            {% blocktrans with score=r.entry.score %}
-              Given score: {{ score }}
-            {% endblocktrans %}
-          </p>
-        </td>
-      </tr>
-    </table>
+    <img src="http://placehold.it/350x400" />
   </div>
 </div>
 <!-- /.row -->

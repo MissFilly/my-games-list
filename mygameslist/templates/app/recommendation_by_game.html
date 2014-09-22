@@ -33,5 +33,7 @@
           {% endwith %}
         {% endif %}
       {% endfor %}
-  {% endfor %}
+    {% empty %}
+        <p>{% trans 'There are no recommendations for this game yet.' %}</p>
+    {% endfor %}
 {% endblock %}

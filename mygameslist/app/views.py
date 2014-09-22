@@ -196,6 +196,10 @@ class GameRecommendationCreate(EntryMixin, CreateView):
         context['game'] = self.entry.game
         return context
 
+    def get_success_url(self):
+        return reverse('game_recommendation_by_user',
+                       kwargs={'slug': self.request.user.username, })
+
 
 class GameRecommendationByUserView(ListView):
     model = GameRecommendation
