@@ -167,3 +167,20 @@ class GameRecommendationCreate(EntryMixin, CreateView):
                         self).get_context_data(**kwargs)
         context['game'] = self.entry.game
         return context
+
+
+class GameRecommendationByUserView(ListView):
+    model = GameReview
+    template_name = 'app/recommendation_by_user.html'
+
+    def get_queryset(self):
+        self.user_profile = get_object_or_404(
+            User, username=self.kwargs['slug'])
+        return GameRecommendation.objects.filter(
+            entries__user=self.user_profile)
+
+    def get_context_data(self, **kwargs):
+        context = super(
+            GameRecommendationByUserView, self).get_context_data(**kwargs)
+        context['object'] = self.user_profile
+        return context

@@ -1,0 +1,22 @@
+{% extends 'user_detail.html' %}
+{% load i18n %}
+
+{% block page_header %}
+  {% blocktrans with username=object.username %}
+    {{ username }}'s profile
+  {% endblocktrans %}
+{% endblock %}
+
+{% block user_profile_content %}
+  {% for obj in object_list %}
+    <section>
+      <h3>
+        {% blocktrans with game1=obj.entries.all.0.game.title game2=obj.entries.all.1.game.title %}
+          If you liked {{ game1 }} you might like {{ game2 }}
+        {% endblocktrans %}
+      </h3>
+      <p>{{ obj.text|linebreaks }}</p>
+      <hr />
+    </section>
+  {% endfor %}
+{% endblock %}

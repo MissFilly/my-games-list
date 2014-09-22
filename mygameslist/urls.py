@@ -20,6 +20,9 @@ urlpatterns = patterns(
         name='game_list_by_user'),
     url(r'^user/(?P<slug>[-_\w]+)/reviews$', GameReviewByUserView.as_view(),
         name='game_review_by_user'),
+    url(r'^user/(?P<slug>[-_\w]+)/recommendations$',
+        GameRecommendationByUserView.as_view(),
+        name='game_recommendation_by_user'),
     url(r'^(?P<pk>\d+)/entry_create/$', ListEntryCreate.as_view(),
         name='entry_create'),
     # Reviews

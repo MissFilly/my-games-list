@@ -56,7 +56,7 @@
                           <a href="{% url 'game_review_by_user' user.username %}">{% trans 'My reviews' %}</a>
                       </li>
                       <li>
-                          <a href="#">{% trans 'My recommendations' %}</a>
+                          <a href="{% url 'game_recommendation_by_user' user.username %}">{% trans 'My recommendations' %}</a>
                       </li>
                       <li>
                           <a href="{% url 'account_logout' %}">{% trans 'Logout' %}</a>
