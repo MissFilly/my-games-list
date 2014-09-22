@@ -116,32 +116,38 @@ class GameReviewCreate(EntryMixin, CreateView):
         context['game'] = self.entry.game
         return context
 
+    def get_success_url(self):
+        return reverse('game_review_by_user',
+                       kwargs={'slug': self.request.user.username, })
+
 
 class GameReviewUpdate(UpdateView):
     model = GameReview
     form_class = GameReviewForm
 
+    def get_success_url(self):
+        return reverse('game_review_by_user',
+                       kwargs={'slug': self.request.user.username, })
 
-class GameReviewByUser(ListView):
-    pass
+
+class GameReviewByUserView(ListView):
+    model = GameReview
+    template_name = 'app/review_by_user.html'
+
+    def get_queryset(self):
+        self.user_profile = get_object_or_404(
+            User, username=self.kwargs['slug'])
+        return GameReview.objects.filter(entry__user=self.user_profile)
+
+    def get_context_data(self, **kwargs):
+        context = super(GameReviewByUserView, self).get_context_data(**kwargs)
+        context['object'] = self.user_profile
+        return context
 
 
 class GameRecommendationCreate(EntryMixin, CreateView):
     model = GameRecommendation
     form_class = GameRecommendationForm
-
-    # def dispatch(self, request, *args, **kwargs):
-    #     if request.user.is_authenticated():
-    #         try:
-    #             recomm = GameRecommendation.objects.get(
-    #                 entry__game__pk=kwargs['pk'],
-    #                 entry__user=request.user)
-    #             return redirect(reverse('review_update',
-    #                                     kwargs={'pk': review.pk}))
-    #         except GameReview.DoesNotExist:
-    #             pass
-    #     return super(GameReviewCreate, self).dispatch(request,
-    #                                                   *args, **kwargs)
 
     def form_valid(self, form):
         self.object = form.save(commit=False)

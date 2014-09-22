@@ -4,11 +4,11 @@
 {% block page_header %}
 	{% if not form.instance.id %}
 		{% blocktrans with game_title=game.title %}
-			Write review for {{ game_title }}
+			Write recommendation for {{ game_title }}
 		{% endblocktrans %}
 	{% else %}
 		{% blocktrans with game_title=object.entry.game.title %}
-			Write review for {{ game_title }}
+			Edit recommendation for {{ game_title }}
 		{% endblocktrans %}
 	{% endif %}
 {% endblock %}

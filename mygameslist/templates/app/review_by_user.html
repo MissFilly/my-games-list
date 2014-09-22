@@ -1,0 +1,18 @@
+{% extends 'user_detail.html' %}
+{% load i18n %}
+
+{% block page_header %}
+  {% blocktrans with username=object.username %}
+    {{ username }}'s profile
+  {% endblocktrans %}
+{% endblock %}
+
+{% block user_profile_content %}
+  {% for obj in object_list %}
+    <section>
+      <h3>{{ obj.entry.game.title }}</h3>
+      <p>{{ obj.text|linebreaks }}</p>
+      <hr />
+    </section>
+  {% endfor %}
+{% endblock %}
