@@ -1,61 +1,117 @@
 {% extends 'base.html' %}
+{% load i18n %}
 
-{% block page_header %}Test header{% endblock %}
+{% block page_header %}{% trans 'Recent activity' %}{% endblock %}
 
 {% block content %}
 
 <div class="row">
 
-    <div class="col-md-8">
-        <img class="img-responsive" src="http://placehold.it/750x500" alt="">
-    </div>
+  <div class="col-md-8">
+    <section>
+      <h3 class="section-title">{% trans 'Latest reviews' %}</h3>
+      {% for r in reviews %}
+        {% with user_profile=r.entry.user game=r.entry.game %}
+          <section>
+            <table class="table table-no-borders">
+              <tr>
+                <td class="col-md-1">
+                  <a href="{{ game.get_absolute_url }}">
+                    <img class="img-responsive" src="{{ game.cover_img.url }}">
+                  </a>
+                </td>
+                <td class="col-md-5">
+                  <p><a href="{{ game.get_absolute_url }}">{{ game.title }}</a></p>
+                  <p>{% trans 'By' %} <a href="{{ user_profile.userprofile.get_absolute_url }}">{{ user_profile.username }}</a></p>
+                </td>
+                <td class="text-right col-md-6">
+                  <p>
+                    {% blocktrans with status=r.entry.get_status_display %}
+                      Status: {{ status }}
+                    {% endblocktrans %}
+                  </p>
+                  <p>
+                    {% blocktrans with score=r.entry.score %}
+                      Given score: {{ score }}
+                    {% endblocktrans %}
+                  </p>
+                </td>
+              </tr>
+            </table>
+            {{ r.text|linebreaks }}
+            {% if not forloop.last %}<hr />{% endif %}
+          </section>
+        {% endwith %}
+      {% empty %}
+        <p>{% trans 'There are no reviews for this game yet.' %}</p>
+      {% endfor %}
+      <hr />
+    </section>
 
-    <div class="col-md-4">
-        <h3>Project Description</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae. Sed dui lorem, adipiscing in adipiscing et, interdum nec metus. Mauris ultricies, justo eu convallis placerat, felis enim.</p>
-        <h3>Project Details</h3>
-        <ul>
-            <li>Lorem Ipsum</li>
-            <li>Dolor Sit Amet</li>
-            <li>Consectetur</li>
-            <li>Adipiscing Elit</li>
-        </ul>
-    </div>
+    <section>
+      <h3 class="section-title">{% trans 'Latest recommendations' %}</h3>
+      {% for obj in recommendations %}
+        {% with game1=obj.entries.all.0.game game2=obj.entries.all.1.game user_profile=obj.entries.all.1.user %}
+          <section>
+            <table class="table table-no-borders">
+              <tr>
+                <td class="col-md-1">
+                  <a href="{{ game1.get_absolute_url }}">
+                    <img class="img-responsive" src="{{ game1.cover_img.url }}">
+                  </a>
+                </td>
+                <td class="col-md-5">
+                  <p>{% trans 'If you liked' %}</p>
+                  <p><a href="{{ game1.get_absolute_url }}">{{ game1.title }}</a></p>
+                  <p>{% trans 'By' %} <a href="{{ user_profile.userprofile.get_absolute_url }}">{{ user_profile.username }}</a></p>
+                </td>
+                <td class="text-right col-md-5">
+                  <p>{% trans '... then you might like' %}</p>
+                  <p><a href="{{ game2.get_absolute_url }}">{{ game2.title }}</a></p>
+                </td>
+                <td class="col-md-1">
+                  <a href="{{ game2.get_absolute_url }}">
+                    <img class="img-responsive" src="{{ game2.cover_img.url }}">
+                  </a>
+                </td>
+              </tr>
+            </table>
+            {{ obj.text|linebreaks }}
+            <hr />
+          </section>
+        {% endwith %}
+      {% endfor %}
+    </section>
+  </div><!-- /.col -->
 
-</div>
-<!-- /.row -->
-
-<!-- Related Projects Row -->
-<div class="row">
-
-    <div class="col-lg-12">
-        <h3 class="page-header">Related Projects</h3>
-    </div>
-
-    <div class="col-sm-3 col-xs-6">
-        <a href="#">
-            <img class="img-responsive portfolio-item" src="http://placehold.it/500x300" alt="">
-        </a>
-    </div>
-
-    <div class="col-sm-3 col-xs-6">
-        <a href="#">
-            <img class="img-responsive portfolio-item" src="http://placehold.it/500x300" alt="">
-        </a>
-    </div>
-
-    <div class="col-sm-3 col-xs-6">
-        <a href="#">
-            <img class="img-responsive portfolio-item" src="http://placehold.it/500x300" alt="">
-        </a>
-    </div>
-
-    <div class="col-sm-3 col-xs-6">
-        <a href="#">
-            <img class="img-responsive portfolio-item" src="http://placehold.it/500x300" alt="">
-        </a>
-    </div>
-
+  <div class="col-md-4">
+    <h3 class="text-center">{% trans 'Top games this week' %}</h3>
+    <table class="table table-no-borders">
+      <tr>
+        <td class="col-md-1">
+          <a href="{{ game.get_absolute_url }}">
+            <img class="img-responsive" src="{{ game.cover_img.url }}">
+          </a>
+        </td>
+        <td class="col-md-5">
+          <p><a href="{{ game.get_absolute_url }}">{{ game.title }}</a></p>
+          <p>{% trans 'By' %} <a href="{{ user_profile.userprofile.get_absolute_url }}">{{ user_profile.username }}</a></p>
+        </td>
+        <td class="text-right col-md-6">
+          <p>
+            {% blocktrans with status=r.entry.get_status_display %}
+              Status: {{ status }}
+            {% endblocktrans %}
+          </p>
+          <p>
+            {% blocktrans with score=r.entry.score %}
+              Given score: {{ score }}
+            {% endblocktrans %}
+          </p>
+        </td>
+      </tr>
+    </table>
+  </div>
 </div>
 <!-- /.row -->
 

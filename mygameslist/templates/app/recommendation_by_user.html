@@ -34,7 +34,7 @@
           </tr>
         </table>
         {{ obj.text|linebreaks }}
-        <hr />
+        {% if not forloop.last %}<hr />{% endif %}
       </section>
     {% endwith %}
   {% endfor %}

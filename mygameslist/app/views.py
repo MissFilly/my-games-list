@@ -12,8 +12,8 @@ from .mixins import LoginRequiredMixin, EntryMixin
 
 
 def home(request):
-    reviews = GameReview.objects.order_by('-date_created')[:6]
-    recommendations = GameRecommendation.objects.order_by('-date_created')[:6]
+    reviews = GameReview.objects.order_by('-date_created')[:4]
+    recommendations = GameRecommendation.objects.order_by('-date_created')[:4]
     context = dict(reviews=reviews, recommendations=recommendations)
     return render(request, 'index.html', context)
 
@@ -22,6 +22,16 @@ class UserDetailView(DetailView):
     model = User
     template_name = 'user_detail.html'
     slug_field = 'username'
+
+    def get_context_data(self, *args, **kwargs):
+        context = super(UserDetailView, self).get_context_data(**kwargs)
+        user = self.object
+        context['reviews'] = GameReview.objects.filter(
+            entry__user=user).order_by('-date_created')[:3]
+        context['recommendations'] = GameRecommendation.objects.filter(
+            entries__user=user).distinct().order_by('-date_created')[:3]
+        context['detail_page'] = True
+        return context
 
 
 class GameDetailView(DetailView):
@@ -144,6 +154,7 @@ class GameReviewByUserView(ListView):
     def get_context_data(self, **kwargs):
         context = super(GameReviewByUserView, self).get_context_data(**kwargs)
         context['object'] = self.user_profile
+        context['reviews_page'] = True
         return context
 
 
@@ -200,6 +211,7 @@ class GameRecommendationByUserView(ListView):
         context = super(GameRecommendationByUserView,
                         self).get_context_data(**kwargs)
         context['object'] = self.user_profile
+        context['recommendations_page'] = True
         return context
 
 
