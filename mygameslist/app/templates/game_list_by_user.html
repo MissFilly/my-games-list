@@ -9,14 +9,13 @@
 
 {% block content %}
 
-{% regroup object_list by get_status_display as entries %}
+{% regroup object_list by get_status_display as status_list %}
 
 <div class="row">
-
     <div class="col-md-12 text-center">
       <div class="btn-group text-center" id="catpicker">
         <a href="#" id="allcat" class="current btn btn-primary">{% trans 'All' %}</a>
-        {% for e in entries %}
+        {% for e in status_list %}
           <a href="#" id="{{ e.grouper }}" class="filter btn btn-primary">{{ e.grouper }}</a>
         {% endfor %}
       </div>
@@ -24,7 +23,7 @@
 
     <div class="col-md-12">
 
-      {% for e in entries %}
+      {% for e in status_list %}
         <section class="discounted-item {{ e.grouper }}">
           <h3 class="section-title">{{ e.grouper }}</h3>
           <table class="table">

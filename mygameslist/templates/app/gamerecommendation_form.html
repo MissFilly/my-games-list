@@ -7,7 +7,7 @@
 			Write recommendation for {{ game_title }}
 		{% endblocktrans %}
 	{% else %}
-		{% blocktrans with game1=object.entries.all.0.game.title game2=object.entries.all.1.game.title %}
+		{% blocktrans with game1=object.entries.all.first.game.title game2=object.entries.all.last.game.title %}
 			Edit recommendation for {{ game1 }} and {{ game2 }}
 		{% endblocktrans %}
 	{% endif %}

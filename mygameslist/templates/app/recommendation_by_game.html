@@ -28,11 +28,11 @@
                 </tr>
               </table>
               {{ obj.text|linebreaks }}
-              {% if not forloop.last %}<hr />{% endif %}
             </section>
           {% endwith %}
         {% endif %}
       {% endfor %}
+      {% if not forloop.last %}<hr />{% endif %}
     {% empty %}
         <p>{% trans 'There are no recommendations for this game yet.' %}</p>
     {% endfor %}

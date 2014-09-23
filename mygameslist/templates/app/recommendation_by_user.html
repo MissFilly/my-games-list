@@ -9,7 +9,7 @@
 
 {% block user_profile_content %}
   {% for obj in object_list %}
-    {% with game1=obj.entries.all.0.game game2=obj.entries.all.1.game %}
+    {% with game1=obj.entries.all.first.game game2=obj.entries.last.game %}
       <section>
         <table class="table table-no-borders">
           <tr>
@@ -34,8 +34,8 @@
           </tr>
         </table>
         {{ obj.text|linebreaks }}
-        {% if not forloop.last %}<hr />{% endif %}
       </section>
     {% endwith %}
+    {% if not forloop.last %}<hr />{% endif %}
   {% endfor %}
 {% endblock %}
