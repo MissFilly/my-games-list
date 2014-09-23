@@ -12,8 +12,8 @@
       <img class="img-responsive" src="{{ object.cover_img.url }}" alt="">
       <table class="table table-no-borders">
         <tr>
-          <td class="text-right">{% trans 'Genre' %}</td>
-          <td>
+          <td class="text-right col-md-6">{% trans 'Genre' %}</td>
+          <td class="col-md-6">
             {% for g in object.genre.all %}
                 {{ g }}{% if not forloop.last %},{% endif %}
             {% endfor %}
@@ -44,7 +44,7 @@
           </td>
         </tr>
         <tr>
-          <td class="text-right">{% trans 'First release date' %}</td>
+          <td class="text-right">{% trans 'Release date' %}</td>
           <td>{{ object.release_date|date:"N d, Y" }}</td>
         </tr>
       </table>
@@ -57,6 +57,7 @@
           {% else %}
             <a href="{% url 'review_update' entry.gamereview.pk %}" class="btn btn-default btn-block">{% trans 'Edit my review' %}</a>
           {% endif %}
+          <a href="{% url 'recommendation_create' entry.game.pk %}" class="btn btn-default btn-block">{% trans 'Make a recommendation' %}</a>
         {% endif %}
       {% endif %}
   </div>

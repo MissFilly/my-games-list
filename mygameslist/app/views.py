@@ -5,9 +5,8 @@ from django.contrib.auth.models import User
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
-from .models import Game, GameReview, GameRecommendation, \
-    UserProfile, ListEntry
-from .forms import ListEntryForm, GameReviewForm, GameRecommendationForm
+from .models import *
+from .forms import *
 from .mixins import LoginRequiredMixin, EntryMixin
 
 
@@ -195,6 +194,15 @@ class GameRecommendationCreate(EntryMixin, CreateView):
                         self).get_context_data(**kwargs)
         context['game'] = self.entry.game
         return context
+
+    def get_success_url(self):
+        return reverse('game_recommendation_by_user',
+                       kwargs={'slug': self.request.user.username, })
+
+
+class GameRecommendationUpdate(UpdateView):
+    model = GameRecommendation
+    form_class = GameRecommendationEditForm
 
     def get_success_url(self):
         return reverse('game_recommendation_by_user',

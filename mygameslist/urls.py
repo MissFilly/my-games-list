@@ -36,6 +36,8 @@ urlpatterns = patterns(
         name='review_create'),
     url(r'^review/(?P<pk>\d+)/update/$', GameReviewUpdate.as_view(),
         name='review_update'),
+    url(r'^recommendation/(?P<pk>\d+)/update/$', GameRecommendationUpdate.as_view(),
+        name='recommendation_update'),
     # Recommendations
     url(r'^(?P<pk>\d+)/recommend/$', GameRecommendationCreate.as_view(),
         name='recommendation_create'),
