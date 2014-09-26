@@ -9,69 +9,63 @@
 <div class="row">
 
   <div class="col-md-3">
-      <img class="img-responsive" src="{{ object.cover_img.url }}" alt="">
+      <img class="img-responsive" src="{{ game.thumb_url }}" alt="">
       <table class="table table-no-borders">
         <tr>
           <td class="text-right col-md-6">{% trans 'Genre' %}</td>
           <td class="col-md-6">
-            {% for g in object.genre.all %}
-                {{ g }}{% if not forloop.last %},{% endif %}
+            {% for g in game.genres %}
+                {{ g.text }}{% if not forloop.last %},{% endif %}
             {% endfor %}
           </td>
         </tr>
         <tr>
           <td class="text-right">{% trans 'Platform' %}</td>
           <td>
-            {% for p in object.platform.all %}
-                {{ p }}{% if not forloop.last %},{% endif %}
-            {% endfor %}
+            {{ game.platform }}
           </td>
         </tr>
         <tr>
           <td class="text-right">{% trans 'Developer' %}</td>
           <td>
-            {% for d in object.developer.all %}
-                {{ d }}{% if not forloop.last %},{% endif %}
-            {% endfor %}
+            {{ game.developer }}
           </td>
         </tr>
         <tr>
           <td class="text-right">{% trans 'Publisher' %}</td>
           <td>
-            {% for p in object.publisher.all %}
-                {{ p }}{% if not forloop.last %},{% endif %}
-            {% endfor %}
+            {{ game.publisher }}
           </td>
         </tr>
         <tr>
           <td class="text-right">{% trans 'Release date' %}</td>
-          <td>{{ object.release_date|date:"N d, Y" }}</td>
+          <td>{{ game.release_date }}</td>
         </tr>
       </table>
       {% if detail_page %}
         {% if not entry %}
-        <a href="{% url 'entry_create' object.pk %}" class="btn btn-default btn-block">{% trans 'Add to my list' %}</a>
+        <a href="{% url 'entry_create' game.id %}" class="btn btn-default btn-block">{% trans 'Add to my list' %}</a>
         {% else %}
           {% if not entry.gamereview %}
-            <a href="{% url 'review_create' object.pk %}" class="btn btn-default btn-block">{% trans 'Write review' %}</a>
+            <a href="{% url 'review_create' game.id %}" class="btn btn-default btn-block">{% trans 'Write review' %}</a>
           {% else %}
             <a href="{% url 'review_update' entry.gamereview.pk %}" class="btn btn-default btn-block">{% trans 'Edit my review' %}</a>
           {% endif %}
-          <a href="{% url 'recommendation_create' entry.game.pk %}" class="btn btn-default btn-block">{% trans 'Make a recommendation' %}</a>
+          <a href="{% url 'recommendation_create' entry.game_id %}" class="btn btn-default btn-block">{% trans 'Make a recommendation' %}</a>
         {% endif %}
       {% endif %}
   </div>
 
   <div class="col-md-9">
     <ul class="nav nav-pills">
-      <li {% if detail_page %}class="active"{% endif %}><a href="{{ object.get_absolute_url }}">{% trans 'Details' %}</a></li>
-      <li {% if reviews_page %}class="active"{% endif %}><a href="{% url 'game_review_by_game' object.pk %}">{% trans 'Reviews' %}</a></li>
-      <li {% if recommendations_page %}class="active"{% endif %}><a href="{% url 'game_recommendation_by_game' object.pk %}">{% trans 'Recommendations' %}</a></li>
+      <li {% if detail_page %}class="active"{% endif %}><a href="{{ game.get_absolute_url }}">{% trans 'Details' %}</a></li>
+      <li {% if reviews_page %}class="active"{% endif %}><a href="{% url 'game_review_by_game' game.id %}">{% trans 'Reviews' %}</a></li>
+      <li {% if recommendations_page %}class="active"{% endif %}><a href="{% url 'game_recommendation_by_game' game.id %}">{% trans 'Recommendations' %}</a></li>
     </ul>
     {% block game_content %}
       <section>
-        <h3 class="section-title">{% trans 'Synopsis' %}</h3>
-        <p>{{ object.synopsis }}</p>
+        <h3 class="section-title">{% trans 'Overview' %}</h3>
+        <p>{{ game.overview }}</p>
         <hr />
       </section>
       

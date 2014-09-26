@@ -18,52 +18,53 @@ class UserProfile(models.Model):
         return reverse('user_profile', kwargs={'slug': self.user.username})
 
 
-class Company(models.Model):
-    name = models.CharField(_('Name'), max_length=200)
-    active = models.BooleanField(default=True)
+# class Company(models.Model):
+#     name = models.CharField(_('Name'), max_length=200)
+#     active = models.BooleanField(default=True)
 
-    class Meta:
-        verbose_name_plural = 'companies'
+#     class Meta:
+#         verbose_name_plural = 'companies'
 
-    def __str__(self):
-        return self.name
-
-
-class Genre(models.Model):
-    name = models.CharField(max_length=200)
-
-    def __str__(self):
-        return self.name
+#     def __str__(self):
+#         return self.name
 
 
-class Platform(models.Model):
-    name = models.CharField(max_length=200)
+# class Genre(models.Model):
+#     name = models.CharField(max_length=200)
 
-    def __str__(self):
-        return self.name
+#     def __str__(self):
+#         return self.name
 
 
-class Game(models.Model):
-    title = models.CharField(_('Title'), max_length=300)
-    synopsis = models.TextField(_('Synopsis'))
-    genre = models.ManyToManyField(Genre)
-    platform = models.ManyToManyField(Platform)
-    developer = models.ManyToManyField(Company, verbose_name=_('Developer'),
-                                       related_name='gameclaim_developers')
-    publisher = models.ManyToManyField(Company, verbose_name=_('publisher'),
-                                       related_name='gameclaim_publishers')
-    release_date = models.DateField(_('First release date'))
-    score = models.DecimalField(_('Score'), max_digits=4, decimal_places=2,
-                                null=True, blank=True)
-    cover_img = models.ImageField(
-        upload_to='covers', default='settings.MEDIA_ROOT/default/profile.png')
-    active = models.BooleanField(default=True)
+# class Platform(models.Model):
+#     name = models.CharField(max_length=200, unique=True)
+#     slug = models.SlugField(unique=True)
 
-    def __str__(self):
-        return self.title
+#     def __str__(self):
+#         return self.name
 
-    def get_absolute_url(self):
-        return reverse('game_detail', kwargs={'pk': self.pk})
+
+# class Game(models.Model):
+#     title = models.CharField(_('Title'), max_length=300)
+#     synopsis = models.TextField(_('Synopsis'))
+#     genre = models.ManyToManyField(Genre)
+#     platform = models.ManyToManyField(Platform)
+#     developer = models.ManyToManyField(Company, verbose_name=_('Developer'),
+#                                        related_name='gameclaim_developers')
+#     publisher = models.ManyToManyField(Company, verbose_name=_('publisher'),
+#                                        related_name='gameclaim_publishers')
+#     release_date = models.DateField(_('First release date'))
+#     score = models.DecimalField(_('Score'), max_digits=4, decimal_places=2,
+#                                 null=True, blank=True)
+#     cover_img = models.ImageField(
+#         upload_to='covers', default='settings.MEDIA_ROOT/default/profile.png')
+#     active = models.BooleanField(default=True)
+
+#     def __str__(self):
+#         return self.title
+
+#     def get_absolute_url(self):
+#         return reverse('game_detail', kwargs={'pk': self.pk})
 
 
 class ListEntry(models.Model):
@@ -94,12 +95,14 @@ class ListEntry(models.Model):
         ('WA', _('Want to play')),
     )
     user = models.ForeignKey(User)
-    game = models.ForeignKey(Game)
+    game_id = models.IntegerField()
     status = models.CharField(_('Status'), max_length=2,
                               choices=STATUS_CHOICES)
-    score = models.IntegerField(_('Score'), choices=SCORE_CHOICES)
+    score = models.IntegerField(_('Score'), choices=SCORE_CHOICES,
+                                null=True, blank=True)
     replay_value = models.CharField(_('Replay value'), max_length=2,
-                                    choices=REPLAY_VALUE_CHOICES)
+                                    choices=REPLAY_VALUE_CHOICES,
+                                    null=True, blank=True)
     date_created = models.DateTimeField(auto_now_add=True)
     last_modified = models.DateTimeField(auto_now=True)
 
@@ -123,12 +126,21 @@ class GameReview(models.Model):
 
 
 class GameRecommendation(models.Model):
-    entries = models.ManyToManyField(ListEntry)
+    entry1 = models.ForeignKey(ListEntry, related_name='recommendation_entry1')
+    entry2 = models.ForeignKey(ListEntry, related_name='recommendation_entry2')
     text = models.TextField(_('Text'))
     date_created = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        unique_together = ('entry1', 'entry2')
+
     def __str__(self):
         return "{0}'s recommendation for {1} - {2}".format(
-            self.entries.first().user.username,
-            self.entries.first().game,
-            self.entries.last().game)
+            self.entry1.user.username,
+            self.entry1.game,
+            self.entry2.game)
+
+    def save(self, *args, **kwargs):
+        if self.entry1.pk > self.entry2.pk:
+            self.entry1, self.entry2 = self.entry2, self.entry1
+        super(GameRecommendation, self).save(*args, **kwargs)

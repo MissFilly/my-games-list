@@ -1,6 +1,6 @@
 from django import forms
 from django.utils.translation import ugettext_lazy as _
-from .models import ListEntry, Game, GameReview, GameRecommendation
+from .models import *
 from crispy_forms.layout import Submit, Reset
 from crispy_forms.helper import FormHelper
 

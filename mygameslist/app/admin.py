@@ -2,8 +2,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 
-from .models import Company, Game, ListEntry, GameReview, \
-    GameRecommendation, Genre, Platform, UserProfile
+from .models import *
 
 
 class UserProfileInline(admin.StackedInline):
@@ -18,10 +17,10 @@ class UserAdmin(UserAdmin):
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
 
-admin.site.register(Company)
-admin.site.register(Game)
+# admin.site.register(Company)
+# admin.site.register(Game)
 admin.site.register(ListEntry)
 admin.site.register(GameReview)
-admin.site.register(Genre)
-admin.site.register(Platform)
+# admin.site.register(Genre)
+# admin.site.register(Platform)
 admin.site.register(GameRecommendation)

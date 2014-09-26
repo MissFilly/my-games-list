@@ -2,12 +2,19 @@ from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.contrib.auth.models import User
+from django.http import Http404
+from django.views.generic.base import TemplateView
 from django.views.generic.edit import CreateView, UpdateView
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
+
+from gamesdb.api import API
+
 from .models import *
 from .forms import *
 from .mixins import LoginRequiredMixin, EntryMixin
+
+gamesdb_api = API()
 
 
 def home(request):
@@ -33,26 +40,29 @@ class UserDetailView(DetailView):
         return context
 
 
-class GameDetailView(DetailView):
-    model = Game
+class GameDetailView(TemplateView):
+    # model = Game
     template_name = 'game_detail.html'
 
     def get_context_data(self, **kwargs):
         context = super(GameDetailView, self).get_context_data(**kwargs)
-        game = self.object
-        context['reviews'] = GameReview.objects.filter(
-            entry__game=game).order_by('-date_created')[:3]
-        context['recommendations'] = GameRecommendation.objects.filter(
-            entries__game=game).distinct().order_by('-date_created')[:3]
+        game = gamesdb_api.get_game(id=kwargs['pk'])
+        if game is None:
+            raise Http404
+        reviews = GameReview.objects.filter(
+            entry__game_id=game.id).order_by('-date_created')[:3]
+        recommendations = GameRecommendation.objects.filter(
+            entry1__game_id=game.id).distinct().order_by('-date_created')[:3]
 
+        context = dict(game=game, reviews=reviews,
+                       recommendations=recommendations, detail_page=True)
         user = self.request.user
         if user.is_authenticated():
             try:
                 context['entry'] = ListEntry.objects.get(user=user,
-                                                         game=self.object)
+                                                         game_id=kwargs['pk'])
             except:
                 pass
-        context['detail_page'] = True
         return context
 
 
