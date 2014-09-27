@@ -16,7 +16,7 @@ class ListEntryForm(forms.ModelForm):
 
     class Meta:
         model = ListEntry
-        exclude = ('user', 'game', )
+        exclude = ('user', 'game_id', )
 
 
 class ListEntryChoiceField(forms.ModelChoiceField):

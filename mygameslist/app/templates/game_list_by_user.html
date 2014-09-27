@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
-{% load i18n staticfiles %}
+{% load i18n staticfiles custom_tags %}
+{% load url from future %}
 
 {% block page_header %}
   {% blocktrans with username=user_profile.username %}
@@ -16,7 +17,7 @@
       <div class="btn-group text-center" id="catpicker">
         <a href="#" id="allcat" class="current btn btn-primary">{% trans 'All' %}</a>
         {% for e in status_list %}
-          <a href="#" id="{{ e.grouper }}" class="filter btn btn-primary">{{ e.grouper }}</a>
+          <a href="#" id="{{ e.grouper|slugify }}" class="filter btn btn-primary">{{ e.grouper }}</a>
         {% endfor %}
       </div>
     </div>
@@ -24,7 +25,7 @@
     <div class="col-md-12">
 
       {% for e in status_list %}
-        <section class="discounted-item {{ e.grouper }}">
+        <section class="discounted-item {{ e.grouper|slugify }}">
           <h3 class="section-title">{{ e.grouper }}</h3>
           <table class="table">
             <tr>
@@ -34,7 +35,8 @@
             </tr>
           {% for entry in e.list %}
             <tr>
-              <td><a href="{{ entry.game.get_absolute_url }}">{{ entry.game.title }}</a></td>
+              {% get_game entry.game_id as game %}
+              <td><a href="{% url 'game_detail' game.id %}">{{ game.title }}</a></td>
               <td>{{ entry.get_replay_value_display }}</td>
               <td>{{ entry.score }}</td>
             </tr>

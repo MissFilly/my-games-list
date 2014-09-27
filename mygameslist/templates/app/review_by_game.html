@@ -2,7 +2,7 @@
 {% load i18n %}
 
 {% block page_header %}
-  {% blocktrans with title=object.title %}
+  {% blocktrans with title=game.title %}
     Reviews for {{ title }}
   {% endblocktrans %}
 {% endblock %}
@@ -19,7 +19,7 @@
             </a>
           </td>
           <td class="col-md-5">
-            <p>{% trans 'By' %} <a href="{{ user_profile.userprofile.get_absolute_url }}">{{ user_profile.username }}</a></p>
+            <p>{% trans 'By' %} <a href="{% url 'user_profile' user_profile.username %}">{{ user_profile.username }}</a></p>
             <p><a href="{% url 'game_review_by_user' user_profile.username %}">{% trans 'View other reviews by this user' %}</a></p>
           </td>
           <td class="text-right col-md-6">

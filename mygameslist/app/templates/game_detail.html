@@ -2,7 +2,7 @@
 {% load i18n %}
 {% load url from future %}
 
-{% block page_header %}{{ object }}{% endblock %}
+{% block page_header %}{{ game.title }}{% endblock %}
 
 {% block content %}
 
@@ -58,7 +58,7 @@
 
   <div class="col-md-9">
     <ul class="nav nav-pills">
-      <li {% if detail_page %}class="active"{% endif %}><a href="{{ game.get_absolute_url }}">{% trans 'Details' %}</a></li>
+      <li {% if detail_page %}class="active"{% endif %}><a href="{% url 'game_detail' game.id %}">{% trans 'Details' %}</a></li>
       <li {% if reviews_page %}class="active"{% endif %}><a href="{% url 'game_review_by_game' game.id %}">{% trans 'Reviews' %}</a></li>
       <li {% if recommendations_page %}class="active"{% endif %}><a href="{% url 'game_recommendation_by_game' game.id %}">{% trans 'Recommendations' %}</a></li>
     </ul>

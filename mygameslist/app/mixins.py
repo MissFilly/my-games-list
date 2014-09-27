@@ -14,7 +14,7 @@ class LoginRequiredMixin(object):
 class EntryMixin(LoginRequiredMixin):
 
     def dispatch(self, request, *args, **kwargs):
-        self.entry = get_object_or_404(ListEntry, game__pk=kwargs['pk'],
+        self.entry = get_object_or_404(ListEntry, game_id=kwargs['pk'],
                                        user=request.user)
         return super(EntryMixin, self).dispatch(request, *args,
                                                 **kwargs)

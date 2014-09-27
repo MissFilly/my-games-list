@@ -108,11 +108,11 @@ class ListEntry(models.Model):
 
     class Meta:
         verbose_name_plural = 'list entries'
-        unique_together = ('user', 'game')
+        unique_together = ('user', 'game_id')
 
     def __str__(self):
         return "{0}'s entry for {1}".format(self.user.username,
-                                            self.game.title)
+                                            self.game_id)
 
 
 class GameReview(models.Model):
@@ -122,7 +122,7 @@ class GameReview(models.Model):
 
     def __str__(self):
         return "{0}'s review for {1}".format(self.entry.user.username,
-                                             self.entry.game.title)
+                                             self.entry.game_id)
 
 
 class GameRecommendation(models.Model):
@@ -137,8 +137,8 @@ class GameRecommendation(models.Model):
     def __str__(self):
         return "{0}'s recommendation for {1} - {2}".format(
             self.entry1.user.username,
-            self.entry1.game,
-            self.entry2.game)
+            self.entry1.game_id,
+            self.entry2.game_id)
 
     def save(self, *args, **kwargs):
         if self.entry1.pk > self.entry2.pk:
