@@ -3,11 +3,11 @@
 
 {% block page_header %}
 	{% if not form.instance.id %}
-		{% blocktrans with game_title=game.title %}
+		{% blocktrans %}
 			Write recommendation for {{ game_title }}
 		{% endblocktrans %}
 	{% else %}
-		{% blocktrans with game1=object.entries.all.first.game.title game2=object.entries.all.last.game.title %}
+		{% blocktrans with game1=object.entry1.game_title game2=object.entry2.game_title %}
 			Edit recommendation for {{ game1 }} and {{ game2 }}
 		{% endblocktrans %}
 	{% endif %}

@@ -1,26 +1,25 @@
 {% load i18n custom_tags %}
-
-{% get_game obj.entry.game_id as game %}
+{% with entry=obj.entry %}
 <section>
   <table class="table table-no-borders">
     <tr>
       <td class="col-md-1">
-        <a href="{% url 'game_detail' game.id %}">
-          <img class="img-responsive" src="{{ game.thumb_url }}">
+        <a href="{% url 'game_detail' entry.game_id %}">
+          <img class="img-responsive" src="{{ entry.game_thumb_url }}">
         </a>
       </td>
       <td class="col-md-5">
-        <p><a href="{% url 'game_detail' game.id %}">{{ game.title }}</a></p>
-        <p><a href="{% url 'game_review_by_game' game.id %}">{% trans 'View other reviews for this game' %}</a></p>
+        <p><a href="{% url 'game_detail' entry.game_id %}">{{ entry.game_title }}</a></p>
+        <p><a href="{% url 'game_review_by_game' entry.game_id %}">{% trans 'View other reviews for this game' %}</a></p>
       </td>
       <td class="text-right col-md-6">
         <p>
-          {% blocktrans with status=obj.entry.get_status_display %}
+          {% blocktrans with status=entry.get_status_display %}
             Status: {{ status }}
           {% endblocktrans %}
         </p>
         <p>
-          {% blocktrans with score=obj.entry.score %}
+          {% blocktrans with score=entry.score %}
             Given score: {{ score }}
           {% endblocktrans %}
         </p>
@@ -30,3 +29,4 @@
   {{ obj.text|linebreaks }}
   {% if not forloop.last %}<hr />{% endif %}
 </section>
+{% endwith %}

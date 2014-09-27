@@ -35,8 +35,7 @@
             </tr>
           {% for entry in e.list %}
             <tr>
-              {% get_game entry.game_id as game %}
-              <td><a href="{% url 'game_detail' game.id %}">{{ game.title }}</a></td>
+              <td><a href="{% url 'game_detail' entry.game_id %}">{{ entry.game_title }}</a></td>
               <td>{{ entry.get_replay_value_display }}</td>
               <td>{{ entry.score }}</td>
             </tr>

@@ -96,6 +96,8 @@ class ListEntry(models.Model):
     )
     user = models.ForeignKey(User)
     game_id = models.IntegerField()
+    game_title = models.CharField(max_length=200)
+    game_thumb_url = models.URLField()
     status = models.CharField(_('Status'), max_length=2,
                               choices=STATUS_CHOICES)
     score = models.IntegerField(_('Score'), choices=SCORE_CHOICES,

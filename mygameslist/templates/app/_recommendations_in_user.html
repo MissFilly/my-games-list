@@ -1,0 +1,30 @@
+{% load i18n %}
+
+{% with entry1=obj.entry1 entry2=obj.entry2 %}
+  <section>
+    <table class="table table-no-borders">
+      <tr>
+        <td class="col-md-1">
+          <a href="{% url 'game_detail' entry1.game_id %}">
+            <img class="img-responsive" src="{{ entry1.game_thumb_url }}">
+          </a>
+        </td>
+        <td class="col-md-5">
+          <p>{% trans 'If you liked' %}</p>
+          <p><a href="{% url 'game_detail' entry1.game_id %}">{{ entry1.game_title }}</a></p>
+        </td>
+        <td class="text-right col-md-5">
+          <p>{% trans '... then you might like' %}</p>
+          <p><a href="{% url 'game_detail' entry2.game_id %}">{{ entry2.game_title }}</a></p>
+        </td>
+        <td class="col-md-1">
+          <a href="{% url 'game_detail' entry2.game_id %}">
+            <img class="img-responsive" src="{{ entry2.game_thumb_url }}">
+          </a>
+        </td>
+      </tr>
+    </table>
+    {{ obj.text|linebreaks }}
+  </section>
+{% endwith %}
+{% if not forloop.last %}<hr />{% endif %}

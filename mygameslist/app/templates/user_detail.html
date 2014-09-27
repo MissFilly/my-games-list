@@ -58,34 +58,7 @@
         <section>
           <h3>{% trans 'Recommendations' %}</h3>
           {% for obj in recommendations %}
-            {% with game1=obj.entries.all.first.game game2=obj.entries.all.last.game %}
-              <section>
-                <table class="table table-no-borders">
-                  <tr>
-                    <td class="col-md-1">
-                      <a href="{{ game1.get_absolute_url }}">
-                        <img class="img-responsive" src="{{ game1.cover_img.url }}">
-                      </a>
-                    </td>
-                    <td class="col-md-5">
-                      <p>{% trans 'If you liked' %}</p>
-                      <p><a href="{{ game1.get_absolute_url }}">{{ game1.title }}</a></p>
-                    </td>
-                    <td class="text-right col-md-5">
-                      <p>{% trans '... then you might like' %}</p>
-                      <p><a href="{{ game2.get_absolute_url }}">{{ game2.title }}</a></p>
-                    </td>
-                    <td class="col-md-1">
-                      <a href="{{ game2.get_absolute_url }}">
-                        <img class="img-responsive" src="{{ game2.cover_img.url }}">
-                      </a>
-                    </td>
-                  </tr>
-                </table>
-                {{ obj.text|linebreaks }}
-                <hr />
-              </section>
-            {% endwith %}
+            {% include 'app/_recommendations_in_user.html' %}
           {% endfor %}
           {% if not forloop.last %}<hr />{% endif %}
         </section>
