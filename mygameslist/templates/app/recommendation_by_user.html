@@ -11,5 +11,7 @@
 {% block user_profile_content %}
   {% for obj in object_list %}
     {% include 'app/_recommendations_in_user.html' %}
+  {% empty %}
+    {% trans "This user hasn't made any recommendations yet." %}
   {% endfor %}
 {% endblock %}

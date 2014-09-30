@@ -35,7 +35,7 @@
 
     <div class="col-md-9">
       <ul class="nav nav-pills">
-        <li {% if detail_page %}class="active"{% endif %}><a href="{% url 'user_profile' user.username %}">{% trans 'Details' %}</a></li>
+        <li {% if detail_page %}class="active"{% endif %}><a href="{% url 'user_profile' object.username %}">{% trans 'Details' %}</a></li>
         <li {% if reviews_page %}class="active"{% endif %}><a href="{% url 'game_review_by_user' object.username %}">{% trans 'Reviews' %}</a></li>
         <li {% if recommendations_page %}class="active"{% endif %}><a href="{% url 'game_recommendation_by_user' object.username %}">{% trans 'Recommendations' %}</a></li>
       </ul>

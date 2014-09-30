@@ -25,6 +25,10 @@
       </tr>
     </table>
     {{ obj.text|linebreaks }}
+    {% if user_profile == user %}
+    < class="text-right">
+    </div>
+    {% endif %}
   </section>
 {% endwith %}
 {% if not forloop.last %}<hr />{% endif %}
