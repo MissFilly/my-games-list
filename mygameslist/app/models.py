@@ -4,6 +4,9 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django_countries.fields import CountryField
 
+from allauth.account import signals
+from django.dispatch import receiver
+
 
 class UserProfile(models.Model):
     GENDER_CHOICES = (('F', _('Female')), ('M', _('Male')))
@@ -12,10 +15,20 @@ class UserProfile(models.Model):
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES,
                               verbose_name=_('Gender'))
     country = CountryField()
-    about = models.TextField(verbose_name=_('About'))
+    about = models.TextField(verbose_name=_('About'), blank=True, null=True)
 
     def get_absolute_url(self):
         return reverse('user_profile', kwargs={'slug': self.user.username})
+
+User.profile = property(lambda u: UserProfile.objects.get_or_create(user=u)[0])
+
+# @receiver(signals.user_signed_up)
+# def new_user_signup(sender, **kwargs):
+#     import pdb; pdb.set_trace()
+#     p = UserProfile(user=kwargs['user'], gender=kwargs['gender'],
+#                     country=kwargs['country'])
+
+#     p.save()
 
 
 # class Company(models.Model):
