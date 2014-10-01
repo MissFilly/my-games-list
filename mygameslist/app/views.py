@@ -4,7 +4,7 @@ from django.core.urlresolvers import reverse, reverse_lazy
 from django.contrib.auth.models import User
 from django.http import Http404
 from django.views.generic.base import TemplateView
-from django.views.generic.edit import CreateView, UpdateView
+from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 
@@ -12,7 +12,7 @@ from gamesdb.api import API
 
 from .models import *
 from .forms import *
-from .mixins import LoginRequiredMixin, EntryMixin
+from .mixins import *
 
 gamesdb_api = API()
 
@@ -118,6 +118,14 @@ class ListEntryCreate(LoginRequiredMixin, CreateView):
         return context
 
 
+class ListEntryDelete(PermissionMixin, DeleteView):
+    model = ListEntry
+
+    def get_success_url(self):
+        return reverse('game_review_by_user',
+                       kwargs={'slug': self.request.user.username, })
+
+
 class GameReviewCreate(EntryMixin, CreateView):
     model = GameReview
     form_class = GameReviewForm
@@ -148,9 +156,17 @@ class GameReviewCreate(EntryMixin, CreateView):
                        kwargs={'slug': self.request.user.username, })
 
 
-class GameReviewUpdate(UpdateView):
+class GameReviewUpdate(PermissionMixin, UpdateView):
     model = GameReview
     form_class = GameReviewForm
+
+    def get_success_url(self):
+        return reverse('game_review_by_user',
+                       kwargs={'slug': self.request.user.username, })
+
+
+class GameReviewDelete(PermissionMixin, DeleteView):
+    model = GameReview
 
     def get_success_url(self):
         return reverse('game_review_by_user',
@@ -261,4 +277,30 @@ class GameRecommendationByGame(ListView):
                         self).get_context_data(**kwargs)
         context['game'] = self.game
         context['recommendations_page'] = True
+        return context
+
+
+class SearchResultsView(TemplateView):
+    template_name = 'search_results.html'
+
+    def get_context_data(self, **kwargs):
+        context = super(SearchResultsView, self).get_context_data(**kwargs)
+        games = gamesdb_api.get_game(id=kwargs['pk'])
+        if game is None:
+            raise Http404
+        reviews = GameReview.objects.filter(
+            entry__game_id=game.id).order_by('-date_created')[:3]
+        recommendations = GameRecommendation.objects.filter(
+            Q(entry1__game_id=game.id) | Q(entry2__game_id=game.id)) \
+            .distinct().order_by('-date_created')[:3]
+
+        context = dict(game=game, reviews=reviews,
+                       recommendations=recommendations, detail_page=True)
+        user = self.request.user
+        if user.is_authenticated():
+            try:
+                context['entry'] = ListEntry.objects.get(user=user,
+                                                         game_id=kwargs['pk'])
+            except:
+                pass
         return context

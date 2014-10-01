@@ -7,7 +7,7 @@
 			Write review for {{ game_title }}
 		{% endblocktrans %}
 	{% else %}
-		{% blocktrans with game_title=object.entry.game.title %}
+		{% blocktrans with game_title=object.entry.game_title %}
 			Edit review for {{ game_title }}
 		{% endblocktrans %}
 	{% endif %}

@@ -31,14 +31,19 @@ urlpatterns = patterns(
         name='game_recommendation_by_user'),
     url(r'^(?P<pk>\d+)/entry_create/$', ListEntryCreate.as_view(),
         name='entry_create'),
+
+    url(r'^entry/(?P<pk>\d+)/delete/$', ListEntryDelete.as_view(),
+        name='entry_delete'),
     # Reviews
     url(r'^(?P<pk>\d+)/review/$', GameReviewCreate.as_view(),
         name='review_create'),
     url(r'^review/(?P<pk>\d+)/update/$', GameReviewUpdate.as_view(),
         name='review_update'),
-    url(r'^recommendation/(?P<pk>\d+)/update/$', GameRecommendationUpdate.as_view(),
-        name='recommendation_update'),
+    url(r'^review/(?P<pk>\d+)/delete/$', GameReviewDelete.as_view(),
+        name='review_delete'),
     # Recommendations
     url(r'^(?P<pk>\d+)/recommend/$', GameRecommendationCreate.as_view(),
         name='recommendation_create'),
+    url(r'^recommendation/(?P<pk>\d+)/update/$', GameRecommendationUpdate.as_view(),
+        name='recommendation_update'),
 )

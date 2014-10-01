@@ -27,6 +27,14 @@
     </tr>
   </table>
   {{ obj.text|linebreaks }}
+  
+  {% if entry.user == user %}
+    <div class="text-right">
+      <a href="{% url 'review_update' obj.id %}" class="btn btn-default btn-xs">{% trans 'Edit' %}</a>
+      <a href="{% url 'review_delete' obj.id %}" class="btn btn-default btn-xs">{% trans 'Delete' %}</a>
+    </div>
+  {% endif %}
+
   {% if not forloop.last %}<hr />{% endif %}
 </section>
 {% endwith %}

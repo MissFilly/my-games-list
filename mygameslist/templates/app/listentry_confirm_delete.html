@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load url from future %}
+
+{% block page_header %}{% trans 'Remove video game from list' %}{% endblock %}
+
+{% block content %}
+
+<div class="row">
+
+  <div class="col-md-12">
+
+    <form action="" method="POST">{% csrf_token %}
+      <p>{% trans 'Are you sure you want to remove this video game from your list?' %}</p>
+      <input class="btn btn-primary" type="submit" value="{% trans 'Confirm' %}" />
+      <a href="" class="btn btn-default">{% trans 'Cancel' %}</a>
+    </form>
+  </div>
+
+</div>
+
+{% endblock %}

@@ -14,7 +14,7 @@
       <table class="table table-no-borders">
         <tr>
           <td class="col-md-1">
-            <a href="{{ user_profile.get_absolute_url }}">
+            <a href="{% url 'user_profile' user_profile.username %}">
               <img class="img-responsive" src="{{ user_profile.userprofile.avatar.url }}">
             </a>
           </td>

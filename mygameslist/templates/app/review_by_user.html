@@ -11,5 +11,7 @@
 {% block user_profile_content %}
   {% for obj in object_list %}
     {% include 'app/_reviews_in_user.html' %}
+  {% empty %}
+    <p>{% trans "This user hasn't written any reviews yet." %}</p>
   {% endfor %}
 {% endblock %}
