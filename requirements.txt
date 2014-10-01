@@ -8,6 +8,7 @@ django-compressor==1.4
 django-countries==2.1.2
 django-crispy-forms==1.4.0
 django-toolbelt==0.0.1
+-e git://github.com/MissFilly/python-gamesdb.git@68a35090cd22386fa91d9f18d3e41aaa6251eea7#egg=gamesdb-master
 gunicorn==19.1.1
 nodeenv==0.11.1
 oauthlib==0.6.3
