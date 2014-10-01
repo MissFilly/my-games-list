@@ -51,6 +51,8 @@
           <h3>{% trans 'Reviews' %}</h3>
             {% for obj in reviews %}
               {% include 'app/_reviews_in_user.html' %}
+            {% empty %}
+              <p>{% trans "This user hasn't written any reviews yet." %}</p>
             {% endfor %}
             <hr />
         </section>
@@ -59,6 +61,8 @@
           <h3>{% trans 'Recommendations' %}</h3>
           {% for obj in recommendations %}
             {% include 'app/_recommendations_in_user.html' %}
+          {% empty %}
+            <p>{% trans "This user hasn't made any recommendations yet." %}</p>
           {% endfor %}
           {% if not forloop.last %}<hr />{% endif %}
         </section>

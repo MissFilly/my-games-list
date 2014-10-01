@@ -118,11 +118,20 @@ class ListEntryCreate(LoginRequiredMixin, CreateView):
         return context
 
 
+class ListEntryUpdate(PermissionMixin, UpdateView):
+    model = ListEntry
+    form_class = ListEntryForm
+
+    def get_success_url(self):
+        return reverse('game_list_by_user',
+                       kwargs={'slug': self.request.user.username, })
+
+
 class ListEntryDelete(PermissionMixin, DeleteView):
     model = ListEntry
 
     def get_success_url(self):
-        return reverse('game_review_by_user',
+        return reverse('game_list_by_user',
                        kwargs={'slug': self.request.user.username, })
 
 

@@ -32,6 +32,8 @@ urlpatterns = patterns(
     url(r'^(?P<pk>\d+)/entry_create/$', ListEntryCreate.as_view(),
         name='entry_create'),
 
+    url(r'^entry/(?P<pk>\d+)/update/$', ListEntryUpdate.as_view(),
+        name='entry_update'),
     url(r'^entry/(?P<pk>\d+)/delete/$', ListEntryDelete.as_view(),
         name='entry_delete'),
     # Reviews

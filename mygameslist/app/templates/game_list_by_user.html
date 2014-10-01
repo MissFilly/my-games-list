@@ -13,14 +13,17 @@
 {% regroup object_list by get_status_display as status_list %}
 
 <div class="row">
-    <div class="col-md-12 text-center">
-      <div class="btn-group text-center" id="catpicker">
-        <a href="#" id="allcat" class="current btn btn-primary">{% trans 'All' %}</a>
-        {% for e in status_list %}
-          <a href="#" id="{{ e.grouper|slugify }}" class="filter btn btn-primary">{{ e.grouper }}</a>
-        {% endfor %}
+
+    {% if status_list %}
+      <div class="col-md-12 text-center">
+        <div class="btn-group text-center" id="catpicker">
+          <a href="#" id="allcat" class="current btn btn-primary">{% trans 'All' %}</a>
+          {% for e in status_list %}
+            <a href="#" id="{{ e.grouper|slugify }}" class="filter btn btn-primary">{{ e.grouper }}</a>
+          {% endfor %}
+        </div>
       </div>
-    </div>
+    {% endif %}
 
     <div class="col-md-12">
 
@@ -31,17 +34,28 @@
             <tr>
               <th class="col-md-4">{% trans 'Game title' %}</th>
               <th class="col-md-4">{% trans 'Replay value' %}</th>
-              <th class="col-md-4">{% trans 'Score' %}</th>
+              <th class="col-md-2">{% trans 'Score' %}</th>
+              {% if user_profile == user %}
+                <th class="col-md-2"></th>
+              {% endif %}
             </tr>
           {% for entry in e.list %}
             <tr>
               <td><a href="{% url 'game_detail' entry.game_id %}">{{ entry.game_title }}</a></td>
               <td>{{ entry.get_replay_value_display }}</td>
               <td>{{ entry.score }}</td>
+              {% if user_profile == user %}
+                <td>
+                  <a href="{% url 'entry_update' entry.id %}" class="btn btn-default btn-xs">{% trans 'Edit' %}</a>
+                  <a href="{% url 'entry_delete' entry.id %}" class="btn btn-default btn-xs">{% trans 'Remove' %}</a>
+                </td>
+              {% endif %}
             </tr>
           {% endfor %}
           </table>
         </section>
+      {% empty %}
+        <p>{% trans "This user hasn't added any video games to their list yet." %}</p>
       {% endfor %}
 
     </div>
