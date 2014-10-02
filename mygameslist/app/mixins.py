@@ -26,14 +26,15 @@ class PermissionMixin(LoginRequiredMixin, SingleObjectMixin):
 
     def get_object(self, *args, **kwargs):
         obj = super(PermissionMixin, self).get_object(*args, **kwargs)
-        if obj.user:
+        owner = None
+        if hasattr(obj, 'user'):
             owner = obj.user
-        elif obj.entry:
+        elif hasattr(obj, 'entry'):
             owner = obj.entry.user
-        elif obj.entry1:
+        elif hasattr(obj, 'entry1'):
             owner = obj.entry1.user
 
         if not owner == self.request.user:
             raise HttpResponseForbidden
-        else:
-            return obj
+
+        return obj

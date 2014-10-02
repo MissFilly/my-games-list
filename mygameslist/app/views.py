@@ -251,6 +251,14 @@ class GameRecommendationUpdate(UpdateView):
                        kwargs={'slug': self.request.user.username, })
 
 
+class GameRecommendationDelete(PermissionMixin, DeleteView):
+    model = GameRecommendation
+
+    def get_success_url(self):
+        return reverse('game_recommendation_by_user',
+                       kwargs={'slug': self.request.user.username, })
+
+
 class GameRecommendationByUserView(ListView):
     model = GameRecommendation
     template_name = 'app/recommendation_by_user.html'
@@ -309,6 +317,6 @@ class UserProfileUpdate(LoginRequiredMixin, UpdateView):
     model = UserProfile
     form_class = UserProfileForm
     template_name = 'app/userprofile_form.html'
-    
+
     def get_object(self):
         return self.request.user.profile

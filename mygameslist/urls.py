@@ -54,4 +54,6 @@ urlpatterns = patterns(
         name='recommendation_create'),
     url(r'^recommendation/(?P<pk>\d+)/update/$', GameRecommendationUpdate.as_view(),
         name='recommendation_update'),
+    url(r'^recommendation/(?P<pk>\d+)/delete/$', GameRecommendationDelete.as_view(),
+        name='recommendation_delete'),
 )
