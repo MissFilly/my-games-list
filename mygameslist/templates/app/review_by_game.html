@@ -1,5 +1,5 @@
 {% extends 'game_detail.html' %}
-{% load i18n %}
+{% load i18n staticfiles %}
 
 {% block page_header %}
   {% blocktrans with title=game.title %}
@@ -15,7 +15,7 @@
         <tr>
           <td class="col-md-1">
             <a href="{% url 'user_profile' user_profile.username %}">
-              <img class="img-responsive" src="{{ user_profile.userprofile.avatar.url }}">
+              <img class="img-responsive" src="{% if user_profile.userprofile.avatar %}{{ user_profile.userprofile.avatar.url }}{% else %}{% static 'img/default.png' %}{% endif %}">
             </a>
           </td>
           <td class="col-md-5">

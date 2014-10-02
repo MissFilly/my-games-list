@@ -45,7 +45,7 @@
               <td>{{ entry.get_replay_value_display }}</td>
               <td>{{ entry.score }}</td>
               {% if user_profile == user %}
-                <td>
+                <td class="text-right">
                   <a href="{% url 'entry_update' entry.id %}" class="btn btn-default btn-xs">{% trans 'Edit' %}</a>
                   <a href="{% url 'entry_delete' entry.id %}" class="btn btn-default btn-xs">{% trans 'Remove' %}</a>
                 </td>

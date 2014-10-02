@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load i18n %}
+{% load i18n staticfiles %}
 {% load url from future %}
 
 {% block page_header %}{{ game.title }}{% endblock %}
@@ -78,7 +78,7 @@
                   <tr>
                     <td class="col-md-1">
                       <a href="{{ user_profile.get_absolute_url }}">
-                        <img class="img-responsive" src="{{ user_profile.userprofile.avatar.url }}">
+                        <img class="img-responsive" src="{% if user_profile.userprofile.avatar %}{{ user_profile.userprofile.avatar.url }}{% else %}{% static 'img/default.png' %}{% endif %}">
                       </a>
                     </td>
                     <td class="col-md-5">
