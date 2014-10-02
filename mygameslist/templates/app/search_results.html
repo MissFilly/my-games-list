@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load url from future %}
+
+{% block page_header %}{% trans 'Search results' %}{% endblock %}
+
+{% block content %}
+
+<div class="row">
+  {% for g in games %}
+  <div class="col-md-4">
+
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <h4><a href="{% url 'game_detail' g.id %}">{{ g.title }}</a></h4>
+        <p>{{ g.platform }}</p>
+      </div>
+    </div>
+
+  </div>
+  {% empty %}
+    <div class="col-md-12">
+      <p>{% trans "Your search did not produce any results." %}</p>
+    </div>
+  {% endfor %}
+</div>
+<!-- /.row -->
+
+{% endblock %}

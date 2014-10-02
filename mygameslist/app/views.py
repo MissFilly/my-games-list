@@ -290,26 +290,15 @@ class GameRecommendationByGame(ListView):
 
 
 class SearchResultsView(TemplateView):
-    template_name = 'search_results.html'
+
+    template_name = "app/search_results.html"
 
     def get_context_data(self, **kwargs):
         context = super(SearchResultsView, self).get_context_data(**kwargs)
-        games = gamesdb_api.get_game(id=kwargs['pk'])
-        if game is None:
-            raise Http404
-        reviews = GameReview.objects.filter(
-            entry__game_id=game.id).order_by('-date_created')[:3]
-        recommendations = GameRecommendation.objects.filter(
-            Q(entry1__game_id=game.id) | Q(entry2__game_id=game.id)) \
-            .distinct().order_by('-date_created')[:3]
-
-        context = dict(game=game, reviews=reviews,
-                       recommendations=recommendations, detail_page=True)
-        user = self.request.user
-        if user.is_authenticated():
-            try:
-                context['entry'] = ListEntry.objects.get(user=user,
-                                                         game_id=kwargs['pk'])
-            except:
-                pass
+        q = self.request.GET.get('q')
+        if q:
+            games = gamesdb_api.get_games_list(name=q)
+            context['games'] = games
+        # games.sort(key=lambda x: x.platform)
+        # context['games_by_platform'] = games
         return context

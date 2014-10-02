@@ -15,6 +15,9 @@ urlpatterns = patterns(
     url(r'^media/(?P<path>.*)$', 'django.views.static.serve',
         {'document_root': settings.MEDIA_ROOT}),
 
+    url(r'^search/$', SearchResultsView.as_view(),
+        name='search'),
+
     url(r'^(?P<pk>\d+)/$', GameDetailView.as_view(),
         name='game_detail'),
     url(r'^(?P<pk>\d+)/reviews/$', GameReviewByGameView.as_view(),

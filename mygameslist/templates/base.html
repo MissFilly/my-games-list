@@ -78,9 +78,9 @@
 
     <div class="search-bar-wrapper">
       <div class="container">
-        <form class="navbar-form navbar-left pull-right" role="search">
+        <form class="navbar-form navbar-left pull-right" role="search" action="{% url 'search' %}" method="GET">
           <div class="input-group input-group-sm">
-            <input class="form-control" type="text" placeholder="{% trans 'Search game&#8230;' %}">
+            <input class="form-control" type="text" name="q" placeholder="{% trans 'Search game&#8230;' %}">
             <span class="input-group-btn">
               <button class="btn btn-default btn" type="button">
                 <span class="glyphicon glyphicon-search"></span>

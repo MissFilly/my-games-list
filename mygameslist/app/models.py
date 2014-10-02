@@ -22,15 +22,6 @@ class UserProfile(models.Model):
 
 User.profile = property(lambda u: UserProfile.objects.get_or_create(user=u)[0])
 
-# @receiver(signals.user_signed_up)
-# def new_user_signup(sender, **kwargs):
-#     import pdb; pdb.set_trace()
-#     p = UserProfile(user=kwargs['user'], gender=kwargs['gender'],
-#                     country=kwargs['country'])
-
-#     p.save()
-
-
 # class Company(models.Model):
 #     name = models.CharField(_('Name'), max_length=200)
 #     active = models.BooleanField(default=True)
