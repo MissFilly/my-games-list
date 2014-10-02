@@ -12,18 +12,16 @@
 
     {% if obj.entry1.game_id != game.id|add:"0" %}
       {% with similar=obj.entry1 %}
-        {% include 'app/_recommendations_in_game.html' %}
+        {% include 'app/_recommendation_layout.html' %}
       {% endwith %}
 
     {% elif obj.entry2.game_id != game.id|add:"0" %}
 
       {% with similar=obj.entry2 %}
-        {% include 'app/_recommendations_in_game.html' %}
+        {% include 'app/_recommendation_layout.html' %}
       {% endwith %}
 
     {% endif %}
-    
-    {% if not forloop.last %}<hr />{% endif %}
     
   {% empty %}
         <p>{% trans 'There are no recommendations for this game yet.' %}</p>

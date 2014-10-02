@@ -50,8 +50,10 @@ class GameRecommendationForm(forms.ModelForm):
         # Exclude entries that already have a recommendation for this
         # game, and the entry for this game too
         similar.queryset = ListEntry.objects.filter(user=user) \
-            .exclude(Q(recommendation_entry1=entry) |
-                     Q(recommendation_entry2=entry)) \
+            .exclude(Q(recommendation_entry1__entry1=entry) | \
+                     Q(recommendation_entry1__entry2=entry) |
+                     Q(recommendation_entry2__entry1=entry) |
+                     Q(recommendation_entry2__entry2=entry)) \
             .exclude(pk=entry.pk)
         self.entry = entry
         self.helper = FormHelper()

@@ -10,7 +10,7 @@
 
 {% block user_profile_content %}
   {% for obj in object_list %}
-    {% include 'app/_recommendations_in_user.html' %}
+    {% include 'app/_recommendation_layout.html' %}
   {% empty %}
     <p>{% trans "This user hasn't made any recommendations yet." %}</p>
   {% endfor %}

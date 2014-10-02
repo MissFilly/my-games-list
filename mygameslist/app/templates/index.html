@@ -51,35 +51,7 @@
     <section>
       <h3 class="section-title">{% trans 'Latest recommendations' %}</h3>
       {% for obj in recommendations %}
-        {% with game1=obj.entries.all.first.game game2=obj.entries.all.last.game user_profile=obj.entries.all.1.user %}
-          <section>
-            <table class="table table-no-borders">
-              <tr>
-                <td class="col-md-1">
-                  <a href="{{ game1.get_absolute_url }}">
-                    <img class="img-responsive" src="{{ game1.cover_img.url }}">
-                  </a>
-                </td>
-                <td class="col-md-5">
-                  <p>{% trans 'If you liked' %}</p>
-                  <p><a href="{{ game1.get_absolute_url }}">{{ game1.title }}</a></p>
-                  <p>{% trans 'By' %} <a href="{{ user_profile.userprofile.get_absolute_url }}">{{ user_profile.username }}</a></p>
-                </td>
-                <td class="text-right col-md-5">
-                  <p>{% trans '... then you might like' %}</p>
-                  <p><a href="{{ game2.get_absolute_url }}">{{ game2.title }}</a></p>
-                </td>
-                <td class="col-md-1">
-                  <a href="{{ game2.get_absolute_url }}">
-                    <img class="img-responsive" src="{{ game2.cover_img.url }}">
-                  </a>
-                </td>
-              </tr>
-            </table>
-            {{ obj.text|linebreaks }}
-            <hr />
-          </section>
-        {% endwith %}
+        {% include 'app/_recommendation_layout.html' %}
       {% endfor %}
     </section>
   </div><!-- /.col -->

@@ -158,6 +158,6 @@ class GameRecommendation(models.Model):
             self.entry2.game_id)
 
     def save(self, *args, **kwargs):
-        if self.entry1.pk > self.entry2.pk:
+        if self.entry1.game_id > self.entry2.game_id:
             self.entry1, self.entry2 = self.entry2, self.entry1
         super(GameRecommendation, self).save(*args, **kwargs)

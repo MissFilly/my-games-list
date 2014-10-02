@@ -242,7 +242,7 @@ class GameRecommendationCreate(EntryMixin, CreateView):
                        kwargs={'slug': self.request.user.username, })
 
 
-class GameRecommendationUpdate(UpdateView):
+class GameRecommendationUpdate(PermissionMixin, UpdateView):
     model = GameRecommendation
     form_class = GameRecommendationEditForm
 
