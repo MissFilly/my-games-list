@@ -302,3 +302,13 @@ class SearchResultsView(TemplateView):
             games.sort(key=lambda x: x.platform)
             context['games_by_platform'] = games
         return context
+
+
+class UserProfileUpdate(LoginRequiredMixin, UpdateView):
+
+    model = UserProfile
+    form_class = UserProfileForm
+    template_name = 'app/userprofile_form.html'
+    
+    def get_object(self):
+        return self.request.user.profile

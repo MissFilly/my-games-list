@@ -12,7 +12,7 @@
 <div class="row">
 
     <div class="col-md-3">
-        <img class="img-responsive" src="{% if user_profile.userprofile.avatar %}{{ user_profile.userprofile.avatar.url }}{% else %}{% static 'img/default.png' %}{% endif %}" alt="">
+        <img class="img-responsive" src="{% if object.userprofile.avatar %}{{ object.userprofile.avatar.url }}{% else %}{% static 'img/default.png' %}{% endif %}" alt="">
         <table class="table table-no-borders">
           <tr>
             <td class="text-right">{% trans 'Joined' %}</td>
@@ -65,6 +65,11 @@
             <p>{% trans "This user hasn't made any recommendations yet." %}</p>
           {% endfor %}
           {% if not forloop.last %}<hr />{% endif %}
+        </section>
+
+        <section>
+          <h3>{% blocktrans with username=object.username %}About {{ username }}{% endblocktrans %}</h3>
+          {{ object.profile.about|safe }}
         </section>
       {% endblock %}
     </div>

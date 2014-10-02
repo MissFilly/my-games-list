@@ -49,6 +49,7 @@ INSTALLED_APPS = (
     'crispy_forms',
     'allauth',
     'allauth.account',
+    'django_summernote',
     # My Games list
     'mygameslist.app',
 )
@@ -139,3 +140,10 @@ ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_USERNAME_REQUIRED = True
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 ACCOUNT_SIGNUP_FORM_CLASS = 'mygameslist.app.forms.SignupForm'
+
+SUMMERNOTE_CONFIG = {
+    'inplacewidget_external_css': (
+        '//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css',
+    ),
+    'inplacewidget_external_js': (),
+}

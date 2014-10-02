@@ -5,6 +5,8 @@ from .models import *
 from crispy_forms.layout import Submit, Reset
 from crispy_forms.helper import FormHelper
 
+from django_summernote.widgets import SummernoteInplaceWidget
+
 
 class ListEntryForm(forms.ModelForm):
 
@@ -88,3 +90,18 @@ class SignupForm(forms.ModelForm):
         profile.country = self.cleaned_data['country']
         profile.save()
         user.save()
+
+
+class UserProfileForm(forms.ModelForm):
+
+    class Meta:
+        model = UserProfile
+        widgets = {
+            'about': SummernoteInplaceWidget(),
+        }
+        exclude = ('user', )
+
+    def __init__(self, *args, **kwargs):
+        super(UserProfileForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.add_input(Submit('submit', _('Save')))
