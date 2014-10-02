@@ -298,7 +298,7 @@ class SearchResultsView(TemplateView):
         q = self.request.GET.get('q')
         if q:
             games = gamesdb_api.get_games_list(name=q)
-            context['games'] = games
-        # games.sort(key=lambda x: x.platform)
-        # context['games_by_platform'] = games
+            context['games'] = games[:]
+            games.sort(key=lambda x: x.platform)
+            context['games_by_platform'] = games
         return context

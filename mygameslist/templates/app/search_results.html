@@ -1,29 +1,72 @@
 {% extends 'base.html' %}
-{% load i18n %}
+{% load i18n staticfiles %}
 {% load url from future %}
 
 {% block page_header %}{% trans 'Search results' %}{% endblock %}
 
 {% block content %}
 
-<div class="row">
-  {% for g in games %}
-  <div class="col-md-4">
+{% regroup games_by_platform by platform as platform_list %}
 
-    <div class="panel panel-default">
-      <div class="panel-body">
-        <h4><a href="{% url 'game_detail' g.id %}">{{ g.title }}</a></h4>
-        <p>{{ g.platform }}</p>
+<div class="row">
+
+  {% if games %}
+    <div class="form-group col-md-12">
+      <label for="select" class="control-label col-md-2 text-right">{% trans 'Filter by platform' %}</label>
+      <div class="col-md-3">
+        <select class="form-control" id="filter-select">
+          <option value="all">{% trans 'All' %}</option>
+          {% for e in platform_list %}
+            <option value=".{{ e.grouper|slugify }}">{{ e.grouper }}</option>
+          {% endfor %}
+        </select>
       </div>
     </div>
 
-  </div>
-  {% empty %}
+    <div id="filterable-items" class="col-md-12">
+
+      {% for g in games %}
+        <div class="mix {{ g.platform|slugify }} col-md-4">
+
+          <div class="panel panel-default">
+            <div class="panel-body">
+              <h4><a href="{% url 'game_detail' g.id %}">{{ g.title }}</a></h4>
+              <p>{{ g.platform }}</p>
+            </div>
+          </div>
+
+        </div>
+      {% endfor %}
+
+    </div>
+
+  {% else %}
+
     <div class="col-md-12">
       <p>{% trans "Your search did not produce any results." %}</p>
     </div>
-  {% endfor %}
+  
+  {% endif %}
+
 </div>
 <!-- /.row -->
 
+{% endblock %}
+
+{% block extrascripts %}
+<script src="{% static 'js/jquery.mixitup.min.js' %}"></script>
+<script type="text/javascript">
+         
+$(function(){
+  var $filterSelect = $('#filter-select'),
+      $container = $('#filterable-items');
+  
+  $container.mixItUp();
+  
+  $filterSelect.on('change', function(){
+    $container.mixItUp('filter', this.value);
+  });
+});
+             
+</script>
 {% endblock %}
