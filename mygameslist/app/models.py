@@ -1,3 +1,6 @@
+import os
+import uuid
+
 from django.db import models
 from django.utils.translation import ugettext as _
 from django.contrib.auth.models import User
@@ -8,9 +11,17 @@ from allauth.account import signals
 from django.dispatch import receiver
 
 
+def get_file_path(instance, filename):
+    ext = filename.split('.')[-1]
+    filename = '{0}.{1}'.format(uuid.uuid4(), ext)
+    return os.path.join('avatars', filename)
+
+
 class UserProfile(models.Model):
     GENDER_CHOICES = (('F', _('Female')), ('M', _('Male')))
-    avatar = models.ImageField(upload_to='avatars', blank=True, null=True)
+    avatar = models.ImageField(upload_to=get_file_path,
+                               blank=True, null=True,
+                               verbose_name=_('Avatar'))
     user = models.OneToOneField(User)
     gender = models.CharField(max_length=1, choices=GENDER_CHOICES,
                               verbose_name=_('Gender'))

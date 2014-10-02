@@ -30,4 +30,16 @@
     margin-bottom: @navbar-margin-bottom;
 	padding-top: @navbar-padding-vertical / 2;
     padding-bottom: @navbar-padding-vertical / 2;
+
+    #search-box {
+        -webkit-transition: width  1s ease-in-out;
+        -moz-transition: width  1s ease-in-out;
+        -o-transition: width  1s ease-in-out;
+        transition: width  1s ease-in-out;
+        float: right !important;
+    }
+}
+
+#search-box:focus{
+    width: 320px !important;   
 }
