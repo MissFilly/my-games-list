@@ -1,65 +1,63 @@
-{% load i18n %}
-{% load url from future %}
-
-{% url 'home' as home_url %}
-
-{% with user_profile=obj.entry1.user entry1=obj.entry1 entry2=obj.entry2 %}
-  <section>
+{% load i18n %} {% load url from future %} {% url 'home' as home_url %} {% with user_profile=obj.entry1.user entry1=obj.entry1 entry2=obj.entry2 %}
+<section>
     <table class="table table-no-borders">
-      <tr>
-        {% if game %}
+        <tr>
+            {% if game %}
 
-          <td class="col-md-1">
-            <a href="{% url 'game_detail' similar.game_id %}">
-              <img class="img-responsive" src="{{ similar.game_thumb_url }}">
-            </a>
-          </td>
-          
-          <td class="col-md-11">
-            <p><a href="{% url 'game_detail' similar.game_id %}">{{ similar.game_title }}</a></p>
-            <p>{% trans 'By' %} <a href="{% url 'user_profile' user_profile.username %}">{{ user_profile.username }}</a></p>
-            <p><a href="{% url 'game_recommendation_by_user' user_profile.username %}">{% trans 'View other recommendations by this user' %}</a></p>
-          </td>
+            <td class="col-md-1">
+                <a href="{% url 'game_detail' similar.game_id %}">
+                    <img class="img-responsive" src="{{ similar.game_thumb_url }}">
+                </a>
+            </td>
 
-        {% else %}
+            <td class="col-md-11">
+                <p><a href="{% url 'game_detail' similar.game_id %}">{{ similar.game_title }}</a>
+                </p>
+                <p>{% trans 'By' %} <a href="{% url 'user_profile' user_profile.username %}">{{ user_profile.username }}</a>
+                </p>
+                <p><a href="{% url 'game_recommendation_by_user' user_profile.username %}">{% trans 'View other recommendations by this user' %}</a>
+                </p>
+            </td>
 
-          <td class="col-md-1">
-            <a href="{% url 'game_detail' entry1.game_id %}">
-              <img class="img-responsive" src="{{ entry1.game_thumb_url }}">
-            </a>
-          </td>
+            {% else %}
 
-          <td class="col-md-5">
-            <p>{% trans 'If you liked' %}</p>
-            <p><a href="{% url 'game_detail' entry1.game_id %}">{{ entry1.game_title }}</a></p>
-            {% if request.get_full_path == home_url %}
-              <p>{% trans 'By' %} <a href="{{ user_profile.profile.get_absolute_url }}">{{ user_profile.username }}</a></p>
+            <td class="col-md-1">
+                <a href="{% url 'game_detail' entry1.game_id %}">
+                    <img class="img-responsive" src="{{ entry1.game_thumb_url }}">
+                </a>
+            </td>
+
+            <td class="col-md-5">
+                <p>{% trans 'If you liked' %}</p>
+                <p><a href="{% url 'game_detail' entry1.game_id %}">{{ entry1.game_title }}</a>
+                </p>
+                {% if request.get_full_path == home_url %}
+                <p>{% trans 'By' %} <a href="{{ user_profile.profile.get_absolute_url }}">{{ user_profile.username }}</a>
+                </p>
+                {% endif %}
+            </td>
+
+            <td class="text-right col-md-5">
+                <p>{% trans '... then you might like' %}</p>
+                <p><a href="{% url 'game_detail' entry2.game_id %}">{{ entry2.game_title }}</a>
+                </p>
+            </td>
+
+            <td class="col-md-1">
+                <a href="{% url 'game_detail' entry2.game_id %}">
+                    <img class="img-responsive" src="{{ entry2.game_thumb_url }}">
+                </a>
+            </td>
+
             {% endif %}
-          </td>
-
-          <td class="text-right col-md-5">
-            <p>{% trans '... then you might like' %}</p>
-            <p><a href="{% url 'game_detail' entry2.game_id %}">{{ entry2.game_title }}</a></p>
-          </td>
-          
-          <td class="col-md-1">
-            <a href="{% url 'game_detail' entry2.game_id %}">
-              <img class="img-responsive" src="{{ entry2.game_thumb_url }}">
-            </a>
-          </td>
-
-        {% endif %}
-      </tr>
+        </tr>
     </table>
-    {{ obj.text|linebreaks }}
-
-    {% if user_profile == user %}
-      <div class="text-right">
+    {{ obj.text|linebreaks }} {% if user_profile == user %}
+    <div class="text-right">
         <a href="{% url 'recommendation_update' obj.pk %}" class="btn btn-default btn-xs">{% trans 'Edit' %}</a>
         <a href="{% url 'recommendation_delete' obj.pk %}" class="btn btn-default btn-xs">{% trans 'Delete' %}</a>
-      </div>
-    {% endif %}
-
-    {% if not forloop.last %}<hr />{% endif %}
-  </section>
+    </div>
+    {% endif %} {% if not forloop.last %}
+    <hr />{% endif %}
+</section>
 {% endwith %}

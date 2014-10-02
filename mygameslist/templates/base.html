@@ -1,5 +1,4 @@
-{% load i18n staticfiles compress %}
-{% load url from future %}
+{% load i18n staticfiles compress %} {% load url from future %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -24,7 +23,7 @@
         <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
         <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
     <![endif]-->
-    
+
     <script src="{% static 'js/jquery-1.11.1.min.js' %}"></script>
 </head>
 
@@ -50,25 +49,25 @@
                         <a href="#">{% trans 'Top games' %}</a>
                     </li>
                     {% if user.is_authenticated %}
-                      <li>
-                          <a href="{% url 'game_list_by_user' user.username %}">{% trans 'My list' %}</a>
-                      </li>
-                      <li>
-                          <a href="{% url 'game_review_by_user' user.username %}">{% trans 'My reviews' %}</a>
-                      </li>
-                      <li>
-                          <a href="{% url 'game_recommendation_by_user' user.username %}">{% trans 'My recommendations' %}</a>
-                      </li>
-                      <li>
-                          <a href="{% url 'account_logout' %}">{% trans 'Logout' %}</a>
-                      </li>
+                    <li>
+                        <a href="{% url 'game_list_by_user' user.username %}">{% trans 'My list' %}</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'game_review_by_user' user.username %}">{% trans 'My reviews' %}</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'game_recommendation_by_user' user.username %}">{% trans 'My recommendations' %}</a>
+                    </li>
+                    <li>
+                        <a href="{% url 'account_logout' %}">{% trans 'Logout' %}</a>
+                    </li>
                     {% else %}
-                      <li>
+                    <li>
                         <a href="{% url 'account_login' %}">{% trans 'Login' %}</a>
-                      </li>
-                      <li>
+                    </li>
+                    <li>
                         <a href="{% url 'account_signup' %}" class="btn btn-primary">{% trans 'Signup' %}</a>
-                      </li>
+                    </li>
                     {% endif %}
                 </ul>
             </div>
@@ -78,18 +77,18 @@
     </nav>
 
     <div class="search-bar-wrapper">
-      <div class="container">
-        <form class="navbar-form navbar-left pull-right" role="search" action="{% url 'search' %}" method="GET">
-          <div class="input-group input-group-sm">
-            <input id="search-box" class="form-control" type="text" name="q" placeholder="{% trans 'Search game&#8230;' %}">
-            <span class="input-group-btn">
-              <button class="btn btn-default btn" type="button">
-                <span class="glyphicon glyphicon-search"></span>
-              </button>
-            </span>
-          </div>
-        </form>
-      </div>
+        <div class="container">
+            <form class="navbar-form navbar-left pull-right" role="search" action="{% url 'search' %}" method="GET">
+                <div class="input-group input-group-sm">
+                    <input id="search-box" class="form-control" type="text" name="q" placeholder="{% trans 'Search game&#8230;' %}" autocomplete="off">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default btn" type="submit">
+                            <span class="glyphicon glyphicon-search"></span>
+                        </button>
+                    </span>
+                </div>
+            </form>
+        </div>
     </div>
 
     <!-- Page Content -->
@@ -121,6 +120,48 @@
     </footer> -->
 
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <script src="{% static 'js/jquery-ui.min.js' %}"></script>
+    <script>
+    $(function() {
+
+        var searchbox = $("#search-box").autocomplete({
+            delay: 500,
+            source: function(request, response) {
+                jQuery.get("{% url 'ajax_search' %}", {
+                    name: request.term
+                }, function(data) {
+                    response(data.games);
+                });
+            },
+            minLength: 3,
+            select: function(event, ui) {
+                var url = "{% url 'game_detail' 1 %}";
+                url = url.replace('foo', ui.item.id);
+                window.location.href = url;
+            },
+            focus: function(event, ui) {
+              var menu = $(this).data("uiAutocomplete").menu.element,
+              focused = menu.find(".ui-state-focus");
+              menu.find('li').removeClass('active');
+              focused.addClass('active');
+            }
+        }).data('uiAutocomplete');
+
+        searchbox._renderItem = function(ul, item) {
+            return $("<li>")
+                .append('<a href="/' + item.id + '">' + item.title + "  <small>(" + item.platform + ")</small></a>")
+                .appendTo(ul);
+        };
+
+        searchbox._renderMenu = function(ul, items) {
+            var that = this;
+            $.each(items, function(index, item) {
+                that._renderItemData(ul, item);
+            });
+            $(ul).addClass("dropdown-menu");
+        }
+    });
+    </script>
     {% block extrascripts %}{% endblock %}
 
 </body>

@@ -12,6 +12,8 @@ urlpatterns = patterns(
     url(r'^summernote/', include('django_summernote.urls')),
     url(r'^profile/edit/$', UserProfileUpdate.as_view(),
         name='user_profile_update'),
+    url(r'^ajax_search/', AjaxSearch.as_view(),
+        name='ajax_search'),
     url(r'^profile/(?P<slug>[\w-]+)/$', UserDetailView.as_view(),
         name='user_profile'),
     url(r'^admin/', include(admin.site.urls)),

@@ -3,7 +3,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.contrib.auth.models import User
 from django.http import Http404
-from django.views.generic.base import TemplateView
+from django.views.generic.base import TemplateView, View
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
@@ -320,3 +320,12 @@ class UserProfileUpdate(LoginRequiredMixin, UpdateView):
 
     def get_object(self):
         return self.request.user.profile
+
+
+class AjaxSearch(JSONResponseMixin, View):
+
+    def get(self, request, *args, **kwargs):
+        q = self.request.GET.get('name')
+        context = dict(games=gamesdb_api.get_games_list(name=q),
+                       success=True)
+        return self.render_to_response(context)
