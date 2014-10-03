@@ -1,7 +1,7 @@
 import json
 from django import http
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseForbidden
+from django.core.exceptions import PermissionDenied
 from django.views.generic.detail import SingleObjectMixin
 from django.utils.decorators import method_decorator
 from django.shortcuts import get_object_or_404
@@ -37,7 +37,7 @@ class PermissionMixin(LoginRequiredMixin, SingleObjectMixin):
             owner = obj.entry1.user
 
         if not owner == self.request.user:
-            raise HttpResponseForbidden
+            raise PermissionDenied()
 
         return obj
 
