@@ -14,8 +14,7 @@
     <title>My Games List</title>
 
     {% compress css %}
-    <link rel="stylesheet" type="text/less" href="{% static 'less/styles.less' %}">
-    {% endcompress %}
+    <link rel="stylesheet" type="text/less" href="{% static 'less/styles.less' %}">{% endcompress %}
 
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -140,10 +139,16 @@
                 window.location.href = url;
             },
             focus: function(event, ui) {
-              var menu = $(this).data("uiAutocomplete").menu.element,
-              focused = menu.find(".ui-state-focus");
-              menu.find('li').removeClass('active');
-              focused.addClass('active');
+                var menu = $(this).data("uiAutocomplete").menu.element,
+                    focused = menu.find(".ui-state-focus");
+                menu.find('li').removeClass('active');
+                focused.addClass('active');
+            },
+            search: function() {
+                $(this).addClass('loading');
+            },
+            open: function() {
+                $(this).removeClass('loading');
             }
         }).data('uiAutocomplete');
 

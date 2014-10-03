@@ -37,9 +37,13 @@
         -o-transition: width  1s ease-in-out;
         transition: width  1s ease-in-out;
         float: right !important;
-    }
-}
 
-#search-box:focus{
-    width: 320px !important;   
+        &:focus {
+            width: 300px !important;
+        }
+
+        &.loading {
+            background: url('../img/ajax-loader.gif') no-repeat no-repeat 97% center white;
+        }
+    }
 }
