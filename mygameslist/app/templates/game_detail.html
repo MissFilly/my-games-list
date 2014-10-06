@@ -9,7 +9,7 @@
 <div class="row">
 
   <div class="col-md-3">
-      <img class="img-responsive" src="{{ game.thumb_url }}" alt="">
+      <img class="img-responsive" src="{% if game.thumb_url %}{{ game.thumb_url }}{% endif %}" alt="">
       <table class="table table-no-borders">
         <tr>
           <td class="text-right col-md-6">{% trans 'Genre' %}</td>

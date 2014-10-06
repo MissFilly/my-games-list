@@ -61,6 +61,9 @@
                         <a href="{% url 'game_recommendation_by_user' user.username %}">{% trans 'My recommendations' %}</a>
                     </li>
                     <li>
+                        <a href="{% url 'user_profile_update' %}">{% trans 'Edit profile' %}</a>
+                    </li>
+                    <li>
                         <a href="{% url 'account_logout' %}">{% trans 'Logout' %}</a>
                     </li>
                     {% else %}
@@ -132,7 +135,7 @@
                 jQuery.get("{% url 'ajax_search' %}", {
                     name: request.term
                 }, function(data) {
-                    response(data.games);
+                    response(data.games.slice(0, 15));
                 });
             },
             minLength: 3,

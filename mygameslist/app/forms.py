@@ -13,7 +13,7 @@ class ListEntryForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(ListEntryForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
-        self.helper.add_input(Submit('submit', _('Add')))
+        self.helper.add_input(Submit('submit', _('Save')))
         self.helper.add_input(
             Reset('job_reset', _('Reset'), css_class='btn-default'))
 

@@ -2,9 +2,15 @@
 {% load i18n crispy_forms_tags %}
 
 {% block page_header %}
-  {% blocktrans with game_title=game.title %}
-    Add {{ game_title }} to my list
-  {% endblocktrans %}
+  {% if not form.instance.pk %}
+    {% blocktrans with game_title=game.title %}
+      Add {{ game_title }} to my list
+    {% endblocktrans %}
+  {% else %}
+    {% blocktrans with game_title=form.instance.game_title %}
+      Edit {{ game_title }} in my list
+    {% endblocktrans %}
+  {% endif %}
 {% endblock %}
 
 {% block content %}

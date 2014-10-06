@@ -325,7 +325,11 @@ class UserProfileUpdate(LoginRequiredMixin, UpdateView):
 class AjaxSearch(JSONResponseMixin, View):
 
     def get(self, request, *args, **kwargs):
+        import time
         q = self.request.GET.get('name')
+        start = time.time()
         context = dict(games=gamesdb_api.get_games_list(name=q),
                        success=True)
+        end = time.time()
+        print("\n\n\nGet games list time: " + str(end - start) + "\n\n\n")
         return self.render_to_response(context)
