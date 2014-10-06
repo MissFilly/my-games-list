@@ -1,4 +1,19 @@
 .footer {
     background-color: @blue-dark;
-    margin-top: @line-height-computed;
+    color: white;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    padding-top: @line-height-computed;
+    padding-bottom: @line-height-computed;
+}
+
+// Sticky footer
+html {
+  position: relative;
+  min-height: 100%;
+}
+body {
+  /* Margin bottom by footer height */
+  margin-bottom: 110px;
 }

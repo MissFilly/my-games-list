@@ -50,6 +50,7 @@ INSTALLED_APPS = (
     'allauth',
     'allauth.account',
     'django_summernote',
+    'friendship',
     # My Games list
     'mygameslist.app',
 )
