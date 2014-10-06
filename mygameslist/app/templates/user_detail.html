@@ -60,7 +60,7 @@
         <section>
           <h3>{% trans 'Recommendations' %}</h3>
           {% for obj in recommendations %}
-            {% include 'app/_recommendations_in_user.html' %}
+            {% include 'app/_recommendation_layout.html' %}
           {% empty %}
             <p>{% trans "This user hasn't made any recommendations yet." %}</p>
           {% endfor %}

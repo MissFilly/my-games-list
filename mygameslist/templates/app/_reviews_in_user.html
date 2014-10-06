@@ -5,7 +5,7 @@
     <tr>
       <td class="col-md-1">
         <a href="{% url 'game_detail' entry.game_id %}">
-          <img class="img-responsive" src="{{ entry.game_thumb_url }}">
+          <img class="img-responsive" src="{% if entry.game_thumb_url %}{{ entry.game_thumb_url }}{% endif %}">
         </a>
       </td>
       <td class="col-md-5">

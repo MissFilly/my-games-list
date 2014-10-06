@@ -6,7 +6,7 @@
 
             <td class="col-md-1">
                 <a href="{% url 'game_detail' similar.game_id %}">
-                    <img class="img-responsive" src="{{ similar.game_thumb_url }}">
+                    <img class="img-responsive" src="{% if similar.game_thumb_url %}{{ similar.game_thumb_url }}{% endif %}">
                 </a>
             </td>
 
@@ -23,7 +23,7 @@
 
             <td class="col-md-1">
                 <a href="{% url 'game_detail' entry1.game_id %}">
-                    <img class="img-responsive" src="{{ entry1.game_thumb_url }}">
+                    <img class="img-responsive" src="{% if entry1.game_thumb_url %}{{ entry1.game_thumb_url }}{% endif %}">
                 </a>
             </td>
 
@@ -45,7 +45,7 @@
 
             <td class="col-md-1">
                 <a href="{% url 'game_detail' entry2.game_id %}">
-                    <img class="img-responsive" src="{{ entry2.game_thumb_url }}">
+                    <img class="img-responsive" src="{% if entry2.game_thumb_url %}{{ entry2.game_thumb_url }}{% endif %}">
                 </a>
             </td>
 
