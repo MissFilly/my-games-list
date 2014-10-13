@@ -2,6 +2,7 @@ from django.conf import settings
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from .app.views import *
+from .friends.views import *
 
 urlpatterns = patterns(
     '',
@@ -58,4 +59,7 @@ urlpatterns = patterns(
         name='recommendation_update'),
     url(r'^recommendation/(?P<pk>\d+)/delete/$', GameRecommendationDelete.as_view(),
         name='recommendation_delete'),
+
+    url(r'^send_request/(?P<pk>\d+)/$', FriendRequestView.as_view(),
+        name='send_request'),
 )

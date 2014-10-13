@@ -1,5 +1,6 @@
 Django==1.7
 Pillow==2.5.3
+boto==2.33.0
 dj-database-url==0.3.0
 dj-static==0.0.6
 django-allauth==0.18.0
@@ -8,9 +9,10 @@ django-compressor==1.4
 django-countries==2.1.2
 django-crispy-forms==1.4.0
 django-friendship==1.2.0
+-e git://github.com/coagulant/django-storages-py3.git#egg=django_storages
 django-summernote==0.5.15
 django-toolbelt==0.0.1
--e git://github.com/MissFilly/python-gamesdb.git@0ddcd075e1db4d7d7493ba7dd9e54f2cca0dc090#egg=gamesdb-master
+-e git://github.com/MissFilly/python-gamesdb.git#egg=gamesdb
 gunicorn==19.1.1
 nodeenv==0.11.1
 oauthlib==0.6.3
