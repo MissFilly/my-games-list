@@ -57,6 +57,7 @@ INSTALLED_APPS = (
     'django_summernote',
     'friendship',
     'storages',
+    'imagekit',
     # My Games list
     'mygameslist.app',
 )
