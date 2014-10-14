@@ -9,7 +9,7 @@ django-compressor==1.4
 django-countries==2.1.2
 django-crispy-forms==1.4.0
 django-friendship==1.2.0
--e git://github.com/coagulant/django-storages-py3.git#egg=django_storages
+-e git+https://github.com/coagulant/django-storages-py3#egg=storages
 django-summernote==0.5.15
 django-toolbelt==0.0.1
 -e git://github.com/MissFilly/python-gamesdb.git#egg=gamesdb

@@ -56,6 +56,7 @@ INSTALLED_APPS = (
     'allauth.account',
     'django_summernote',
     'friendship',
+    'storages',
     # My Games list
     'mygameslist.app',
 )
@@ -115,11 +116,21 @@ MEDIA_ROOT = 'media'
 MEDIA_URL = '/media/'
 
 COMPRESS_ENABLED = True
-if not 'COMPRESS_OFFLINE' in os.environ:
-    COMPRESS_OFFLINE = True
 COMPRESS_PRECOMPILERS = (
     ('text/less', 'lessc {infile} {outfile}'),
 )
+
+# If in production
+if not 'COMPRESS_OFFLINE' in os.environ:
+    COMPRESS_OFFLINE = True
+    AWS_QUERYSTRING_AUTH = False
+    AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
+    AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_ACCESS_KEY']
+    AWS_STORAGE_BUCKET_NAME = os.environ['S3_BUCKET_NAME']
+    AWS_BUCKET_URL = 'http://s3.amazonaws.com/{0}/'.format(
+        AWS_STORAGE_BUCKET_NAME)
+    MEDIA_URL = AWS_BUCKET_URL + 'media/'
+    DEFAULT_FILE_STORAGE = 'mygameslist.s3utils.MediaRootS3BotoStorage'
 
 FIXTURE_DIRS = (
     os.path.join(BASE_DIR, 'fixtures'),
