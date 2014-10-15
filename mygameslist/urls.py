@@ -60,6 +60,12 @@ urlpatterns = patterns(
     url(r'^recommendation/(?P<pk>\d+)/delete/$', GameRecommendationDelete.as_view(),
         name='recommendation_delete'),
 
-    url(r'^send_request/(?P<pk>\d+)/$', FriendRequestView.as_view(),
+    url(r'^add/(?P<pk>\d+)/$', FriendRequestView.as_view(),
         name='send_request'),
+    url(r'^requests/$', ReceivedRequestsView.as_view(),
+        name='friend_requests'),
+    url(r'^requests/(?P<action>[-_\w]+)/(?P<pk>\d+)/$', FriendshipRequestAction.as_view(),
+        name='friend_request_action'),
+    url(r'^my_friends/$', FriendListView.as_view(),
+        name='friends_list'),
 )

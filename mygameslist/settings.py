@@ -60,6 +60,7 @@ INSTALLED_APPS = (
     'imagekit',
     # My Games list
     'mygameslist.app',
+    'mygameslist.friends',
 )
 
 MIDDLEWARE_CLASSES = (

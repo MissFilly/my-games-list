@@ -35,6 +35,8 @@ class PermissionMixin(LoginRequiredMixin, SingleObjectMixin):
             owner = obj.entry.user
         elif hasattr(obj, 'entry1'):
             owner = obj.entry1.user
+        elif hasattr(obj, 'to_user'):
+            owner = obj.to_user
 
         if not owner == self.request.user:
             raise PermissionDenied()
