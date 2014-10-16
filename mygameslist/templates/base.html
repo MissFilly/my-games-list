@@ -106,12 +106,12 @@
                 <div class="input-group input-group-sm">
                     <div class="input-group-btn">
                         <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id="search-type-title">
-                            {% trans 'Games' %}
+                            {% if search_type == 'users' %} {% trans 'Users' %} {% else %} {% trans 'Games' %} {% endif %}
                             <span class="caret"></span>
                         </button>
                         <select class="hidden" id="search-type-select" name="search_type">
-                            <option value="games" selected="true"></option>
-                            <option value="users"></option>
+                            <option value="games" {% if search_type != 'users' %}selected="true" {% endif %}></option>
+                            <option value="users" {% if search_type == 'users' %}selected="true" {% endif %}></option>
                         </select>
                         <ul class="dropdown-menu" id="search-type-ul">
                             <li><a href="">{% trans 'Games' %}</a>
@@ -166,15 +166,19 @@
     $('#search-type-ul li a').click(function(e) {
         e.preventDefault();
         var li = $(this).closest('li'),
-        i = li.index(),
-        caret = ' <span class="caret"></span>',
-        title = $('#search-type-title'),
-        select = $('#search-type-select');
+            i = li.index(),
+            caret = ' <span class="caret"></span>',
+            title = $('#search-type-title'),
+            select = $('#search-type-select');
 
-        if (select.val() !== 0 && i === 0)
+        if (select.val() !== 'games' && i === 0) {
+            console.log('hitted');
             createAutocomplete();
-        else 
-            $('#search-box').autocomplete("destroy");
+        } else {
+            try {
+                $('#search-box').autocomplete("destroy");
+            } catch (e) {}
+        }
 
         select.prop('selectedIndex', i);
         title.text($(this).text());
@@ -227,7 +231,9 @@
         };
     };
 
-    createAutocomplete();
+    if ($('#search-type-select').val() === 'games') {
+        createAutocomplete();
+    }
     </script>
     {% block extrascripts %}{% endblock %}
 

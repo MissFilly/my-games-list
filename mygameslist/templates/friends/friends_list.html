@@ -1,7 +1,7 @@
 {% extends "account/base.html" %}
 
 {% load url from future %}
-{% load i18n friendshiptags %}
+{% load i18n friendshiptags staticfiles %}
 
 {% block page_header %}{% trans 'My friends' %}{% endblock %}
 
@@ -17,7 +17,7 @@
 
                 <div class="col-md-3">
                     <a href="{% url 'user_profile' f.username %}">
-                        <img class="img-responsive" src="{{ f.profile.avatar.url }}">
+                        <img class="img-responsive" src="{% if u.profile.avatar %}{{ u.profile.avatar.url }}{% else %}{% static 'img/default.png' %}{% endif %}">
                     </a>
                 </div>
 

@@ -42,7 +42,6 @@
           <td>{{ game.release_date }}</td>
         </tr>
       </table>
-      {%%}
       {% if detail_page %}
         {% if not entry %}
         <a href="{% url 'entry_create' game.id %}" class="btn btn-default btn-block">{% trans 'Add to my list' %}</a>

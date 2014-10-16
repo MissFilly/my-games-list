@@ -314,6 +314,7 @@ class SearchResultsView(TemplateView):
             else:
                 query = User.objects.filter(username__icontains=q)
                 context['users'] = query
+        context['search_type'] = search_type
         return context
 
 

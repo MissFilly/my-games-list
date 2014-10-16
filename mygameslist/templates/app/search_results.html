@@ -1,4 +1,4 @@
-{% extends 'base.html' %} {% load i18n staticfiles %} {% load url from future %} {% block page_header %}{% trans 'Search results' %}{% endblock %} {% block content %} {% regroup games_by_platform by platform as platform_list %}
+{% extends 'base.html' %} {% load i18n staticfiles user_tags %} {% load url from future %} {% block page_header %}{% trans 'Search results' %}{% endblock %} {% block content %} {% regroup games_by_platform by platform as platform_list %}
 
 <div class="row">
 
@@ -43,7 +43,7 @@
 
                   <div class="col-md-3">
                       <a href="{% url 'user_profile' u.username %}">
-                          <img class="img-responsive" src="{{ u.profile.avatar.url }}">
+                          <img class="img-responsive" src="{% if u.profile.avatar %}{{ u.profile.avatar.url }}{% else %}{% static 'img/default.png' %}{% endif %}">
                       </a>
                   </div>
 
@@ -56,9 +56,16 @@
                       <p>
                         {% trans 'Last seen:' %} {{ u.last_login }}
                       </p>
-                      <p class="text-right">
-                        <a href="{% url 'friend_add' u.pk %}" class="btn btn-default btn-xs">{% trans 'Add friend' %}</a>
-                      </p>
+                      {% if u != user %}
+                        {% user_is_friend u user as is_friend %}
+                          <p class="text-right">
+                            {% if not is_friend %}
+                              <a href="{% url 'friend_add' u.pk %}" class="btn btn-default btn-xs">{% trans 'Add friend' %}</a>
+                            {% else %}
+                              <a href="{% url 'friend_delete' u.pk %}" class="btn btn-danger btn-xs">{% trans 'Remove friend' %}</a>
+                            {% endif %}
+                          </p>
+                      {% endif %}
                   </div>
 
               </div>
