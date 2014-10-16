@@ -10,7 +10,7 @@
 
 {% block content %}
 
-{% regroup object_list by get_status_display as status_list %}
+{% regroup object_list|dictsort:"status" by get_status_display as status_list %}
 
 <div class="row">
 

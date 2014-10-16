@@ -67,8 +67,7 @@ class GameListByUserView(ListView):
     def get_queryset(self):
         self.user_profile = get_object_or_404(
             User, username=self.kwargs['slug'])
-        return ListEntry.objects.filter(user=self.user_profile) \
-            .order_by('status')
+        return ListEntry.objects.filter(user=self.user_profile)
 
     def get_context_data(self, **kwargs):
         context = super(GameListByUserView, self).get_context_data(**kwargs)

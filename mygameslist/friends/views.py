@@ -8,6 +8,8 @@ from django.views.generic.base import View, TemplateView
 from django.views.generic.detail import SingleObjectMixin
 from django.views.generic.edit import FormView, DeleteView
 from django.views.generic.list import ListView
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
 
 from friendship.models import Friend, FriendshipRequest, FriendshipManager
 
@@ -17,21 +19,23 @@ from .forms import FriendRequestForm
 friendship_manager = FriendshipManager()
 
 
-class FriendRequestView(FormView, LoginRequiredMixin):
+class FriendRequestView(LoginRequiredMixin, FormView):
 
     template_name = 'friends/request.html'
     form_class = FriendRequestForm
     success_url = '/'
 
+    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
+        super(FriendRequestView, self).dispatch(request, *args, **kwargs)
+        req_user = self.request.user
         self.user2 = get_object_or_404(User, pk=kwargs['pk'])
-        if self.request.user == self.user2:
+        if req_user == self.user2:
             raise PermissionDenied()
-        elif FriendshipRequest.objects.filter(from_user=self.request.user,
+        elif FriendshipRequest.objects.filter(from_user=req_user,
                                               to_user=self.user2).exists():
             return HttpResponse(_('You already sent a request to this user.'))
-        return super(FriendRequestView, self).dispatch(request,
-                                                       *args, **kwargs)
+        return
 
     def form_valid(self, form, *args, **kwargs):
         message_relationship = Friend.objects.add_friend(

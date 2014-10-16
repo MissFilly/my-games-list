@@ -55,8 +55,8 @@
                     </li>
                     {% if user.is_authenticated %}
                     <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="my_list" href="{% url 'game_list_by_user' user.username %}">{% trans 'My list' %} <span class="caret"></span></a>
-                        <ul class="dropdown-menu" aria-labelledby="my_list">
+                        <a href="{% url 'game_list_by_user' user.username %}">{% trans 'My list' %} <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
                             <li>
                                 <a href="{% url 'game_list_by_user' user.username %}">{% trans 'My list' %}</a>
                             </li>
@@ -70,10 +70,13 @@
                     </li>
                     <li class="dropdown">
                         {% get_notifications request.user as n %}
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="{% url 'game_list_by_user' user.username %}" id="download">{{ user.username }} {% if n > 0 %}<span class="badge">{{ n }}</span>{% endif %} <span class="caret"></span></a>
-                        <ul class="dropdown-menu" aria-labelledby="download">
+                        <a href="{% url 'user_profile' user.username %}">{{ user.username }} {% if n > 0 %}<span class="badge">{{ n }}</span>{% endif %} <span class="caret"></span></a>
+                        <ul class="dropdown-menu">
                             <li>
-                                <a href="{% url 'user_profile_update' %}">{% trans 'Edit my profile' %}</a>
+                                <a href="{% url 'user_profile' user.username %}">{% trans 'View profile' %}</a>
+                            </li>
+                            <li>
+                                <a href="{% url 'user_profile_update' %}">{% trans 'Edit profile' %}</a>
                             </li>
                             <li>
                                 <a href="{% url 'friend_list' %}">{% trans 'View friends' %}</a>
@@ -110,10 +113,13 @@
                             {% if search_type == 'users' %} {% trans 'Users' %} {% else %} {% trans 'Games' %} {% endif %}
                             <span class="caret"></span>
                         </button>
-                        <select class="hidden" id="search-type-select" name="search_type">
-                            <option value="games" {% if search_type != 'users' %}selected="true" {% endif %}></option>
-                            <option value="users" {% if search_type == 'users' %}selected="true" {% endif %}></option>
+                        <select id="search-type-select" name="search_type" class="form-control">
+                            <option value="games" {% if search_type != 'users' %}selected="true" {% endif %}>{% trans 'Games' %}</option>
+                            <option value="users" {% if search_type == 'users' %}selected="true" {% endif %}>{% trans 'Users' %}</option>
                         </select>
+                        <script>
+                            $('#search-type-select').addClass('hidden');
+                        </script>
                         <ul class="dropdown-menu" id="search-type-ul">
                             <li><a href="">{% trans 'Games' %}</a>
                             </li>
