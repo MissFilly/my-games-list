@@ -1,18 +1,20 @@
 from django.contrib.auth.models import User
 from django.core.exceptions import PermissionDenied
-from django.core.urlresolvers import reverse
+from django.core.urlresolvers import reverse, reverse_lazy
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic.base import View, TemplateView
 from django.views.generic.detail import SingleObjectMixin
-from django.views.generic.edit import FormView
+from django.views.generic.edit import FormView, DeleteView
 from django.views.generic.list import ListView
 
-from friendship.models import Friend, FriendshipRequest
+from friendship.models import Friend, FriendshipRequest, FriendshipManager
 
 from mygameslist.app.mixins import LoginRequiredMixin, PermissionMixin
 from .forms import FriendRequestForm
+
+friendship_manager = FriendshipManager()
 
 
 class FriendRequestView(FormView, LoginRequiredMixin):
@@ -50,7 +52,7 @@ class ReceivedRequestsView(LoginRequiredMixin, ListView):
     template_name = 'friends/requests.html'
 
     def get_queryset(self):
-        return FriendshipRequest.objects.filter(to_user=self.request.user)
+        return friendship_manager.unread_requests(self.request.user)
 
 
 class FriendshipRequestAction(PermissionMixin, SingleObjectMixin, View):
@@ -67,8 +69,23 @@ class FriendshipRequestAction(PermissionMixin, SingleObjectMixin, View):
             if action == 'reject':
                 friend_request.reject()
 
-        return redirect(reverse('friends_list'))
+        return redirect(reverse('friend_list'))
 
 
-class FriendListView(TemplateView, LoginRequiredMixin):
+class FriendListView(LoginRequiredMixin, ListView):
+    model = Friend
     template_name = 'friends/friends_list.html'
+
+    def get_queryset(self):
+        return friendship_manager.friends(self.request.user)
+
+
+class FriendDeleteView(LoginRequiredMixin, DeleteView):
+    model = User
+    template_name = 'friends/friend_confirm_delete.html'
+    success_url = reverse_lazy('friend_list')
+
+    def post(self, *args, **kwargs):
+        self.object = self.get_object()
+        friendship_manager.remove_friend(self.request.user, self.object)
+        return redirect(self.get_success_url())

@@ -4,21 +4,21 @@
 
     {% for req in object_list %}
     <div class="friend-request col-md-6">
-        {% with user=req.from_user %}
+        {% with u=req.from_user %}
         <div class="panel panel-default">
             <div class="panel-body">
 
                 <div class="col-md-3">
-                    <a href="{% url 'user_profile' user.username %}">
-                        <img class="img-responsive" src="{{ user.profile.avatar.url }}">
+                    <a href="{% url 'user_profile' u.username %}">
+                        <img class="img-responsive" src="{{ u.profile.avatar.url }}">
                     </a>
                 </div>
 
-                <div class="col-md-9">
+                <div class="col-md-6">
                     <p>
                         {% trans 'From' %}
-                        <a href="{% url 'user_profile' user.username %}">
-                            {{ user.username }}
+                        <a href="{% url 'user_profile' u.username %}">
+                            {{ u.username }}
                         </a>
                     </p>
                     <p>
@@ -29,21 +29,28 @@
                     </p>
                 </div>
 
+                <div class="col-md-3">
+                    <p>
+                        <form method="post" action="{% url 'friend_request_action' 'accept' req.pk %}">
+                            {% csrf_token %}
+                            <input type="submit" class="btn btn-sm btn-info btn-block" value="{% trans 'Accept' %}" />
+                        </form>
+                    </p>
 
-                <form method="post" action="{% url 'friend_request_action' 'accept' req.pk %}" class="col-md-4">
-                    {% csrf_token %}
-                    <input type="submit" class="btn btn-sm btn-info btn-block" value="{% trans 'Accept' %}" />
-                </form>
+                    <p>
+                        <form method="post" action="{% url 'friend_request_action' 'ignore' req.pk %}">
+                            {% csrf_token %}
+                            <input type="submit" class="btn btn-default btn-sm btn-warning btn-block" value="{% trans 'Ignore' %}" />
+                        </form>
+                    </p>
 
-                <form method="post" action="{% url 'friend_request_action' 'ignore' req.pk %}" class="col-md-4" class="col-md-4">
-                    {% csrf_token %}
-                    <input type="submit" class="btn btn-default btn-sm btn-warning btn-block" value="{% trans 'Ignore' %}" />
-                </form>
-
-                <form method="post" action="{% url 'friend_request_action' 'reject' req.pk %}" class="col-md-4">
-                    {% csrf_token %}
-                    <input type="submit" class="btn btn-default btn-sm btn-danger btn-block" value="{% trans 'Reject' %}" />
-                </form>
+                    <p>
+                        <form method="post" action="{% url 'friend_request_action' 'reject' req.pk %}">
+                            {% csrf_token %}
+                            <input type="submit" class="btn btn-default btn-sm btn-danger btn-block" value="{% trans 'Reject' %}" />
+                        </form>
+                    </p>
+                </div>
 
 
             </div>

@@ -9,11 +9,43 @@
 
 <div class="row">
 
-    <div class="col-md-6 col-md-offset-3">
-      <div class="panel panel-default">
-      </div>
+    {% for f in object_list %}
+    <div class="friend-request col-md-4">
+        <div class="panel panel-default">
+            <div class="panel-body">
+
+                <div class="col-md-3">
+                    <a href="{% url 'user_profile' f.username %}">
+                        <img class="img-responsive" src="{{ f.profile.avatar.url }}">
+                    </a>
+                </div>
+
+                <div class="col-md-9">
+                    <p>
+                        <a href="{% url 'user_profile' f.username %}">
+                            {{ f.username }}
+                        </a>
+                    </p>
+                    <p>
+                    	{% trans 'Last seen:' %} {{ f.last_login }}
+                    </p>
+                    <p class="text-right">
+                    	<a href="{% url 'friend_delete' f.pk %}" class="btn btn-danger btn-xs">{% trans 'Remove friend' %}</a>
+                    </p>
+                </div>
+
+            </div>
+        </div>
+
     </div>
 
+    {% empty %}
+
+    <div class="col-md-12">
+        <p>{% trans 'There are no friends in your list.' %}</p>
+    </div>
+
+    {% endfor %}
 </div>
 <!-- /.row -->
 

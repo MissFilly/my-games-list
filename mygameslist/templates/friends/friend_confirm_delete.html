@@ -1,0 +1,22 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load url from future %}
+
+{% block page_header %}{% trans 'Remove friend' %}{% endblock %}
+
+{% block content %}
+
+<div class="row">
+
+  <div class="col-md-12">
+
+    <form action="" method="POST">{% csrf_token %}
+      <p>{% blocktrans %}Are you sure you want to remove {{ object }} from your friends list?{% endblocktrans %}</p>
+      <input class="btn btn-primary" type="submit" value="{% trans 'Confirm' %}" />
+      <a href="{% url 'friend_list' %}" class="btn btn-default">{% trans 'Cancel' %}</a>
+    </form>
+  </div>
+
+</div>
+
+{% endblock %}

@@ -52,10 +52,10 @@
                     </li>
                     {% if user.is_authenticated %}
                     <li class="dropdown">
-                        <a class="dropdown-toggle" data-toggle="dropdown" href="{% url 'game_list_by_user' user.username %}" id="download">{% trans 'My list' %} <span class="caret"></span></a>
-                        <ul class="dropdown-menu" aria-labelledby="download">
+                        <a class="dropdown-toggle" data-toggle="my_list" href="{% url 'game_list_by_user' user.username %}">{% trans 'My list' %} <span class="caret"></span></a>
+                        <ul class="dropdown-menu" aria-labelledby="my_list">
                             <li>
-                                <a class="dropdown-toggle" data-toggle="dropdown" href="{% url 'game_list_by_user' user.username %}" id="download">{% trans 'My list' %}</a>
+                                <a href="{% url 'game_list_by_user' user.username %}">{% trans 'My list' %}</a>
                             </li>
                             <li>
                                 <a href="{% url 'game_review_by_user' user.username %}">{% trans 'My reviews' %}</a>
@@ -73,7 +73,7 @@
                                 <a href="{% url 'user_profile_update' %}">{% trans 'Edit my profile' %}</a>
                             </li>
                             <li>
-                                <a href="{% url 'friends_list' %}">{% trans 'View friends' %}</a>
+                                <a href="{% url 'friend_list' %}">{% trans 'View friends' %}</a>
                             </li>
                             <li>
                                 <a href="{% url 'friend_requests' %}">{% trans 'Pending requests' %} {% if n > 0 %}<span class="badge">{{ n }}</span>{% endif %}</a>
