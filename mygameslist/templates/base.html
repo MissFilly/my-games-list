@@ -42,7 +42,7 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="{% url 'home' %}">My Games List</a>
+                <a class="navbar-brand" href="{% url 'home' %}"><img src="{% static 'img/logo.png' %}" alt="My Games List" /></a>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -79,9 +79,6 @@
                                 <a href="{% url 'friend_requests' %}">{% trans 'Pending requests' %} {% if n > 0 %}<span class="badge">{{ n }}</span>{% endif %}</a>
                             </li>
                         </ul>
-                    </li>
-                    <li>
-                        <a href="{% url 'user_profile_update' %}">{% trans 'Edit profile' %}</a>
                     </li>
                     <li>
                         <a href="{% url 'account_logout' %}">{% trans 'Logout' %}</a>

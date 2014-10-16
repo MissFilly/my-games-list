@@ -1,69 +1,64 @@
-{% extends "account/base.html" %} {% load url from future %} {% load i18n crispy_forms_tags %} {% block page_header %}{% trans 'Received friend requests' %}{% endblock %} {% block content %}
+{% extends "account/base.html" %} {% load url from future %} {% load i18n crispy_forms_tags %} {% block page_header %}{% trans 'Pending friend requests' %}{% endblock %} {% block content %}
 
 <div class="row">
 
-    <div class="col-md-12">
+    {% for req in object_list %}
+    <div class="friend-request col-md-6">
+        {% with user=req.from_user %}
+        <div class="panel panel-default">
+            <div class="panel-body">
 
-        {% for req in object_list %}
-        <div class="friend-request col-md-6">
-            {% with user=req.from_user %}
-            <div class="panel panel-default">
-                <div class="panel-body">
-
-                    <div class="col-md-3">
-                        <a href="{% url 'user_profile' user.username %}">
-                            <img class="img-responsive" src="{{ user.profile.avatar.url }}">
-                        </a>
-                    </div>
-
-                    <div class="col-md-9">
-                        <p>
-                            {% trans 'From' %}
-                            <a href="{% url 'user_profile' user.username %}">
-                                {{ user.username }}
-                            </a>
-                        </p>
-                        <p>
-                            {% trans 'Message:' %}
-                        </p>
-                        <p>
-                            {{ req.message }}
-                        </p>
-                    </div>
-
-                    <div class="col-md-12">
-
-                        <form method="post" action="{% url 'friend_request_action' 'accept' req.pk %}" class="col-md-4">
-                            {% csrf_token %}
-                            <input type="submit" class="btn btn-sm btn-info btn-block" value="{% trans 'Accept' %}" />
-                        </form>
-
-                        <form method="post" action="{% url 'friend_request_action' 'ignore' req.pk %}" class="col-md-4" class="col-md-4">
-                            {% csrf_token %}
-                            <input type="submit" class="btn btn-default btn-sm btn-warning btn-block" value="{% trans 'Ignore' %}" />
-                        </form>
-
-                        <form method="post" action="{% url 'friend_request_action' 'reject' req.pk %}" class="col-md-4">
-                            {% csrf_token %}
-                            <input type="submit" class="btn btn-default btn-sm btn-danger btn-block" value="{% trans 'Reject' %}" />
-                        </form>
-
-                    </div>
-
+                <div class="col-md-3">
+                    <a href="{% url 'user_profile' user.username %}">
+                        <img class="img-responsive" src="{{ user.profile.avatar.url }}">
+                    </a>
                 </div>
+
+                <div class="col-md-9">
+                    <p>
+                        {% trans 'From' %}
+                        <a href="{% url 'user_profile' user.username %}">
+                            {{ user.username }}
+                        </a>
+                    </p>
+                    <p>
+                        {% trans 'Message:' %}
+                    </p>
+                    <p>
+                        {{ req.message }}
+                    </p>
+                </div>
+
+
+                <form method="post" action="{% url 'friend_request_action' 'accept' req.pk %}" class="col-md-4">
+                    {% csrf_token %}
+                    <input type="submit" class="btn btn-sm btn-info btn-block" value="{% trans 'Accept' %}" />
+                </form>
+
+                <form method="post" action="{% url 'friend_request_action' 'ignore' req.pk %}" class="col-md-4" class="col-md-4">
+                    {% csrf_token %}
+                    <input type="submit" class="btn btn-default btn-sm btn-warning btn-block" value="{% trans 'Ignore' %}" />
+                </form>
+
+                <form method="post" action="{% url 'friend_request_action' 'reject' req.pk %}" class="col-md-4">
+                    {% csrf_token %}
+                    <input type="submit" class="btn btn-default btn-sm btn-danger btn-block" value="{% trans 'Reject' %}" />
+                </form>
+
+
             </div>
-            {% endwith %}
-
         </div>
-
-        {% empty %}
-
-        <p>{% trans 'You have no pending friend requests.' %}</p>
-
-        {% endfor %}
+        {% endwith %}
 
     </div>
 
+    {% empty %}
+
+    <div class="col-md-12">
+        <p>{% trans 'You have no pending friend requests.' %}</p>
+    </div>
+
+    {% endfor %}
 </div>
 <!-- /.row -->
 
