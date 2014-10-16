@@ -43,7 +43,7 @@
 
                   <div class="col-md-3">
                       <a href="{% url 'user_profile' u.username %}">
-                          <img class="img-responsive" src="{% if u.profile.avatar %}{{ u.profile.avatar.url }}{% else %}{% static 'img/default.png' %}{% endif %}">
+                          <img class="img-responsive" src="{% avatar_or_default u %}">
                       </a>
                   </div>
 

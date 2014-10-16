@@ -42,17 +42,16 @@
           <td>{{ game.release_date }}</td>
         </tr>
       </table>
-      {% if detail_page %}
-        {% if not entry %}
-        <a href="{% url 'entry_create' game.id %}" class="btn btn-default btn-block">{% trans 'Add to my list' %}</a>
+      {% user_game_entry user game.id as entry %}
+      {% if not entry %}
+      <a href="{% url 'entry_create' game.id %}" class="btn btn-default btn-block">{% trans 'Add to my list' %}</a>
+      {% else %}
+        {% if not entry.gamereview %}
+          <a href="{% url 'review_create' game.id %}" class="btn btn-default btn-block">{% trans 'Write review' %}</a>
         {% else %}
-          {% if not entry.gamereview %}
-            <a href="{% url 'review_create' game.id %}" class="btn btn-default btn-block">{% trans 'Write review' %}</a>
-          {% else %}
-            <a href="{% url 'review_update' entry.gamereview.pk %}" class="btn btn-default btn-block">{% trans 'Edit my review' %}</a>
-          {% endif %}
-          <a href="{% url 'recommendation_create' entry.game_id %}" class="btn btn-default btn-block">{% trans 'Make a recommendation' %}</a>
+          <a href="{% url 'review_update' entry.gamereview.pk %}" class="btn btn-default btn-block">{% trans 'Edit my review' %}</a>
         {% endif %}
+        <a href="{% url 'recommendation_create' entry.game_id %}" class="btn btn-default btn-block">{% trans 'Make a recommendation' %}</a>
       {% endif %}
   </div>
 
@@ -78,7 +77,7 @@
                   <tr>
                     <td class="col-md-1">
                       <a href="{{ user_profile.get_absolute_url }}">
-                        <img class="img-responsive" src="{% if user_profile.userprofile.avatar %}{{ user_profile.userprofile.avatar.url }}{% else %}{% static 'img/default.png' %}{% endif %}">
+                        <img class="img-responsive" src="{% avatar_or_default user_profile %}">
                       </a>
                     </td>
                     <td class="col-md-5">

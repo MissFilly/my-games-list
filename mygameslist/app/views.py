@@ -57,13 +57,6 @@ class GameDetailView(TemplateView):
 
         context = dict(game=game, reviews=reviews,
                        recommendations=recommendations, detail_page=True)
-        user = self.request.user
-        if user.is_authenticated():
-            try:
-                context['entry'] = ListEntry.objects.get(user=user,
-                                                         game_id=kwargs['pk'])
-            except:
-                pass
         return context
 
 
@@ -315,6 +308,7 @@ class SearchResultsView(TemplateView):
                 query = User.objects.filter(username__icontains=q)
                 context['users'] = query
         context['search_type'] = search_type
+        context['query'] = q
         return context
 
 

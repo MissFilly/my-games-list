@@ -1,4 +1,4 @@
-{% extends "account/base.html" %} {% load url from future %} {% load i18n crispy_forms_tags %} {% block page_header %}{% trans 'Pending friend requests' %}{% endblock %} {% block content %}
+{% extends "account/base.html" %} {% load url from future %} {% load i18n crispy_forms_tags user_tags %} {% block page_header %}{% trans 'Pending friend requests' %}{% endblock %} {% block content %}
 
 <div class="row">
 
@@ -10,7 +10,7 @@
 
                 <div class="col-md-3">
                     <a href="{% url 'user_profile' u.username %}">
-                        <img class="img-responsive" src="{{ u.profile.avatar.url }}">
+                        <img class="img-responsive" src="{% avatar_or_default u %}">
                     </a>
                 </div>
 

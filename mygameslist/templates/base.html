@@ -121,7 +121,7 @@
                         </ul>
                     </div>
 
-                    <input id="search-box" class="form-control" type="text" name="q" placeholder="{% trans 'Search&#8230;' %}" autocomplete="off">
+                    <input id="search-box" class="form-control" type="text" name="q" placeholder="{% if not query %}{% trans 'Search&#8230;' %}{% endif %}" autocomplete="off" {% if query %}value="{{ query }}"{% endif %}>
                     <span class="input-group-btn">
                         <button class="btn btn-default btn" type="submit">
                             <span class="glyphicon glyphicon-search"></span>

@@ -3,7 +3,7 @@
 <div class="row">
 
     <div class="col-md-3">
-        <img class="img-responsive" src="{% if object.userprofile.avatar %}{{ object.userprofile.avatar.url }}{% else %}{% static 'img/default.png' %}{% endif %}" alt="">
+        <img class="img-responsive" src="{% avatar_or_default object %}" alt="">
         <table class="table table-no-borders">
             <tr>
                 <td class="text-right">{% trans 'Joined' %}</td>
