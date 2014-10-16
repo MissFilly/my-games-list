@@ -29,6 +29,9 @@ def avatar_or_default(user):
 @register.assignment_tag
 def user_game_entry(user, game_pk):
     if user.is_authenticated():
-        return ListEntry.objects.get(user=user,
-                                     game_id=game_pk)
+        try:
+            return ListEntry.objects.get(user=user,
+                                         game_id=game_pk)
+        except ListEntry.DoesNotExist:
+            pass
     return
