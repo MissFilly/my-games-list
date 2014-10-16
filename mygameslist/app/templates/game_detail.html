@@ -1,5 +1,5 @@
 {% extends 'base.html' %}
-{% load i18n staticfiles %}
+{% load i18n staticfiles user_tags %}
 {% load url from future %}
 
 {% block page_header %}{{ game.title }}{% endblock %}
@@ -42,6 +42,7 @@
           <td>{{ game.release_date }}</td>
         </tr>
       </table>
+      {%%}
       {% if detail_page %}
         {% if not entry %}
         <a href="{% url 'entry_create' game.id %}" class="btn btn-default btn-block">{% trans 'Add to my list' %}</a>

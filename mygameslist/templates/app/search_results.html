@@ -1,72 +1,96 @@
-{% extends 'base.html' %}
-{% load i18n staticfiles %}
-{% load url from future %}
-
-{% block page_header %}{% trans 'Search results' %}{% endblock %}
-
-{% block content %}
-
-{% regroup games_by_platform by platform as platform_list %}
+{% extends 'base.html' %} {% load i18n staticfiles %} {% load url from future %} {% block page_header %}{% trans 'Search results' %}{% endblock %} {% block content %} {% regroup games_by_platform by platform as platform_list %}
 
 <div class="row">
 
-  {% if games %}
+    {% if games %}
     <div class="form-group col-md-12">
-      <label for="select" class="control-label col-md-2 text-right">{% trans 'Filter by platform' %}</label>
-      <div class="col-md-3">
-        <select class="form-control" id="filter-select">
-          <option value="all">{% trans 'All' %}</option>
-          {% for e in platform_list %}
-            <option value=".{{ e.grouper|slugify }}">{{ e.grouper }}</option>
-          {% endfor %}
-        </select>
-      </div>
+        <label for="select" class="control-label col-md-2 text-right">{% trans 'Filter by platform' %}</label>
+        <div class="col-md-3">
+            <select class="form-control" id="filter-select">
+                <option value="all">{% trans 'All' %}</option>
+                {% for e in platform_list %}
+                <option value=".{{ e.grouper|slugify }}">{{ e.grouper }}</option>
+                {% endfor %}
+            </select>
+        </div>
     </div>
 
     <div id="filterable-items" class="col-md-12">
 
-      {% for g in games %}
+        {% for g in games %}
         <div class="mix {{ g.platform|slugify }} col-md-4 text-center">
 
-          <div class="panel panel-default">
-            <div class="panel-body">
-              <h4><a href="{% url 'game_detail' g.id %}">{{ g.title }}</a></h4>
-              <p>{{ g.platform }}</p>
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h4><a href="{% url 'game_detail' g.id %}">{{ g.title }}</a>
+                    </h4>
+                    <p>{{ g.platform }}</p>
+                </div>
             </div>
-          </div>
 
         </div>
-      {% endfor %}
+        {% endfor %}
 
     </div>
 
-  {% else %}
+    {% else %} {% if users %}
+    
+    {% for u in users %}
+
+      <div class="friend-request col-md-4">
+          <div class="panel panel-default">
+              <div class="panel-body">
+
+                  <div class="col-md-3">
+                      <a href="{% url 'user_profile' u.username %}">
+                          <img class="img-responsive" src="{{ u.profile.avatar.url }}">
+                      </a>
+                  </div>
+
+                  <div class="col-md-9">
+                      <p>
+                          <a href="{% url 'user_profile' u.username %}">
+                              {{ u.username }}
+                          </a>
+                      </p>
+                      <p>
+                        {% trans 'Last seen:' %} {{ u.last_login }}
+                      </p>
+                      <p class="text-right">
+                        <a href="{% url 'friend_add' u.pk %}" class="btn btn-default btn-xs">{% trans 'Add friend' %}</a>
+                      </p>
+                  </div>
+
+              </div>
+          </div>
+
+      </div>
+
+    {% endfor %}
+
+    {% else %}
 
     <div class="col-md-12">
-      <p>{% trans "Your search did not produce any results." %}</p>
+        <p>{% trans "Your search did not produce any results." %}</p>
     </div>
-  
-  {% endif %}
+
+    {% endif %} {% endif %}
 
 </div>
 <!-- /.row -->
 
-{% endblock %}
-
-{% block extrascripts %}
+{% endblock %} {% block extrascripts %}
 <script src="{% static 'js/jquery.mixitup.min.js' %}"></script>
 <script type="text/javascript">
-         
-$(function(){
-  var $filterSelect = $('#filter-select'),
-      $container = $('#filterable-items');
-  
-  $container.mixItUp();
-  
-  $filterSelect.on('change', function(){
-    $container.mixItUp('filter', this.value);
-  });
+$(function() {
+    var $filterSelect = $('#filter-select'),
+        $container = $('#filterable-items');
+
+    $container.mixItUp();
+
+    $filterSelect.on('change', function() {
+        $container.mixItUp('filter', this.value);
+    });
 });
-             
 </script>
 {% endblock %}

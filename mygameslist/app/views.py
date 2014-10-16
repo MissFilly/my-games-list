@@ -304,11 +304,16 @@ class SearchResultsView(TemplateView):
     def get_context_data(self, **kwargs):
         context = super(SearchResultsView, self).get_context_data(**kwargs)
         q = self.request.GET.get('q')
+        search_type = self.request.GET.get('search_type')
         if q:
-            games = gamesdb_api.get_games_list(name=q)
-            context['games'] = games[:]
-            games.sort(key=lambda x: x.platform)
-            context['games_by_platform'] = games
+            if search_type == 'games':
+                games = gamesdb_api.get_games_list(name=q)
+                context['games'] = games[:]
+                games.sort(key=lambda x: x.platform)
+                context['games_by_platform'] = games
+            else:
+                query = User.objects.filter(username__icontains=q)
+                context['users'] = query
         return context
 
 

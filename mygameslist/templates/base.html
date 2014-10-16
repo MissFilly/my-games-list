@@ -42,7 +42,9 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="{% url 'home' %}"><img src="{% static 'img/logo.png' %}" alt="My Games List" /></a>
+                <a class="navbar-brand" href="{% url 'home' %}">
+                    <img src="{% static 'img/logo.png' %}" alt="My Games List" />
+                </a>
             </div>
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
@@ -102,7 +104,24 @@
         <div class="container">
             <form class="navbar-form navbar-left pull-right" role="search" action="{% url 'search' %}" method="GET">
                 <div class="input-group input-group-sm">
-                    <input id="search-box" class="form-control" type="text" name="q" placeholder="{% trans 'Search game&#8230;' %}" autocomplete="off">
+                    <div class="input-group-btn">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown" id="search-type-title">
+                            {% trans 'Games' %}
+                            <span class="caret"></span>
+                        </button>
+                        <select class="hidden" id="search-type-select" name="search_type">
+                            <option value="games" selected="true"></option>
+                            <option value="users"></option>
+                        </select>
+                        <ul class="dropdown-menu" id="search-type-ul">
+                            <li><a href="">{% trans 'Games' %}</a>
+                            </li>
+                            <li><a href="">{% trans 'Users' %}</a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <input id="search-box" class="form-control" type="text" name="q" placeholder="{% trans 'Search&#8230;' %}" autocomplete="off">
                     <span class="input-group-btn">
                         <button class="btn btn-default btn" type="submit">
                             <span class="glyphicon glyphicon-search"></span>
@@ -144,7 +163,25 @@
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/jquery-ui.min.js' %}"></script>
     <script>
-    $(function() {
+    $('#search-type-ul li a').click(function(e) {
+        e.preventDefault();
+        var li = $(this).closest('li'),
+        i = li.index(),
+        caret = ' <span class="caret"></span>',
+        title = $('#search-type-title'),
+        select = $('#search-type-select');
+
+        if (select.val() !== 0 && i === 0)
+            createAutocomplete();
+        else 
+            $('#search-box').autocomplete("destroy");
+
+        select.prop('selectedIndex', i);
+        title.text($(this).text());
+        title.append(caret);
+    });
+
+    function createAutocomplete() {
 
         var searchbox = $("#search-box").autocomplete({
             delay: 500,
@@ -187,8 +224,10 @@
                 that._renderItemData(ul, item);
             });
             $(ul).addClass("dropdown-menu");
-        }
-    });
+        };
+    };
+
+    createAutocomplete();
     </script>
     {% block extrascripts %}{% endblock %}
 
