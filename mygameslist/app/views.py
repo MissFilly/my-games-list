@@ -80,18 +80,15 @@ class ListEntryCreate(LoginRequiredMixin, CreateView):
     form_class = ListEntryForm
 
     def dispatch(self, request, *args, **kwargs):
+        super(ListEntryCreate, self).dispatch(request, *args, **kwargs)
         self.game = gamesdb_api.get_game(id=kwargs['pk'])
         if self.game is None:
             raise Http404
-        if request.user.is_authenticated():
-            entry = ListEntry.objects.filter(user=request.user,
-                                             game_id=self.game.id)
-            if entry.exists():
-                return redirect(reverse(
-                    'entry_update',
-                    kwargs={'pk': entry.pk, }))
-        return super(ListEntryCreate, self).dispatch(request,
-                                                     *args, **kwargs)
+        entry = ListEntry.objects.filter(user=request.user,
+                                         game_id=self.game.id)
+        if entry.exists():
+            return redirect(reverse('entry_update', kwargs={'pk': entry.pk, }))
+        return
 
     def form_valid(self, form):
         form.instance.user = self.request.user

@@ -10,6 +10,7 @@ urlpatterns = patterns(
     url(r'^accounts/logout/$',
         'django.contrib.auth.views.logout', {'next_page': '/'}),
     url(r'^accounts/', include('allauth.urls')),
+    url('', include('social.apps.django_app.urls', namespace='social')),
     url(r'^summernote/', include('django_summernote.urls')),
     url(r'^profile/edit/$', UserProfileUpdate.as_view(),
         name='user_profile_update'),

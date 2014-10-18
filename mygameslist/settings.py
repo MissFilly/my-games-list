@@ -10,6 +10,7 @@ https://docs.djangoproject.com/en/dev/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
+import steam
 import dj_database_url
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 BASE_PROJ = os.path.join(BASE_DIR, 'mygameslist')
@@ -54,6 +55,8 @@ INSTALLED_APPS = (
     'crispy_forms',
     'allauth',
     'allauth.account',
+    'allauth.socialaccount',
+    'social.apps.django_app.default',
     'django_summernote',
     'friendship',
     'storages',
@@ -142,7 +145,7 @@ CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 AUTHENTICATION_BACKENDS = (
     "django.contrib.auth.backends.ModelBackend",
-    "allauth.account.auth_backends.AuthenticationBackend"
+    "social.backends.steam.SteamOpenId",
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (
@@ -150,8 +153,12 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.contrib.auth.context_processors.auth",
     "allauth.account.context_processors.account",
     "allauth.socialaccount.context_processors.socialaccount",
+    'social.apps.django_app.context_processors.backends',
+    'social.apps.django_app.context_processors.login_redirect',
 )
 
+SOCIAL_AUTH_TWITTER_LOGIN_URL = '/account/signup'
+SOCIAL_AUTH_LOGIN_URL = '/'
 LOGIN_REDIRECT_URL = '/'
 SITE_ID = 1
 
@@ -162,7 +169,15 @@ ACCOUNT_SIGNUP_FORM_CLASS = 'mygameslist.app.forms.SignupForm'
 
 SUMMERNOTE_CONFIG = {
     'inplacewidget_external_css': (
-        '//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.min.css',
+        '//netdna.bootstrapcdn.com/font-awesome/'
+        '4.0.3/css/font-awesome.min.css',
     ),
     'inplacewidget_external_js': (),
 }
+
+steam_key = os.environ.get('STEAM_API_KEY')
+steam.api.key.set(steam_key)
+SOCIAL_AUTH_STEAM_API_KEY = steam_key
+SOCIAL_AUTH_STEAM_EXTRA_DATA = ['player']
+
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/'
