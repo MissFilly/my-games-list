@@ -1,15 +1,15 @@
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.core.exceptions import PermissionDenied
 from django.core.urlresolvers import reverse, reverse_lazy
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect
+from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
 from django.views.generic.base import View, TemplateView
 from django.views.generic.detail import SingleObjectMixin
 from django.views.generic.edit import FormView, DeleteView
 from django.views.generic.list import ListView
-from django.contrib.auth.decorators import login_required
-from django.utils.decorators import method_decorator
 
 from friendship.models import Friend, FriendshipRequest, FriendshipManager
 

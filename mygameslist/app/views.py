@@ -1,8 +1,10 @@
+from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 from django.http import Http404
+from django.utils.decorators import method_decorator
 from django.views.generic.base import TemplateView, View
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.detail import DetailView
@@ -79,6 +81,7 @@ class ListEntryCreate(LoginRequiredMixin, CreateView):
     model = ListEntry
     form_class = ListEntryForm
 
+    @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
         super(ListEntryCreate, self).dispatch(request, *args, **kwargs)
         self.game = gamesdb_api.get_game(id=kwargs['pk'])
