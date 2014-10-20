@@ -1,4 +1,5 @@
-{% load i18n %} {% load url from future %} {% url 'home' as home_url %} {% with user_profile=obj.entry1.user entry1=obj.entry1 entry2=obj.entry2 %}
+{% load i18n %} {% load url from future %} {% load qhonuskan_votes static %}
+{% get_static_prefix as STATIC_PREFIX %} {% url 'home' as home_url %} {% with user_profile=obj.entry1.user entry1=obj.entry1 entry2=obj.entry2 %}
 <section>
     <table class="table table-no-borders">
         <tr>
@@ -57,6 +58,11 @@
         <a href="{% url 'recommendation_update' obj.pk %}" class="btn btn-default btn-xs">{% trans 'Edit' %}</a>
         <a href="{% url 'recommendation_delete' obj.pk %}" class="btn btn-default btn-xs">{% trans 'Delete' %}</a>
     </div>
+    {% else %}
+
+    {% voting_script %}
+    {% vote_buttons_for obj %}
+    
     {% endif %} {% if not forloop.last %}
     <hr />{% endif %}
 </section>

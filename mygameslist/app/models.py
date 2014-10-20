@@ -11,6 +11,8 @@ from django.utils.translation import ugettext as _
 from allauth.account import signals
 from imagekit.models import ProcessedImageField, ImageSpecField
 from imagekit.processors import ResizeToFit
+from qhonuskan_votes.models import (VotesField, ObjectsWithScoresManager,
+                                    SortByScoresManager)
 
 
 def get_file_path(instance, filename):
@@ -162,6 +164,10 @@ class GameRecommendation(models.Model):
     entry2 = models.ForeignKey(ListEntry, related_name='recommendation_entry2')
     text = models.TextField(_('Text'))
     date_created = models.DateTimeField(auto_now_add=True)
+    votes = VotesField()
+    objects = models.Manager()
+    objects_with_scores = ObjectsWithScoresManager()
+    sort_by_score = SortByScoresManager()
 
     class Meta:
         unique_together = ('entry1', 'entry2')

@@ -16,6 +16,7 @@ urlpatterns = patterns(
         name='user_profile_update'),
     url(r'^ajax_search/', AjaxSearch.as_view(),
         name='ajax_search'),
+    url(r'^votes/', include('qhonuskan_votes.urls')),
     url(r'^profile/(?P<slug>[\w-]+)/$', UserDetailView.as_view(),
         name='user_profile'),
     url(r'^admin/', include(admin.site.urls)),

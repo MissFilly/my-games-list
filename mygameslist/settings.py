@@ -61,6 +61,7 @@ INSTALLED_APPS = (
     'friendship',
     'storages',
     'imagekit',
+    'qhonuskan_votes',
     # My Games list
     'mygameslist.app',
     'mygameslist.friends',

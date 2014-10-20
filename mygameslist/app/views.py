@@ -21,7 +21,8 @@ gamesdb_api = API()
 
 def home(request):
     reviews = GameReview.objects.order_by('-date_created')[:4]
-    recommendations = GameRecommendation.objects.order_by('-date_created')[:4]
+    recommendations = GameRecommendation.objects_with_scores \
+        .order_by('-date_created')[:4]
     context = dict(reviews=reviews, recommendations=recommendations)
     return render(request, 'index.html', context)
 
