@@ -105,6 +105,10 @@ class GameReview(models.Model):
     entry = models.OneToOneField(ListEntry)
     text = models.TextField(_('Text'))
     date_created = models.DateTimeField(auto_now_add=True)
+    votes = VotesField()
+    objects = models.Manager()
+    objects_with_scores = ObjectsWithScoresManager()
+    sort_by_score = SortByScoresManager()
 
     def __str__(self):
         return "{0}'s review for {1}".format(self.entry.user.username,

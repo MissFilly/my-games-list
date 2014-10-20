@@ -20,7 +20,7 @@ gamesdb_api = API()
 
 
 def home(request):
-    reviews = GameReview.objects.order_by('-date_created')[:4]
+    reviews = GameReview.objects_with_scores.order_by('-date_created')[:4]
     recommendations = GameRecommendation.objects_with_scores \
         .order_by('-date_created')[:4]
     context = dict(reviews=reviews, recommendations=recommendations)
@@ -35,10 +35,10 @@ class UserDetailView(DetailView):
     def get_context_data(self, *args, **kwargs):
         context = super(UserDetailView, self).get_context_data(**kwargs)
         user = self.object
-        context['reviews'] = GameReview.objects.filter(
-            entry__user=user).order_by('-date_created')[:3]
-        context['recommendations'] = GameRecommendation.objects.filter(
-            entry1__user=user).distinct().order_by('-date_created')[:3]
+        context['reviews'] = GameReview.objects_with_scores \
+            .filter(entry__user=user).order_by('-date_created')[:3]
+        context['recommendations'] = GameRecommendation.objects_with_scores \
+            .filter(entry1__user=user).distinct().order_by('-date_created')[:3]
         context['detail_page'] = True
         return context
 
@@ -52,9 +52,9 @@ class GameDetailView(TemplateView):
         game = gamesdb_api.get_game(id=kwargs['pk'])
         if game is None:
             raise Http404
-        reviews = GameReview.objects.filter(
+        reviews = GameReview.objects_with_scores.filter(
             entry__game_id=game.id).order_by('-date_created')[:3]
-        recommendations = GameRecommendation.objects.filter(
+        recommendations = GameRecommendation.objects_with_scores.filter(
             Q(entry1__game_id=game.id) | Q(entry2__game_id=game.id)) \
             .distinct().order_by('-date_created')[:3]
 
@@ -84,15 +84,16 @@ class ListEntryCreate(LoginRequiredMixin, CreateView):
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
-        super(ListEntryCreate, self).dispatch(request, *args, **kwargs)
         self.game = gamesdb_api.get_game(id=kwargs['pk'])
         if self.game is None:
             raise Http404
-        entry = ListEntry.objects.filter(user=request.user,
-                                         game_id=self.game.id)
-        if entry.exists():
+        try:
+            entry = ListEntry.objects.get(user=request.user,
+                                          game_id=self.game.id)
             return redirect(reverse('entry_update', kwargs={'pk': entry.pk, }))
-        return
+        except:
+            pass
+        return super(ListEntryCreate, self).dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
         form.instance.user = self.request.user
@@ -135,11 +136,12 @@ class GameReviewCreate(EntryMixin, CreateView):
     def dispatch(self, request, *args, **kwargs):
         if request.user.is_authenticated():
             try:
-                review = GameReview.objects.get(entry__game_id=kwargs['pk'],
-                                                entry__user=request.user)
+                review = GameReview.objects.get(
+                    entry__game_id=kwargs['pk'],
+                    entry__user=request.user)
                 return redirect(reverse('review_update',
                                         kwargs={'pk': review.pk}))
-            except GameReview.DoesNotExist:
+            except:
                 self.game = gamesdb_api.get_game(id=kwargs['pk'])
         return super(GameReviewCreate, self).dispatch(request,
                                                       *args, **kwargs)
@@ -182,7 +184,9 @@ class GameReviewByUserView(ListView):
     def get_queryset(self):
         self.user_profile = get_object_or_404(
             User, username=self.kwargs['slug'])
-        return GameReview.objects.filter(entry__user=self.user_profile)
+        return GameReview.objects_with_scores.filter(
+            entry__user=self.user_profile
+        )
 
     def get_context_data(self, **kwargs):
         context = super(GameReviewByUserView, self).get_context_data(**kwargs)
@@ -199,7 +203,9 @@ class GameReviewByGameView(ListView):
         self.game = gamesdb_api.get_game(id=self.kwargs['pk'])
         if self.game is None:
             raise Http404
-        return GameReview.objects.filter(entry__game_id=self.game.id)
+        return GameReview.objects_with_scores.filter(
+            entry__game_id=self.game.id
+        )
 
     def get_context_data(self, **kwargs):
         context = super(GameReviewByGameView, self).get_context_data(**kwargs)
@@ -259,7 +265,7 @@ class GameRecommendationByUserView(ListView):
     def get_queryset(self):
         self.user_profile = get_object_or_404(
             User, username=self.kwargs['slug'])
-        return GameRecommendation.objects.filter(
+        return GameRecommendation.objects_with_scores.filter(
             entry1__user=self.user_profile).distinct()
 
     def get_context_data(self, **kwargs):
@@ -279,8 +285,9 @@ class GameRecommendationByGame(ListView):
         if game is None:
             raise Http404
         self.game = game
-        return GameRecommendation.objects.filter(Q(entry1__game_id=game.id) |
-                                                 Q(entry2__game_id=game.id))
+        return GameRecommendation.objects_with_scores \
+            .filter(Q(entry1__game_id=game.id) |
+                    Q(entry2__game_id=game.id))
 
     def get_context_data(self, **kwargs):
         context = super(GameRecommendationByGame,

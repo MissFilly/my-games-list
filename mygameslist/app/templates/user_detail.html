@@ -55,7 +55,7 @@
 
         <section>
             <h3>{% trans 'Reviews' %}</h3>
-            {% for obj in reviews %} {% include 'app/_reviews_in_user.html' %} {% empty %}
+            {% for obj in reviews %} {% include 'app/_review_layout.html' %} {% empty %}
             <p>{% trans "This user hasn't written any reviews yet." %}</p>
             {% endfor %}
             <hr />

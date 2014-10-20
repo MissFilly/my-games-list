@@ -9,38 +9,7 @@
 
 {% block game_content %}
   {% for obj in object_list %}
-    {% with user_profile=obj.entry.user %}
-    <section>
-      <table class="table table-no-borders">
-        <tr>
-          <td class="col-md-1">
-            <a href="{% url 'user_profile' user_profile.username %}">
-              <img class="img-responsive" src="{% avatar_or_default user_profile %}">
-            </a>
-          </td>
-          <td class="col-md-5">
-            <p>{% trans 'By' %} <a href="{% url 'user_profile' user_profile.username %}">{{ user_profile.username }}</a></p>
-            <p><a href="{% url 'game_review_by_user' user_profile.username %}">{% trans 'View other reviews by this user' %}</a></p>
-          </td>
-          <td class="text-right col-md-6">
-            <p>
-              {% blocktrans with status=obj.entry.get_status_display %}
-                Status: {{ status }}
-              {% endblocktrans %}
-            </p>
-            <p>
-              {% blocktrans with score=obj.entry.score %}
-                Given score: {{ score }}
-              {% endblocktrans %}
-            </p>
-          </td>
-        </tr>
-      </table>
-      {{ obj.text|linebreaks }}
-      <hr />
-    </section>
-    {% endwith %}
-
+    {% include 'app/_review_layout.html' %}
   {% empty %}
     <p>{% trans 'There are no reviews for this game yet.' %}</p>
   {% endfor %}
