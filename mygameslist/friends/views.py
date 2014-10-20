@@ -27,15 +27,17 @@ class FriendRequestView(LoginRequiredMixin, FormView):
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
-        super(FriendRequestView, self).dispatch(request, *args, **kwargs)
         req_user = self.request.user
-        self.user2 = get_object_or_404(User, pk=kwargs['pk'])
-        if req_user == self.user2:
-            raise PermissionDenied()
-        elif FriendshipRequest.objects.filter(from_user=req_user,
-                                              to_user=self.user2).exists():
-            return HttpResponse(_('You already sent a request to this user.'))
-        return
+        if req_user.is_authenticated():
+            self.user2 = get_object_or_404(User, pk=kwargs['pk'])
+            if req_user == self.user2:
+                raise PermissionDenied()
+            elif FriendshipRequest.objects.filter(from_user=req_user,
+                                                  to_user=self.user2).exists():
+                return HttpResponse(_('You already sent a request'
+                                      ' to this user.'))
+        return super(FriendRequestView, self).dispatch(request, *args,
+                                                       **kwargs)
 
     def form_valid(self, form, *args, **kwargs):
         message_relationship = Friend.objects.add_friend(
