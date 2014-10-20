@@ -1,4 +1,4 @@
-{% load i18n staticfiles compress notifications %} {% load url from future %}
+{% load i18n staticfiles compress notifications qhonuskan_votes %} {% load url from future %}
 
 <!DOCTYPE html>
 <html lang="en">
@@ -169,6 +169,7 @@
 
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
     <script src="{% static 'js/jquery-ui.min.js' %}"></script>
+    {% voting_script %}
     <script>
     $('#search-type-ul li a').click(function(e) {
         e.preventDefault();
