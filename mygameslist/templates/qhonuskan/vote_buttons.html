@@ -1,0 +1,6 @@
+{% load qhonuskan_votes i18n %}
+<div class="vote_buttons small" x:model="{{vote_model}}" x:id="{{object.id}}">
+    <a href="#" class="upVote{% if object|is_up_voted_by:user %} voted{%endif%}" x:value="1" ><span class="glyphicon glyphicon-thumbs-up"></span> {% trans 'Helpful' %}</a>
+    <a href="#" class="downVote{% if object|is_down_voted_by:user %} voted{%endif%}" x:value="-1"><span class="glyphicon glyphicon-thumbs-down"></span> {% trans 'Not helpful' %}</a>
+    <p class="pull-right">{% trans 'Recommendation score:' %} <span class="score">{% if object.vote_score %}{{object.vote_score}}{% else %}0{% endif %}</span></p>
+</div>

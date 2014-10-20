@@ -50,54 +50,6 @@ class UserProfile(models.Model):
 
 User.profile = property(lambda u: UserProfile.objects.get_or_create(user=u)[0])
 
-# class Company(models.Model):
-#     name = models.CharField(_('Name'), max_length=200)
-#     active = models.BooleanField(default=True)
-
-#     class Meta:
-#         verbose_name_plural = 'companies'
-
-#     def __str__(self):
-#         return self.name
-
-
-# class Genre(models.Model):
-#     name = models.CharField(max_length=200)
-
-#     def __str__(self):
-#         return self.name
-
-
-# class Platform(models.Model):
-#     name = models.CharField(max_length=200, unique=True)
-#     slug = models.SlugField(unique=True)
-
-#     def __str__(self):
-#         return self.name
-
-
-# class Game(models.Model):
-#     title = models.CharField(_('Title'), max_length=300)
-#     synopsis = models.TextField(_('Synopsis'))
-#     genre = models.ManyToManyField(Genre)
-#     platform = models.ManyToManyField(Platform)
-#     developer = models.ManyToManyField(Company, verbose_name=_('Developer'),
-#                                        related_name='gameclaim_developers')
-#     publisher = models.ManyToManyField(Company, verbose_name=_('publisher'),
-#                                        related_name='gameclaim_publishers')
-#     release_date = models.DateField(_('First release date'))
-#     score = models.DecimalField(_('Score'), max_digits=4, decimal_places=2,
-#                                 null=True, blank=True)
-#     cover_img = models.ImageField(
-#         upload_to='covers', default='settings.MEDIA_ROOT/default/profile.png')
-#     active = models.BooleanField(default=True)
-
-#     def __str__(self):
-#         return self.title
-
-#     def get_absolute_url(self):
-#         return reverse('game_detail', kwargs={'pk': self.pk})
-
 
 class ListEntry(models.Model):
     SCORE_CHOICES = (

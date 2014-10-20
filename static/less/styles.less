@@ -43,3 +43,24 @@ section {
   padding-left: 0px;
   padding-right: 0px;
 }
+
+.vote_buttons {
+    a {
+      color: @gray-light;
+      display: inline-block;
+      &, &:hover, &:focus {
+        text-decoration: none;
+      }
+      &:first-of-type {
+        margin-right: 10px;
+      }
+      &.voted {
+        &.upVote {
+          color: @brand-success;
+        }
+        &.downVote {
+          color: @brand-danger;
+        }
+      }
+    }
+}
