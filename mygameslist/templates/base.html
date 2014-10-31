@@ -51,7 +51,7 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="#">{% trans 'Top games' %}</a>
+                        <a href="{% url 'top_games' %}">{% trans 'Top games' %}</a>
                     </li>
                     {% if user.is_authenticated %}
                     <li class="dropdown">

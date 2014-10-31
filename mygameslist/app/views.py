@@ -1,7 +1,7 @@
 from datetime import timedelta
 
 from django.contrib.auth.decorators import login_required
-from django.db.models import Q, Count
+from django.db.models import Q, Count, Avg
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
@@ -37,7 +37,15 @@ def home(request):
 
 class TopGames(ListView):
     # ListEntry.objects.values('game_title').annotate(average=Avg('score')).order_by('-average')
-    pass
+    model = ListEntry
+    template_name = 'app/top_games.html'
+    paginate_by = 25
+
+    def get_queryset(self):
+        return ListEntry.objects.filter(score__isnull=False) \
+            .values('game_id', 'game_title', 'game_thumb_url') \
+            .annotate(average=Avg('score'), count=Count('game_id')) \
+            .order_by('-average')
 
 
 class UserDetailView(DetailView):

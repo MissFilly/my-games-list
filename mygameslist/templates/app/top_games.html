@@ -1,0 +1,49 @@
+{% extends 'base.html' %} {% load i18n crispy_forms_tags %} {% block page_header %}{% trans 'Top games' %}{% endblock %} {% block content %} {% for g in object_list %} {% url 'game_detail' g.game_id as game_url %}
+<div class="row">
+    <div class="col-md-4">
+        <table class="table table-no-borders">
+            <tr>
+                <td class="col-md-3">
+                    <a href="{{ game_url }}">
+                        <img class="img-responsive" src="{{ g.game_thumb_url }}">
+                    </a>
+                </td>
+
+                <td class="col-md-9">
+                    <p><a href="{{ game_url }}">{{ g.game_title }}</a>
+                    </p>
+                    <p class="text-muted">{% blocktrans with avg=g.average %}Scored {{ avg }}{% endblocktrans %}</p>
+                    <p class="text-muted">{% blocktrans with c=g.count plural=g.count|pluralize %}Added {{ c }} time{{ plural }}{% endblocktrans %}</p>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+{% empty %}
+<p>{% trans 'No entries were added this month.' %}</p>
+{% endfor %} {% if is_paginated %}
+<div class="row">
+    <div class="col-md-12">
+        <ul class="pagination pagination-centered">
+            {% if page_obj.has_previous %}
+            <li>
+                <a href="?page=1">
+                    &laquo;</a>
+            </li>
+            <li>
+                <a href="?page={{ page_obj.previous_page_number }}">
+                    &lt;</a>
+            </li>
+            {% endif %} {% for i in paginator.page_range %}
+            <li {% if page_obj.number == i %} class="active" {% endif %}><a href="?page={{i}}">{{i}}</a>
+            </li>
+            {% endfor %} {% if page_obj.has_next %}
+            <li><a href="?page={{ page_obj.next_page_number }}">&gt;</a>
+            </li>
+            <li><a href="?page={{ page_obj.paginator.num_pages }}">&raquo;</a>
+            </li>
+            {% endif %}
+        </ul>
+    </div>
+</div>
+{% endif %} {% endblock %}

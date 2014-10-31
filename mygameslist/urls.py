@@ -26,6 +26,7 @@ urlpatterns = patterns(
     url(r'^search/$', SearchResultsView.as_view(),
         name='search'),
 
+    url(r'^top/$', TopGames.as_view(), name='top_games'),
     url(r'^(?P<pk>\d+)/$', GameDetailView.as_view(),
         name='game_detail'),
     url(r'^(?P<pk>\d+)/reviews/$', GameReviewByGameView.as_view(),
