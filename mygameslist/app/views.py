@@ -1,9 +1,12 @@
+from datetime import timedelta
+
 from django.contrib.auth.decorators import login_required
-from django.db.models import Q
+from django.db.models import Q, Count
 from django.shortcuts import render, get_object_or_404, redirect
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 from django.http import Http404
+from django.utils import timezone
 from django.utils.decorators import method_decorator
 from django.views.generic.base import TemplateView, View
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
@@ -23,8 +26,18 @@ def home(request):
     reviews = GameReview.objects_with_scores.order_by('-date_created')[:4]
     recommendations = GameRecommendation.objects_with_scores \
         .order_by('-date_created')[:4]
-    context = dict(reviews=reviews, recommendations=recommendations)
+    last_month = timezone.now().date() - timedelta(days=30)
+    top_month = ListEntry.objects.filter(date_created__gt=last_month) \
+        .values('game_id', 'game_title', 'game_thumb_url') \
+        .annotate(count=Count('game_id')).order_by('-count')[:5]
+    context = dict(reviews=reviews, recommendations=recommendations,
+                   top_month=top_month)
     return render(request, 'index.html', context)
+
+
+class TopGames(ListView):
+    # ListEntry.objects.values('game_title').annotate(average=Avg('score')).order_by('-average')
+    pass
 
 
 class UserDetailView(DetailView):

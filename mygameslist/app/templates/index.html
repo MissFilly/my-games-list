@@ -1,37 +1,47 @@
-{% extends 'base.html' %}
-{% load i18n %}
-
-{% block page_header %}{% trans 'Recent activity' %}{% endblock %}
-
-{% block content %}
+{% extends 'base.html' %} {% load i18n %} {% block page_header %}{% trans 'Recent activity' %}{% endblock %} {% block content %}
 
 <div class="row">
 
-  <div class="col-md-8">
-    <section>
-      <h3 class="section-title">{% trans 'Latest reviews' %}</h3>
-      {% for obj in reviews %}
-        {% with game=obj.entry.game %}
-          {% include 'app/_review_layout.html' %}
-        {% endwith %}
-      {% empty %}
-        <p>{% trans 'There are no reviews for this game yet.' %}</p>
-      {% endfor %}
-      <hr />
-    </section>
+    <div class="col-md-8">
+        <section>
+            <h3 class="section-title">{% trans 'Latest reviews' %}</h3>
+            {% for obj in reviews %} {% with game=obj.entry.game %} {% include 'app/_review_layout.html' %} {% endwith %} {% empty %}
+            <p>{% trans 'There are no reviews for this game yet.' %}</p>
+            {% endfor %}
+            <hr />
+        </section>
 
-    <section>
-      <h3 class="section-title">{% trans 'Latest recommendations' %}</h3>
-      {% for obj in recommendations %}
-        {% include 'app/_recommendation_layout.html' %}
-      {% endfor %}
-    </section>
-  </div><!-- /.col -->
+        <section>
+            <h3 class="section-title">{% trans 'Latest recommendations' %}</h3>
+            {% for obj in recommendations %} {% include 'app/_recommendation_layout.html' %} {% endfor %}
+        </section>
+    </div>
+    <!-- /.col -->
 
-  <div class="col-md-4">
-    <h3 class="text-center">{% trans 'Top games this week' %}</h3>
-    <img src="http://placehold.it/350x400" />
-  </div>
+    <div class="col-md-4">
+        <section>
+            <h3 class="section-title">{% trans 'Top games this month' %}</h3>
+            {% for g in top_month %} {% url 'game_detail' g.game_id as game_url %}
+            <table class="table table-no-borders">
+                <tr>
+                    <td class="col-md-3">
+                        <a href="{{ game_url }}">
+                            <img class="img-responsive" src="{{ g.game_thumb_url }}">
+                        </a>
+                    </td>
+
+                    <td class="col-md-9">
+                        <p><a href="{{ game_url }}">{{ g.game_title }}</a>
+                        </p>
+                        <p class="text-muted">{% blocktrans with c=g.count %}Added {{ c }} times in the last 30 days{% endblocktrans %}</p>
+                    </td>
+                </tr>
+            </table>
+            {% empty %}
+            <p>{% trans 'No entries were added this month.' %}</p>
+            {% endfor %}
+        </section>
+    </div>
 </div>
 <!-- /.row -->
 
