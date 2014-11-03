@@ -42,8 +42,8 @@
           {% for entry in e.list %}
             <tr>
               <td><a href="{% url 'game_detail' entry.game_id %}">{{ entry.game_title }}</a></td>
-              <td>{{ entry.get_replay_value_display }}</td>
-              <td>{{ entry.score }}</td>
+              <td>{{ entry.get_replay_value_display|default_if_none:"---" }}</td>
+              <td>{{ entry.score|default_if_none:"---" }}</td>
               {% if user_profile == user %}
                 <td class="text-right">
                   <a href="{% url 'entry_update' entry.id %}" class="btn btn-default btn-xs">{% trans 'Edit' %}</a>

@@ -6,6 +6,19 @@
     width: 100%;
     padding-top: @line-height-computed;
     padding-bottom: @line-height-computed;
+
+    ul {
+      margin-bottom: 0px;
+    }
+    li:nth-child(3) {
+      padding-left: 9px;
+      border-left: 1px solid white;
+    }
+    a {
+      &, &:hover {
+        color: white;
+      }
+    }
 }
 
 // Sticky footer

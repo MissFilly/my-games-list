@@ -15,7 +15,7 @@
 
     {% compress css %}
     <link rel="stylesheet" type="text/less" href="{% static 'less/styles.less' %}">{% endcompress %}
-    <link rel="shortcut icon" type="image/png" href="{% static 'img/favicon.ico' %}"/>
+    <link rel="shortcut icon" type="image/png" href="{% static 'img/favicon.ico' %}" />
     <noscript>
         <link type="text/css" href="{% static 'css/noscript.css' %}" rel="stylesheet" />
     </noscript>
@@ -118,7 +118,7 @@
                             <option value="users" {% if search_type == 'users' %}selected="true" {% endif %}>{% trans 'Users' %}</option>
                         </select>
                         <script>
-                            $('#search-type-select').addClass('hidden');
+                        $('#search-type-select').addClass('hidden');
                         </script>
                         <ul class="dropdown-menu" id="search-type-ul">
                             <li><a href="">{% trans 'Games' %}</a>
@@ -128,7 +128,7 @@
                         </ul>
                     </div>
 
-                    <input id="search-box" class="form-control" type="text" name="q" placeholder="{% if not query %}{% trans 'Search&#8230;' %}{% endif %}" autocomplete="off" {% if query %}value="{{ query }}"{% endif %}>
+                    <input id="search-box" class="form-control" type="text" name="q" placeholder="{% if not query %}{% trans 'Search&#8230;' %}{% endif %}" autocomplete="off" {% if query %}value="{{ query }}" {% endif %}>
                     <span class="input-group-btn">
                         <button class="btn btn-default btn" type="submit">
                             <span class="glyphicon glyphicon-search"></span>
@@ -161,7 +161,14 @@
         <div class="container">
             <div class="row">
                 <div class="col-lg-12">
-                    <p>By Filly</p>
+                    <ul class="list-unstyled list-inline">
+                        <li class="pull-right"><a href="http://steampowered.com">Powered by Steam</a>
+                        </li>
+                        <li><a href="http://missfilly.me">{% trans 'By Filly' %}</a>
+                        </li>
+                        <li><a href="https://github.com/MissFilly/my-games-list">{% trans 'Source code' %}</a>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>

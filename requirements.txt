@@ -11,10 +11,8 @@ django-countries==2.1.2
 django-crispy-forms==1.4.0
 django-friendship==1.2.0
 django-imagekit==3.2.4
--e git://github.com/coagulant/django-storages-py3#egg=storages
 django-summernote==0.5.15
 django-toolbelt==0.0.1
--e git://github.com/MissFilly/python-gamesdb.git#egg=gamesdb
 gunicorn==19.1.1
 nodeenv==0.11.1
 oauthlib==0.6.3
@@ -28,4 +26,3 @@ requests-oauthlib==0.3.1
 selenium==2.42.1
 six==1.7.3
 static3==0.5.1
--e git://github.com/smiley/steamapi#egg=steamapi

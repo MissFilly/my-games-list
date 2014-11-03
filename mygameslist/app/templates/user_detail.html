@@ -2,8 +2,8 @@
 
 <div class="row">
 
-    <div class="col-md-3">
-        <img class="img-responsive" src="{% avatar_or_default object %}" alt="">
+    <div class="text-center col-md-3">
+        <img src="{% avatar_or_default object %}" alt="{% trans 'User picture' %}">
         <table class="table table-no-borders">
             <tr>
                 <td class="text-right">{% trans 'Joined' %}</td>
@@ -47,12 +47,6 @@
         </ul>
 
         {% block user_profile_content %}
-        <section>
-            <h3>{% trans 'Last list updates' %}</h3>
-            <p>{{ object.synopsis }}</p>
-            <hr />
-        </section>
-
         <section>
             <h3>{% trans 'Reviews' %}</h3>
             {% for obj in reviews %} {% include 'app/_review_layout.html' %} {% empty %}

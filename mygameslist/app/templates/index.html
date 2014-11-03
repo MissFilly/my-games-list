@@ -6,14 +6,15 @@
         <section>
             <h3 class="section-title">{% trans 'Latest reviews' %}</h3>
             {% for obj in reviews %} {% with game=obj.entry.game %} {% include 'app/_review_layout.html' %} {% endwith %} {% empty %}
-            <p>{% trans 'There are no reviews for this game yet.' %}</p>
+            <p>{% trans 'There are no reviews yet.' %}</p>
             {% endfor %}
             <hr />
         </section>
 
         <section>
             <h3 class="section-title">{% trans 'Latest recommendations' %}</h3>
-            {% for obj in recommendations %} {% include 'app/_recommendation_layout.html' %} {% endfor %}
+            {% for obj in recommendations %} {% include 'app/_recommendation_layout.html' %} {% empty %}
+            <p>{% trans 'There are no recommendations yet.' %}</p>{% endfor %}
         </section>
     </div>
     <!-- /.col -->
