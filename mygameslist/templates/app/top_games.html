@@ -3,13 +3,16 @@
     <div class="col-md-4">
         <table class="table table-no-borders">
             <tr>
+            	<td class="col-md-2 top-count text-center">
+            		{{ forloop.counter0|add:page_obj.start_index }}
+            	</td>
                 <td class="col-md-3">
                     <a href="{{ game_url }}">
                         <img class="img-responsive" src="{{ g.game_thumb_url }}">
                     </a>
                 </td>
 
-                <td class="col-md-9">
+                <td class="col-md-7">
                     <p><a href="{{ game_url }}">{{ g.game_title }}</a>
                     </p>
                     <p class="text-muted">{% blocktrans with avg=g.average %}Scored {{ avg }}{% endblocktrans %}</p>

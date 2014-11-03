@@ -36,7 +36,6 @@ def home(request):
 
 
 class TopGames(ListView):
-    # ListEntry.objects.values('game_title').annotate(average=Avg('score')).order_by('-average')
     model = ListEntry
     template_name = 'app/top_games.html'
     paginate_by = 25
