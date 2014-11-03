@@ -14,6 +14,8 @@ from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
 
 from gamesdb.api import API
+from social.apps.django_app.default.models import UserSocialAuth
+import steamapi
 
 from .models import *
 from .forms import *
@@ -348,6 +350,14 @@ class UserProfileUpdate(LoginRequiredMixin, UpdateView):
     def get_object(self):
         return self.request.user.profile
 
+    def get_context_data(self, **kwargs):
+        context = super(UserProfileUpdate, self).get_context_data(**kwargs)
+        steam_account_exists = UserSocialAuth.objects.filter(
+            provider='steam',
+            user=self.request.user).exists()
+        context['steam_account_exists'] = steam_account_exists
+        return context
+
 
 class AjaxSearch(JSONResponseMixin, View):
 
@@ -360,3 +370,39 @@ class AjaxSearch(JSONResponseMixin, View):
         end = time.time()
         print("\n\n\nGet games list time: " + str(end - start) + "\n\n\n")
         return self.render_to_response(context)
+
+
+class ImportSteamGames(View):
+
+    def get(self, request):
+        try:
+            steam_account = UserSocialAuth.objects.get(provider='steam',
+                                                       user=self.request.user)
+            steam_id = steam_account.extra_data['player']['steamid']
+            games = steamapi.user.SteamUser(int(steam_id)).games
+            for g in games:
+                exists = ListEntry.objects.filter(user=request.user,
+                                                  game_title=g.name).exists()
+                if not exists:
+                    gl = gamesdb_api.get_game(name=g.name, platform='PC')
+                    if gl:
+                        if not isinstance(gl, list):
+                            if gl.title == g.name:
+                                ListEntry.objects.create(
+                                    user=request.user,
+                                    game_id=gl.id,
+                                    game_title=gl.title,
+                                    game_thumb_url=gl.thumb_url,
+                                    status='CO')
+                        else:
+                            for x in gl:
+                                if x.title == g.name:
+                                    ListEntry.objects.create(
+                                        user=request.user,
+                                        game_id=x.id,
+                                        game_title=x.title,
+                                        game_thumb_url=x.thumb_url,
+                                        status='CO')
+        except UserSocialAuth.DoesNotExist:
+            pass
+        return redirect('/')

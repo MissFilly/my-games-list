@@ -10,7 +10,7 @@ https://docs.djangoproject.com/en/dev/ref/settings/
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
-import steam
+import steamapi
 import dj_database_url
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 BASE_PROJ = os.path.join(BASE_DIR, 'mygameslist')
@@ -177,7 +177,7 @@ SUMMERNOTE_CONFIG = {
 }
 
 steam_key = os.environ.get('STEAM_API_KEY')
-steam.api.key.set(steam_key)
+steamapi.core.APIConnection(api_key=steam_key)
 SOCIAL_AUTH_STEAM_API_KEY = steam_key
 SOCIAL_AUTH_STEAM_EXTRA_DATA = ['player']
 

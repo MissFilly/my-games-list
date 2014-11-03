@@ -1,25 +1,33 @@
-{% extends "account/base.html" %}
-
-{% load i18n crispy_forms_tags %}
-
-{% block page_header %}{% trans "Edit profile" %}{% endblock %}
-
-{% block content %}
+{% extends "account/base.html" %} {% load i18n crispy_forms_tags %} {% block page_header %}{% trans "Edit profile" %}{% endblock %} {% block content %}
 
 <div class="row">
 
-    <div class="col-md-8 col-md-offset-2">
-      <div class="panel panel-default">
-        <div class="panel-body">
-          {% crispy form %}
+    <div class="col-md-6 col-md-offset-1">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                {% crispy form %}
+            </div>
         </div>
-      </div>
+    </div>
+    <div class="col-md-3">
+        <div class="panel panel-default">
+            <div class="panel-body">
+                {% if not steam_account_exists %}
+                <legend>{% trans 'Add your Steam account' %}</legend>
+                <div class="text-center">
+                    <a href="{% url 'social:begin' 'steam' %}">
+                        <img src="http://cdn.steamcommunity.com/public/images/signinthroughsteam/sits_small.png" alt="{% trans 'Sign in through Steam' %}" />
+                    </a>
+                </div>
+                {% else %}
+                <div class="text-center">
+                	<a href="{% url 'import' %}">{% trans 'Import your Steam games' %}</a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
     </div>
 
 </div>
 <!-- /.row -->
-{% endblock %}
-
-{% block extrascripts %}
-{{ form.media }}
-{% endblock %}
+{% endblock %} {% block extrascripts %} {{ form.media }} {% endblock %}
