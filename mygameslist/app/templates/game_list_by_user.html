@@ -1,70 +1,68 @@
-{% extends 'base.html' %}
-{% load i18n staticfiles %}
-{% load url from future %}
-
-{% block page_header %}
-  {% blocktrans with username=user_profile.username %}
-    {{ username }}'s games list
-  {% endblocktrans %}
-{% endblock %}
-
-{% block content %}
-
-{% regroup object_list|dictsort:"status" by get_status_display as status_list %}
+{% extends 'base.html' %} {% load i18n staticfiles %} {% load url from future %} {% block page_header %} {% blocktrans with username=user_profile.username %} {{ username }}'s games list {% endblocktrans %} {% endblock %} {% block content %} {% regroup object_list|dictsort:"status" by get_status_display as status_list %}
 
 <div class="row">
 
     {% if status_list %}
-      <div class="col-md-12 text-center">
+    <div class="col-md-12 text-center">
         <div class="btn-group text-center" id="catpicker">
-          <a href="#" id="allcat" class="current btn btn-primary">{% trans 'All' %}</a>
-          {% for e in status_list %}
+            <a href="#" id="allcat" class="current btn btn-primary">{% trans 'All' %}</a>
+            {% for e in status_list %}
             <a href="#" id="{{ e.grouper|slugify }}" class="filter btn btn-primary">{{ e.grouper }}</a>
-          {% endfor %}
+            {% endfor %}
         </div>
-      </div>
+    </div>
     {% endif %}
 
     <div class="col-md-12">
 
-      {% for e in status_list %}
+        {% for e in status_list %}
         <section class="discounted-item {{ e.grouper|slugify }}">
-          <h3 class="section-title">{{ e.grouper }}</h3>
-          <table class="table">
-            <tr>
-              <th class="col-md-4">{% trans 'Game title' %}</th>
-              <th class="col-md-4">{% trans 'Replay value' %}</th>
-              <th class="col-md-2">{% trans 'Score' %}</th>
-              {% if user_profile == user %}
-                <th class="col-md-2"></th>
-              {% endif %}
-            </tr>
-          {% for entry in e.list %}
-            <tr>
-              <td><a href="{% url 'game_detail' entry.game_id %}">{{ entry.game_title }}</a></td>
-              <td>{{ entry.get_replay_value_display|default_if_none:"---" }}</td>
-              <td>{{ entry.score|default_if_none:"---" }}</td>
-              {% if user_profile == user %}
-                <td class="text-right">
-                  <a href="{% url 'entry_update' entry.id %}" class="btn btn-default btn-xs">{% trans 'Edit' %}</a>
-                  <a href="{% url 'entry_delete' entry.id %}" class="btn btn-default btn-xs">{% trans 'Remove' %}</a>
-                </td>
-              {% endif %}
-            </tr>
-          {% endfor %}
-          </table>
+            <h3 class="section-title">{{ e.grouper }}</h3>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="col-md-4">{% trans 'Game title' %}</th>
+                        <th class="col-md-4">{% trans 'Replay value' %}</th>
+                        <th class="col-md-2">{% trans 'Score' %}</th>
+                        {% if user_profile == user %}
+                        <th class="col-md-2"></th>
+                        {% endif %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entry in e.list %}
+                    <tr>
+                        <td><a href="{% url 'game_detail' entry.game_id %}">{{ entry.game_title }}</a>
+                        </td>
+                        <td>{{ entry.get_replay_value_display|default_if_none:"" }}</td>
+                        <td>{{ entry.score|default_if_none:"" }}</td>
+                        {% if user_profile == user %}
+                        <td class="text-right">
+                            <a href="{% url 'entry_update' entry.id %}" class="btn btn-default btn-xs">{% trans 'Edit' %}</a>
+                            <a href="{% url 'entry_delete' entry.id %}" class="btn btn-default btn-xs">{% trans 'Remove' %}</a>
+                        </td>
+                        {% endif %}
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
         </section>
-      {% empty %}
+        {% empty %}
         <p>{% trans "This user hasn't added any video games to their list yet." %}</p>
-      {% endfor %}
+        {% endfor %}
 
     </div>
 
 </div>
 <!-- /.row -->
 
-{% endblock %}
-
-{% block extrascripts %}
-<script src="{% static 'js/filter.js' %}"></script>
+{% endblock %} {% block extrascripts %}
+<script type="text/javascript" src="{% static 'js/filter.js' %}"></script>
+<script type="text/javascript" charset="utf8" src="//cdn.datatables.net/1.10.3/js/jquery.dataTables.js"></script>
+<script type="text/javascript" src="//cdn.datatables.net/plug-ins/380cb78f450/integration/bootstrap/3/dataTables.bootstrap.js"></script>
+<script type="text/javascript">
+$(document).ready(function() {
+    $('.table').DataTable();
+});
+</script>
 {% endblock %}
