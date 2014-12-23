@@ -1,8 +1,42 @@
+### Install the required system libraries:
+
+    $ sudo apt-get install curl npm libpq-dev python-dev build-essential g++
+
+Install PostgreSQL:
+
+    $ sudo apt-get install postgresql postgresql-contrib
+
+(Optional) Install pgAdmin III:
+
+    $ sudo apt-get install pgadmin3
+
+Install Heroku Toolbelt:
+
+    $ wget -qO- https://toolbelt.heroku.com/install-ubuntu.sh | sh
+
 ### Set up your development environment:
 
-    $ sudo apt-get install python-pip virtualenv
+    $ sudo apt-get install python-pip python-virtualenv
+    $ git clone https://github.com/MissFilly/my-games-list.git
+    $ cd my-games-list
     $ virtualenv env && source env/bin/activate
     $ pip install -r requirements.txt
+    $ nodeenv --python-virtualenv
+    $ npm install -g less
+
+### Set up your database
+
+If it's your first time running PostgreSQL in your current PC:
+
+    $ sudo -u postgres psql
+    postgres=# alter user postgres password 'mypassword';
+    ALTER ROLE
+    postgres=# create database mydb owner postgres;
+    CREATE DATABASE
+
+Then run:
+
+    $ foreman run ./manage.py migrate
 
 Start the local server either running `foreman start` or `foreman run ./manage.py runserver`.
 
