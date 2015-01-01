@@ -136,6 +136,8 @@ if not 'COMPRESS_OFFLINE' in os.environ:
     AWS_STORAGE_BUCKET_NAME = os.environ['S3_BUCKET_NAME']
     AWS_BUCKET_URL = 'http://s3.amazonaws.com/{0}/'.format(
         AWS_STORAGE_BUCKET_NAME)
+    AWS_S3_CUSTOM_DOMAIN = '{0}.s3-external-3.amazonaws.com'.format(
+        AWS_STORAGE_BUCKET_NAME)
     MEDIA_URL = AWS_BUCKET_URL + 'media/'
     DEFAULT_FILE_STORAGE = 'mygameslist.s3utils.MediaRootS3BotoStorage'
 
