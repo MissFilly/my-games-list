@@ -2,6 +2,7 @@ from django.conf import settings
 from django.conf.urls import patterns, include, url
 from django.contrib import admin
 from .app.views import *
+from .api import *
 from .friends.views import *
 
 urlpatterns = patterns(
@@ -10,6 +11,8 @@ urlpatterns = patterns(
     url(r'^accounts/logout/$',
         'django.contrib.auth.views.logout', {'next_page': '/'}),
     url(r'^accounts/', include('allauth.urls')),
+    url(r'^api/', include('rest_framework.urls', namespace='rest_framework')),
+    url(r'^api/listentry/(?P<pk>[0-9]+)$', EntryDetail.as_view()),
     url('', include('social.apps.django_app.urls', namespace='social')),
     url(r'^summernote/', include('django_summernote.urls')),
     url(r'^profile/edit/$', UserProfileUpdate.as_view(),

@@ -1,4 +1,5 @@
 Django==1.7
+Markdown==2.5.2
 Pillow==2.5.3
 PyJWT==0.2.3
 boto==2.33.0
@@ -9,10 +10,12 @@ django-appconf==0.6
 django-compressor==1.4
 django-countries==2.1.2
 django-crispy-forms==1.4.0
+django-filter==0.9.1
 django-friendship==1.2.0
 django-imagekit==3.2.4
 django-summernote==0.5.15
 django-toolbelt==0.0.1
+djangorestframework==3.0.2
 gunicorn==19.1.1
 nodeenv==0.11.1
 oauthlib==0.6.3
@@ -26,3 +29,6 @@ requests-oauthlib==0.3.1
 selenium==2.42.1
 six==1.7.3
 static3==0.5.1
+-e git://github.com/smiley/steamapi#egg=steamapi
+-e git://github.com/coagulant/django-storages-py3#egg=django_storages
+-e git://github.com/MissFilly/python-gamesdb.git#egg=gamesdb
