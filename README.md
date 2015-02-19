@@ -1,6 +1,6 @@
 ### Install the required system libraries:
 
-    $ sudo apt-get install curl npm libpq-dev python-dev build-essential g++
+    $ sudo apt-get install curl npm libpq-dev python3-dev build-essential g++ libmemcached-dev
 
 Install PostgreSQL:
 
@@ -19,7 +19,7 @@ Install Heroku Toolbelt:
     $ sudo apt-get install python-pip python-virtualenv
     $ git clone https://github.com/MissFilly/my-games-list.git
     $ cd my-games-list
-    $ virtualenv env && source env/bin/activate
+    $ virtualenv -p /usr/bin/python3.4 env && source env/bin/activate
     $ pip install -r requirements.txt
     $ nodeenv --python-virtualenv
     $ npm install -g less

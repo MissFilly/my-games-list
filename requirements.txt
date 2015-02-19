@@ -31,5 +31,5 @@ selenium==2.42.1
 six==1.7.3
 static3==0.5.1
 -e git://github.com/smiley/steamapi#egg=steamapi
--e git://github.com/coagulant/django-storages-py3#egg=django_storages
+-e git://github.com/coagulant/django-storages-py3@py3#egg=django_storages
 -e git://github.com/MissFilly/python-gamesdb.git#egg=gamesdb
