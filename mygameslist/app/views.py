@@ -40,10 +40,13 @@ class TopGames(ListView):
     paginate_by = 25
 
     def get_queryset(self):
-        return ListEntry.objects.filter(score__isnull=False) \
-            .values('game_id', 'game__title', 'game__thumb_url') \
-            .annotate(average=Avg('score'), count=Count('game_id')) \
-            .order_by('-average')
+        q = ListEntry.objects.filter(score__isnull=False)
+        platform = self.request.GET.get('platform')
+        if platform:
+            q = q.filter(game__platform=platform)
+        return q.values('game__gamesdb_id', 'game__title', 'game__thumb_url') \
+                .annotate(average=Avg('score'), count=Count('game_id')) \
+                .order_by('-average')
 
 
 class UserDetailView(DetailView):
