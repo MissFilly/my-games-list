@@ -14,27 +14,33 @@
         <tr>
           <td class="text-right col-md-6">{% trans 'Genre' %}</td>
           <td class="col-md-6">
-            {% for g in game.genres %}
-                {{ g.text }}{% if not forloop.last %},{% endif %}
+            {% for genre in game.genre.all %}
+              {{ genre }}
             {% endfor %}
           </td>
         </tr>
         <tr>
           <td class="text-right">{% trans 'Platform' %}</td>
           <td>
-            {{ game.platform }}
+            {% for platform in game.platform.all %}
+              {{ platform }}
+            {% endfor %}
           </td>
         </tr>
         <tr>
           <td class="text-right">{% trans 'Developer' %}</td>
           <td>
-            {{ game.developer }}
+            {% for developer in game.developer.all %}
+              {{ developer.name }}
+            {% endfor %}
           </td>
         </tr>
         <tr>
           <td class="text-right">{% trans 'Publisher' %}</td>
           <td>
-            {{ game.publisher }}
+            {% for publisher in game.publisher.all %}
+              {{ publisher }}
+            {% endfor %}
           </td>
         </tr>
         <tr>

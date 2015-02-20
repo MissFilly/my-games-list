@@ -1,13 +1,9 @@
 from datetime import timedelta
 
-from django.contrib.auth.decorators import login_required
 from django.db.models import Q, Count, Avg
-from django.shortcuts import render, get_object_or_404, redirect
-from django.core.urlresolvers import reverse
-from django.contrib.auth.models import User
+from django.shortcuts import render, redirect
 from django.http import Http404
 from django.utils import timezone
-from django.utils.decorators import method_decorator
 from django.views.generic.base import TemplateView, View
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.detail import DetailView
@@ -30,7 +26,7 @@ def home(request):
         .order_by('-date_created')[:4]
     last_month = timezone.now().date() - timedelta(days=30)
     top_month = ListEntry.objects.filter(date_created__gt=last_month) \
-        .values('game_id', 'game_title', 'game_thumb_url') \
+        .values('game_id', 'game__title', 'game__thumb_url') \
         .annotate(count=Count('game_id')).order_by('-count')[:5]
     context = dict(reviews=reviews, recommendations=recommendations,
                    top_month=top_month)
@@ -65,15 +61,42 @@ class UserDetailView(DetailView):
         return context
 
 
-class GameDetailView(TemplateView):
-    # model = Game
+class GameDetailView(DetailView):
+    model = Game
     template_name = 'game_detail.html'
+    slug_field = 'gamesdb_id'
+
+    def get_object(self):
+        try:
+            return super(GameDetailView, self).get_object()
+        except Http404:
+            gamesdb_game = gamesdb_api.get_game(id=self.kwargs.get('slug'))
+            if gamesdb_game is None:
+                raise Http404
+            platform, created = Platform.objects.get_or_create(name=gamesdb_game.platform)
+            import pdb; pdb.set_trace()
+            game = self.model.objects.create(title=gamesdb_game.title,
+                                             gamesdb_id=gamesdb_game.id,
+                                             overview=gamesdb_game.overview,
+                                             thumb_url=gamesdb_game.thumb_url)
+            genres = []
+            if gamesdb_game.genres:
+                for g in gamesdb_game.genres:
+                    genre, created = Genre.objects.get_or_create(name=g.text)
+                    genres.append(genre)
+            game.genre.add(*genres)
+            if gamesdb_game.publisher:
+                publisher, created = Company.objects.get_or_create(name=gamesdb_game.publisher)
+                game.publisher.add(publisher)
+            if gamesdb_game.developer:
+                developer, created = Company.objects.get_or_create(name=gamesdb_game.developer)
+                game.developer.add(developer)
+            game.platform.add(platform)
+            return game
 
     def get_context_data(self, **kwargs):
         context = super(GameDetailView, self).get_context_data(**kwargs)
-        game = gamesdb_api.get_game(id=kwargs['pk'])
-        if game is None:
-            raise Http404
+        game = self.object
         reviews = GameReview.objects_with_scores.filter(
             entry__game_id=game.id).order_by('-date_created')[:3]
         recommendations = GameRecommendation.objects_with_scores.filter(

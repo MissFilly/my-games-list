@@ -5,11 +5,9 @@ from django.contrib.auth.models import User
 from django.core.urlresolvers import reverse
 from django_countries.fields import CountryField
 from django.db import models
-from django.dispatch import receiver
 from django.utils.translation import ugettext as _
 
-from allauth.account import signals
-from imagekit.models import ProcessedImageField, ImageSpecField
+from imagekit.models import ProcessedImageField
 from imagekit.processors import ResizeToFit
 from qhonuskan_votes.models import (VotesField, ObjectsWithScoresManager,
                                     SortByScoresManager)
@@ -51,6 +49,43 @@ class UserProfile(models.Model):
 User.profile = property(lambda u: UserProfile.objects.get_or_create(user=u)[0])
 
 
+class Platform(models.Model):
+    name = models.CharField(max_length=50, unique=True)
+
+    def __str__(self):
+        return self.name
+
+
+class Genre(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+
+    def __str__(self):
+        return self.name
+
+
+class Company(models.Model):
+    name = models.CharField(max_length=200, unique=True)
+
+    def __str__(self):
+        return self.name
+
+
+class Game(models.Model):
+    title = models.CharField(max_length=200)
+    thumb_url = models.URLField(null=True, blank=True)
+    overview = models.TextField(null=True, blank=True)
+    gamesdb_id = models.PositiveIntegerField(null=True, blank=True, unique=True)
+    steam_id = models.PositiveIntegerField(null=True, blank=True, unique=True)
+    platform = models.ManyToManyField(Platform, null=True, blank=True)
+    genre = models.ManyToManyField(Genre, null=True, blank=True)
+    developer = models.ManyToManyField(Company, null=True, blank=True, related_name='game_developer')
+    publisher = models.ManyToManyField(Company, null=True, blank=True, related_name='game_publisher')
+    release_date = models.DateField(null=True, blank=True)
+
+    def __str__(self):
+        return self.title
+
+
 class ListEntry(models.Model):
     SCORE_CHOICES = (
         (10, '(10) {0}'.format(_('Masterpiece'))),
@@ -79,9 +114,7 @@ class ListEntry(models.Model):
         ('WA', _('Want to play')),
     )
     user = models.ForeignKey(User)
-    game_id = models.IntegerField()
-    game_title = models.CharField(max_length=200)
-    game_thumb_url = models.URLField(null=True, blank=True)
+    game = models.ForeignKey(Game)
     status = models.CharField(_('Status'), max_length=2,
                               choices=STATUS_CHOICES)
     score = models.IntegerField(_('Score'), choices=SCORE_CHOICES,
@@ -94,7 +127,7 @@ class ListEntry(models.Model):
 
     class Meta:
         verbose_name_plural = 'list entries'
-        unique_together = ('user', 'game_id')
+        unique_together = ('user', 'game')
 
     def __str__(self):
         return "{0}'s entry for {1}".format(self.user.username,
