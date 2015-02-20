@@ -2,19 +2,19 @@
 {% load i18n staticfiles user_tags %}
 {% load url from future %}
 
-{% block page_header %}{{ game.title }}{% endblock %}
+{% block page_header %}{{ object.title }}{% endblock %}
 
 {% block content %}
 
 <div class="row">
 
   <div class="col-md-3">
-      <img class="img-responsive" src="{% if game.thumb_url %}{{ game.thumb_url }}{% endif %}" alt="">
+      <img class="img-responsive" src="{% if object.thumb_url %}{{ object.thumb_url }}{% endif %}" alt="">
       <table class="table table-no-borders">
         <tr>
           <td class="text-right col-md-6">{% trans 'Genre' %}</td>
           <td class="col-md-6">
-            {% for genre in game.genre.all %}
+            {% for genre in object.genre.all %}
               {{ genre }}
             {% endfor %}
           </td>
@@ -22,7 +22,7 @@
         <tr>
           <td class="text-right">{% trans 'Platform' %}</td>
           <td>
-            {% for platform in game.platform.all %}
+            {% for platform in object.platform.all %}
               {{ platform }}
             {% endfor %}
           </td>
@@ -30,7 +30,7 @@
         <tr>
           <td class="text-right">{% trans 'Developer' %}</td>
           <td>
-            {% for developer in game.developer.all %}
+            {% for developer in object.developer.all %}
               {{ developer.name }}
             {% endfor %}
           </td>
@@ -38,22 +38,22 @@
         <tr>
           <td class="text-right">{% trans 'Publisher' %}</td>
           <td>
-            {% for publisher in game.publisher.all %}
+            {% for publisher in object.publisher.all %}
               {{ publisher }}
             {% endfor %}
           </td>
         </tr>
         <tr>
           <td class="text-right">{% trans 'Release date' %}</td>
-          <td>{{ game.release_date }}</td>
+          <td>{{ object.release_date }}</td>
         </tr>
       </table>
-      {% user_game_entry user game.id as entry %}
+      {% user_game_entry user object.id as entry %}
       {% if not entry %}
-      <a href="{% url 'entry_create' game.id %}" class="btn btn-default btn-block">{% trans 'Add to my list' %}</a>
+      <a href="{% url 'entry_create' object.id %}" class="btn btn-default btn-block">{% trans 'Add to my list' %}</a>
       {% else %}
         {% if not entry.gamereview %}
-          <a href="{% url 'review_create' game.id %}" class="btn btn-default btn-block">{% trans 'Write review' %}</a>
+          <a href="{% url 'review_create' object.id %}" class="btn btn-default btn-block">{% trans 'Write review' %}</a>
         {% else %}
           <a href="{% url 'review_update' entry.gamereview.pk %}" class="btn btn-default btn-block">{% trans 'Edit my review' %}</a>
         {% endif %}
@@ -63,14 +63,14 @@
 
   <div class="col-md-9">
     <ul class="nav nav-pills">
-      <li {% if detail_page %}class="active"{% endif %}><a href="{% url 'game_detail' game.id %}">{% trans 'Details' %}</a></li>
-      <li {% if reviews_page %}class="active"{% endif %}><a href="{% url 'game_review_by_game' game.id %}">{% trans 'Reviews' %}</a></li>
-      <li {% if recommendations_page %}class="active"{% endif %}><a href="{% url 'game_recommendation_by_game' game.id %}">{% trans 'Recommendations' %}</a></li>
+      <li {% if detail_page %}class="active"{% endif %}><a href="{% url 'game_detail' object.id %}">{% trans 'Details' %}</a></li>
+      <li {% if reviews_page %}class="active"{% endif %}><a href="{% url 'game_review_by_game' object.id %}">{% trans 'Reviews' %}</a></li>
+      <li {% if recommendations_page %}class="active"{% endif %}><a href="{% url 'game_recommendation_by_game' object.id %}">{% trans 'Recommendations' %}</a></li>
     </ul>
     {% block game_content %}
       <section>
         <h3 class="section-title">{% trans 'Overview' %}</h3>
-        <p>{{ game.overview }}</p>
+        <p>{{ object.overview }}</p>
         <hr />
       </section>
       
@@ -88,12 +88,12 @@
         <h3 class="section-title">{% trans 'Latest recommendations' %}</h3>
           {% for obj in recommendations %}
 
-            {% if obj.entry1.game_id != game.id|add:"0" %}
+            {% if obj.entry1.game_id != object.id|add:"0" %}
               {% with similar=obj.entry1 %}
                 {% include 'app/_recommendation_layout.html' %}
               {% endwith %}
 
-            {% elif obj.entry2.game_id != game.id|add:"0" %}
+            {% elif obj.entry2.game_id != object.id|add:"0" %}
 
               {% with similar=obj.entry2 %}
                 {% include 'app/_recommendation_layout.html' %}

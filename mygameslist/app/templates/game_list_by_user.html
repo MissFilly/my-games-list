@@ -32,7 +32,7 @@
                 <tbody>
                     {% for entry in e.list %}
                     <tr>
-                        <td><a href="{% url 'game_detail' entry.game_id %}">{{ entry.game_title }}</a>
+                        <td><a href="{% url 'game_detail' entry.game.gamesdb_id %}">{{ entry.game.title }}</a>
                         </td>
                         <td>{{ entry.get_replay_value_display|default_if_none:"" }}</td>
                         <td>{{ entry.score|default_if_none:"" }}</td>

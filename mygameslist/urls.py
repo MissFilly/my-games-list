@@ -47,7 +47,7 @@ urlpatterns = patterns(
     url(r'^user/(?P<slug>[-_\w]+)/recommendations$',
         GameRecommendationByUserView.as_view(),
         name='game_recommendation_by_user'),
-    url(r'^(?P<pk>\d+)/entry_create/$', ListEntryCreate.as_view(),
+    url(r'^(?P<slug>\d+)/entry_create/$', ListEntryCreate.as_view(),
         name='entry_create'),
 
     url(r'^entry/(?P<pk>\d+)/update/$', ListEntryUpdate.as_view(),

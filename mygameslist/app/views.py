@@ -13,6 +13,7 @@ from gamesdb.api import API
 from social.apps.django_app.default.models import UserSocialAuth
 import steamapi
 
+from .gamesdb_manager import get_or_create_game
 from .models import *
 from .forms import *
 from .mixins import *
@@ -40,7 +41,7 @@ class TopGames(ListView):
 
     def get_queryset(self):
         return ListEntry.objects.filter(score__isnull=False) \
-            .values('game_id', 'game_title', 'game_thumb_url') \
+            .values('game_id', 'game__title', 'game__thumb_url') \
             .annotate(average=Avg('score'), count=Count('game_id')) \
             .order_by('-average')
 
@@ -70,29 +71,7 @@ class GameDetailView(DetailView):
         try:
             return super(GameDetailView, self).get_object()
         except Http404:
-            gamesdb_game = gamesdb_api.get_game(id=self.kwargs.get('slug'))
-            if gamesdb_game is None:
-                raise Http404
-            platform, created = Platform.objects.get_or_create(name=gamesdb_game.platform)
-            import pdb; pdb.set_trace()
-            game = self.model.objects.create(title=gamesdb_game.title,
-                                             gamesdb_id=gamesdb_game.id,
-                                             overview=gamesdb_game.overview,
-                                             thumb_url=gamesdb_game.thumb_url)
-            genres = []
-            if gamesdb_game.genres:
-                for g in gamesdb_game.genres:
-                    genre, created = Genre.objects.get_or_create(name=g.text)
-                    genres.append(genre)
-            game.genre.add(*genres)
-            if gamesdb_game.publisher:
-                publisher, created = Company.objects.get_or_create(name=gamesdb_game.publisher)
-                game.publisher.add(publisher)
-            if gamesdb_game.developer:
-                developer, created = Company.objects.get_or_create(name=gamesdb_game.developer)
-                game.developer.add(developer)
-            game.platform.add(platform)
-            return game
+            return get_or_create_game(self.kwargs.get('slug'))
 
     def get_context_data(self, **kwargs):
         context = super(GameDetailView, self).get_context_data(**kwargs)
@@ -103,8 +82,9 @@ class GameDetailView(DetailView):
             Q(entry1__game_id=game.id) | Q(entry2__game_id=game.id)) \
             .distinct().order_by('-date_created')[:3]
 
-        context = dict(game=game, reviews=reviews,
-                       recommendations=recommendations, detail_page=True)
+        context.update(dict(reviews=reviews,
+                            recommendations=recommendations,
+                            detail_page=True))
         return context
 
 
@@ -129,22 +109,18 @@ class ListEntryCreate(LoginRequiredMixin, CreateView):
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
-        self.game = gamesdb_api.get_game(id=kwargs['pk'])
-        if self.game is None:
-            raise Http404
+        self.game = get_or_create_game(kwargs.get('slug'))
         try:
             entry = ListEntry.objects.get(user=request.user,
                                           game_id=self.game.id)
             return redirect(reverse('entry_update', kwargs={'pk': entry.pk, }))
-        except:
+        except ListEntry.DoesNotExist:
             pass
         return super(ListEntryCreate, self).dispatch(request, *args, **kwargs)
 
     def form_valid(self, form):
         form.instance.user = self.request.user
-        form.instance.game_id = self.game.id
-        form.instance.game_title = self.game.title
-        form.instance.game_thumb_url = self.game.thumb_url
+        form.instance.game = self.game
         return super(ListEntryCreate, self).form_valid(form)
 
     def get_success_url(self):
