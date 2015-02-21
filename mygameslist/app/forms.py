@@ -2,7 +2,7 @@ from django import forms
 from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
 from .models import *
-from crispy_forms.layout import Submit, Reset
+from crispy_forms.layout import Submit, Reset, Layout
 from crispy_forms.helper import FormHelper
 
 from django_summernote.widgets import SummernoteInplaceWidget
@@ -107,3 +107,16 @@ class UserProfileForm(forms.ModelForm):
         super(UserProfileForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.add_input(Submit('submit', _('Save')))
+
+
+class PlatformForm(forms.Form):
+    platform = forms.ModelChoiceField(queryset=Platform.objects.all())
+
+    def __init__(self, *args, **kwargs):
+        super(PlatformForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_method = 'GET'
+        self.helper.form_class = 'form-horizontal'
+        self.helper.label_class = 'col-md-2'
+        self.helper.field_class = 'col-md-8'
+        self.helper.add_input(Submit('submit', _('Filter'), css_class='col-md-2'))

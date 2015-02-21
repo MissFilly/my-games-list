@@ -13,7 +13,7 @@ from gamesdb.api import API
 from social.apps.django_app.default.models import UserSocialAuth
 import steamapi
 
-from .gamesdb_manager import get_or_create_game
+from .gamesdb_manager import get_or_create_game, create_game
 from .models import *
 from .forms import *
 from .mixins import *
@@ -47,6 +47,11 @@ class TopGames(ListView):
         return q.values('game__gamesdb_id', 'game__title', 'game__thumb_url') \
                 .annotate(average=Avg('score'), count=Count('game_id')) \
                 .order_by('-average')
+
+    def get_context_data(self, **kwargs):
+        context = super(TopGames, self).get_context_data(**kwargs)
+        context['platform_form'] = PlatformForm()
+        return context
 
 
 class UserDetailView(DetailView):
@@ -382,29 +387,29 @@ class ImportSteamGames(View):
                                                        user=self.request.user)
             steam_id = steam_account.extra_data['player']['steamid']
             games = steamapi.user.SteamUser(int(steam_id)).games
-            for g in games:
-                exists = ListEntry.objects.filter(user=request.user,
-                                                  game_title=g.name).exists()
-                if not exists:
-                    gl = gamesdb_api.get_game(name=g.name, platform='PC')
+            platform, created = Platform.objects.get_or_create(name='PC')
+            for steam_game in games:
+                game = None
+                try:
+                    entry = ListEntry.objects.get(user=request.user,
+                                                  game__title=steam_game.name,
+                                                  game__platform=platform)
+                    game = entry.game
+                except ListEntry.DoesNotExist:
+                    gl = gamesdb_api.get_game(name=steam_game.name, platform='PC')
                     if gl:
                         if not isinstance(gl, list):
-                            if gl.title == g.name:
-                                ListEntry.objects.create(
-                                    user=request.user,
-                                    game_id=gl.id,
-                                    game_title=gl.title,
-                                    game_thumb_url=gl.thumb_url,
-                                    status='CO')
+                            if gl.title == steam_game.name:
+                                game = get_or_create_game(gl.id)
                         else:
                             for x in gl:
-                                if x.title == g.name:
-                                    ListEntry.objects.create(
-                                        user=request.user,
-                                        game_id=x.id,
-                                        game_title=x.title,
-                                        game_thumb_url=x.thumb_url,
-                                        status='CO')
+                                if x.title == steam_game.name:
+                                    game = get_or_create_game(x.id)
+                                    break
+                if game is not None:
+                    game.steam_id = steam_game.appid
+                    game.save()
+                    ListEntry.objects.create(user=request.user, game=game, status='CO')
         except UserSocialAuth.DoesNotExist:
             pass
         return redirect('/')
