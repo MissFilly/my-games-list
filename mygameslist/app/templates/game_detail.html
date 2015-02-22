@@ -48,12 +48,12 @@
           <td>{{ object.release_date }}</td>
         </tr>
       </table>
-      {% user_game_entry user object.id as entry %}
+      {% user_game_entry user object.gamesdb_id as entry %}
       {% if not entry %}
-      <a href="{% url 'entry_create' object.id %}" class="btn btn-default btn-block">{% trans 'Add to my list' %}</a>
+      <a href="{% url 'entry_create' object.gamesdb_id %}" class="btn btn-default btn-block">{% trans 'Add to my list' %}</a>
       {% else %}
         {% if not entry.gamereview %}
-          <a href="{% url 'review_create' object.id %}" class="btn btn-default btn-block">{% trans 'Write review' %}</a>
+          <a href="{% url 'review_create' object.gamesdb_id %}" class="btn btn-default btn-block">{% trans 'Write review' %}</a>
         {% else %}
           <a href="{% url 'review_update' entry.gamereview.pk %}" class="btn btn-default btn-block">{% trans 'Edit my review' %}</a>
         {% endif %}
@@ -63,9 +63,9 @@
 
   <div class="col-md-9">
     <ul class="nav nav-pills">
-      <li {% if detail_page %}class="active"{% endif %}><a href="{% url 'game_detail' object.id %}">{% trans 'Details' %}</a></li>
-      <li {% if reviews_page %}class="active"{% endif %}><a href="{% url 'game_review_by_game' object.id %}">{% trans 'Reviews' %}</a></li>
-      <li {% if recommendations_page %}class="active"{% endif %}><a href="{% url 'game_recommendation_by_game' object.id %}">{% trans 'Recommendations' %}</a></li>
+      <li {% if detail_page %}class="active"{% endif %}><a href="{% url 'game_detail' object.gamesdb_id %}">{% trans 'Details' %}</a></li>
+      <li {% if reviews_page %}class="active"{% endif %}><a href="{% url 'game_review_by_game' object.gamesdb_id %}">{% trans 'Reviews' %}</a></li>
+      <li {% if recommendations_page %}class="active"{% endif %}><a href="{% url 'game_recommendation_by_game' object.gamesdb_id %}">{% trans 'Recommendations' %}</a></li>
     </ul>
     {% block game_content %}
       <section>

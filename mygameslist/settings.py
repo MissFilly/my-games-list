@@ -27,10 +27,6 @@ DEBUG = True
 
 TEMPLATE_DEBUG = True
 
-TEMPLATE_DIRS = (
-    os.path.join(BASE_PROJ, 'templates'),
-)
-
 ALLOWED_HOSTS = ['*']
 
 EMAIL_HOST = 'smtp.sendgrid.net'
@@ -150,6 +146,15 @@ CRISPY_TEMPLATE_PACK = 'bootstrap3'
 AUTHENTICATION_BACKENDS = (
     "django.contrib.auth.backends.ModelBackend",
     "social.backends.steam.SteamOpenId",
+)
+
+TEMPLATE_LOADERS = (
+    'django.template.loaders.filesystem.Loader',
+    'django.template.loaders.app_directories.Loader',
+)
+
+TEMPLATE_DIRS = (
+    os.path.join(BASE_PROJ, 'templates'),
 )
 
 TEMPLATE_CONTEXT_PROCESSORS = (

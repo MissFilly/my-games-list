@@ -32,7 +32,8 @@ urlpatterns = patterns(
     url(r'^search/$', SearchResultsView.as_view(),
         name='search'),
 
-    url(r'^top/$', TopGames.as_view(), name='top_games'),
+    url(r'^top/', include('mygameslist.topgames.urls')),
+
     url(r'^(?P<slug>\d+)/$', GameDetailView.as_view(),
         name='game_detail'),
     url(r'^(?P<slug>\d+)/reviews/$', GameReviewByGameView.as_view(),
@@ -55,7 +56,7 @@ urlpatterns = patterns(
     url(r'^entry/(?P<pk>\d+)/delete/$', ListEntryDelete.as_view(),
         name='entry_delete'),
     # Reviews
-    url(r'^(?P<pk>\d+)/review/$', GameReviewCreate.as_view(),
+    url(r'^(?P<slug>\d+)/review/$', GameReviewCreate.as_view(),
         name='review_create'),
     url(r'^review/(?P<pk>\d+)/update/$', GameReviewUpdate.as_view(),
         name='review_update'),

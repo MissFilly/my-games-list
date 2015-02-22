@@ -27,31 +27,11 @@ def home(request):
         .order_by('-date_created')[:4]
     last_month = timezone.now().date() - timedelta(days=30)
     top_month = ListEntry.objects.filter(date_created__gt=last_month) \
-        .values('game_id', 'game__title', 'game__thumb_url') \
+        .values('game__gamesdb_id', 'game__title', 'game__thumb_url') \
         .annotate(count=Count('game_id')).order_by('-count')[:5]
     context = dict(reviews=reviews, recommendations=recommendations,
                    top_month=top_month)
     return render(request, 'index.html', context)
-
-
-class TopGames(ListView):
-    model = ListEntry
-    template_name = 'app/top_games.html'
-    paginate_by = 25
-
-    def get_queryset(self):
-        q = ListEntry.objects.filter(score__isnull=False)
-        platform = self.request.GET.get('platform')
-        if platform:
-            q = q.filter(game__platform=platform)
-        return q.values('game__gamesdb_id', 'game__title', 'game__thumb_url') \
-                .annotate(average=Avg('score'), count=Count('game_id')) \
-                .order_by('-average')
-
-    def get_context_data(self, **kwargs):
-        context = super(TopGames, self).get_context_data(**kwargs)
-        context['platform_form'] = PlatformForm()
-        return context
 
 
 class UserDetailView(DetailView):
@@ -166,12 +146,12 @@ class GameReviewCreate(EntryMixin, CreateView):
         if request.user.is_authenticated():
             try:
                 review = GameReview.objects.get(
-                    entry__game_id=kwargs['pk'],
+                    entry__game__gamesdb_id=kwargs['slug'],
                     entry__user=request.user)
                 return redirect(reverse('review_update',
                                         kwargs={'pk': review.pk}))
-            except:
-                self.game = gamesdb_api.get_game(id=kwargs['pk'])
+            except GameReview.DoesNotExist:
+                self.game = get_or_create_game(kwargs.get('slug'))
         return super(GameReviewCreate, self).dispatch(request,
                                                       *args, **kwargs)
 
@@ -211,15 +191,12 @@ class GameReviewByUserView(ListView):
     template_name = 'app/review_by_user.html'
 
     def get_queryset(self):
-        self.user_profile = get_object_or_404(
-            User, username=self.kwargs['slug'])
-        return GameReview.objects_with_scores.filter(
-            entry__user=self.user_profile
-        )
+        self.user_profile = get_object_or_404(UserProfile, user__username=self.kwargs['slug'])
+        return GameReview.objects_with_scores.filter(entry__user=self.user_profile)
 
     def get_context_data(self, **kwargs):
         context = super(GameReviewByUserView, self).get_context_data(**kwargs)
-        context['object'] = self.user_profile
+        context['user_profile'] = self.user_profile
         context['reviews_page'] = True
         return context
 
@@ -229,16 +206,14 @@ class GameReviewByGameView(ListView):
     template_name = 'app/review_by_game.html'
 
     def get_queryset(self):
-        self.game = gamesdb_api.get_game(id=self.kwargs['pk'])
+        self.game = get_or_create_game(self.kwargs['slug'])
         if self.game is None:
             raise Http404
-        return GameReview.objects_with_scores.filter(
-            entry__game_id=self.game.id
-        )
+        return GameReview.objects_with_scores.filter(entry__game_id=self.game.id)
 
     def get_context_data(self, **kwargs):
         context = super(GameReviewByGameView, self).get_context_data(**kwargs)
-        context['game'] = self.game
+        context['object'] = self.game
         context['reviews_page'] = True
         return context
 
@@ -310,18 +285,16 @@ class GameRecommendationByGame(ListView):
     template_name = 'app/recommendation_by_game.html'
 
     def get_queryset(self):
-        game = gamesdb_api.get_game(id=self.kwargs['pk'])
-        if game is None:
+        self.game = get_or_create_game(self.kwargs['slug'])
+        if self.game is None:
             raise Http404
-        self.game = game
-        return GameRecommendation.objects_with_scores \
-            .filter(Q(entry1__game_id=game.id) |
-                    Q(entry2__game_id=game.id))
+        return GameRecommendation.objects_with_scores.filter(Q(entry1__game_id=self.game.id) |
+                                                             Q(entry2__game_id=self.game.id))
 
     def get_context_data(self, **kwargs):
         context = super(GameRecommendationByGame,
                         self).get_context_data(**kwargs)
-        context['game'] = self.game
+        context['object'] = self.game
         context['recommendations_page'] = True
         return context
 

@@ -18,8 +18,8 @@ def user_is_friend(user_profile, request_user):
 
 
 @register.simple_tag
-def avatar_or_default(user):
-    avatar = user.profile.avatar
+def avatar_or_default(user_profile):
+    avatar = user_profile.avatar
     if avatar:
         return avatar.url
     else:
@@ -27,11 +27,11 @@ def avatar_or_default(user):
 
 
 @register.assignment_tag
-def user_game_entry(user, game_pk):
+def user_game_entry(user, game_id):
     if user.is_authenticated():
         try:
             return ListEntry.objects.get(user=user,
-                                         game_id=game_pk)
+                                         game__gamesdb_id=game_id)
         except ListEntry.DoesNotExist:
             pass
     return

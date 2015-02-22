@@ -22,17 +22,17 @@
     <div class="col-md-4">
         <section>
             <h3 class="section-title">{% trans 'Top games this month' %}</h3>
-            {% for g in top_month %} {% url 'game_detail' g.game_id as game_url %}
+            {% for g in top_month %} {% url 'game_detail' g.game__gamesdb_id as game_url %}
             <table class="table table-no-borders">
                 <tr>
                     <td class="col-md-3">
                         <a href="{{ game_url }}">
-                            <img class="img-responsive" src="{{ g.game_thumb_url }}">
+                            <img class="img-responsive" src="{{ g.game__thumb_url }}">
                         </a>
                     </td>
 
                     <td class="col-md-9">
-                        <p><a href="{{ game_url }}">{{ g.game_title }}</a>
+                        <p><a href="{{ game_url }}">{{ g.game__title }}</a>
                         </p>
                         <p class="text-muted">{% blocktrans with c=g.count %}Added {{ c }} times in the last 30 days{% endblocktrans %}</p>
                     </td>

@@ -2,7 +2,7 @@
 <section>
     <table class="table table-no-borders">
         <tr>
-            {% if game %}
+            {% if user_profile %}
 
             <td class="col-md-1">
                 <a href="{% url 'user_profile' user_profile.username %}">
@@ -20,18 +20,18 @@
             {% else %}
 
             <td class="col-md-1">
-                <a href="{% url 'game_detail' entry.game_id %}">
-                    <img class="img-responsive" src="{% if entry.game_thumb_url %}{{ entry.game_thumb_url }}{% endif %}">
+                <a href="{% url 'game_detail' entry.game.gamesdb_id %}">
+                    <img class="img-responsive" src="{% if entry.game.thumb_url %}{{ entry.game.thumb_url }}{% endif %}">
                 </a>
             </td>
             <td class="col-md-5">
-                <p><a href="{% url 'game_detail' entry.game_id %}">{{ entry.game_title }}</a>
+                <p><a href="{% url 'game_detail' entry.game.gamesdb_id %}">{{ entry.game.title }}</a>
                 </p>
                 {% if request.get_full_path == home_url %}
                 <p>{% trans 'By' %} <a href="{{ user_profile.profile.get_absolute_url }}">{{ user_profile.username }}</a>
                 </p>
                 {% else %}
-                <p><a href="{% url 'game_review_by_game' entry.game_id %}">{% trans 'View other reviews for this game' %}</a>
+                <p><a href="{% url 'game_review_by_game' entry.game.gamesdb_id %}">{% trans 'View other reviews for this game' %}</a>
                 </p>
                 {% endif %}
             </td>
