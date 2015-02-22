@@ -61,6 +61,7 @@ INSTALLED_APPS = (
     'rest_framework',
     # My Games list
     'mygameslist.app',
+    'mygameslist.users',
     'mygameslist.friends',
 )
 
@@ -174,7 +175,7 @@ SITE_ID = 1
 ACCOUNT_EMAIL_REQUIRED = True
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_USERNAME_REQUIRED = True
-ACCOUNT_SIGNUP_FORM_CLASS = 'mygameslist.app.forms.SignupForm'
+ACCOUNT_SIGNUP_FORM_CLASS = 'mygameslist.users.forms.SignupForm'
 
 SUMMERNOTE_CONFIG = {
     'inplacewidget_external_css': (

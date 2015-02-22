@@ -9,7 +9,7 @@
 
 {% block game_content %}
   {% for obj in object_list %}
-    {% include 'app/_review_layout.html' %}
+    {% include 'app/_game_review_layout.html' %}
   {% empty %}
     <p>{% trans 'There are no reviews for this game yet.' %}</p>
   {% endfor %}

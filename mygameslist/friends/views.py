@@ -6,14 +6,14 @@ from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect
 from django.utils.decorators import method_decorator
 from django.utils.translation import ugettext_lazy as _
-from django.views.generic.base import View, TemplateView
+from django.views.generic.base import View
 from django.views.generic.detail import SingleObjectMixin
 from django.views.generic.edit import FormView, DeleteView
 from django.views.generic.list import ListView
 
 from friendship.models import Friend, FriendshipRequest, FriendshipManager
 
-from mygameslist.app.mixins import LoginRequiredMixin, PermissionMixin
+from mygameslist.mixins import LoginRequiredMixin, PermissionMixin
 from .forms import FriendRequestForm
 
 friendship_manager = FriendshipManager()

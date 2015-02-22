@@ -57,7 +57,7 @@
         {% else %}
           <a href="{% url 'review_update' entry.gamereview.pk %}" class="btn btn-default btn-block">{% trans 'Edit my review' %}</a>
         {% endif %}
-        <a href="{% url 'recommendation_create' entry.game_id %}" class="btn btn-default btn-block">{% trans 'Make a recommendation' %}</a>
+        <a href="{% url 'recommendation_create' entry.game.gamesdb_id %}" class="btn btn-default btn-block">{% trans 'Make a recommendation' %}</a>
       {% endif %}
   </div>
 

@@ -1,0 +1,31 @@
+{% extends 'app/_recommendation_layout.html' %}
+{% load i18n %}
+{% block table_content %}
+<td class="col-md-1">
+    <a href="{% url 'game_detail' entry1.game.gamesdb_id %}">
+        <img class="img-responsive" src="{% if entry1.game.thumb_url %}{{ entry1.game.thumb_url }}{% endif %}">
+    </a>
+</td>
+
+<td class="col-md-5">
+    <p>{% trans 'If you liked' %}</p>
+    <p><a href="{% url 'game_detail' entry1.game.gamesdb_id %}">{{ entry1.game.title }}</a>
+    </p>
+    {% if request.get_full_path == home_url %}
+    <p>{% trans 'By' %} <a href="{{ user_profile.profile.get_absolute_url }}">{{ user_profile.username }}</a>
+    </p>
+    {% endif %}
+</td>
+
+<td class="text-right col-md-5">
+    <p>{% trans '... then you might like' %}</p>
+    <p><a href="{% url 'game_detail' entry2.game.gamesdb_id %}">{{ entry2.game.title }}</a>
+    </p>
+</td>
+
+<td class="col-md-1">
+    <a href="{% url 'game_detail' entry2.game_id %}">
+        <img class="img-responsive" src="{% if entry2.game.thumb_url %}{{ entry2.game.thumb_url }}{% endif %}">
+    </a>
+</td>
+{% endblock %}

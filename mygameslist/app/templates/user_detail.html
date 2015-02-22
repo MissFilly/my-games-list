@@ -1,80 +1,104 @@
-{% extends 'base.html' %} {% load i18n staticfiles user_tags %} {% block page_header %} {% blocktrans with username=object.username %} {{ username }}'s profile {% endblocktrans %} {% endblock %} {% block content %}
+{% extends 'base.html' %} {% load i18n staticfiles user_tags %} {% block page_header %}
+    {% blocktrans with username=object.username %} {{ username }}'s profile {% endblocktrans %} {% endblock %}
+{% block content %}
 
-<div class="row">
+    <div class="row">
 
-    <div class="text-center col-md-3">
-        <img src="{% avatar_or_default object %}" alt="{% trans 'User picture' %}" class="img-responsive" />
-        <table class="table table-no-borders">
-            <tr>
-                <td class="text-right">{% trans 'Joined' %}</td>
-                <td>{{ object.date_joined|date:"N d, Y" }}</td>
-            </tr>
-            <tr>
-                <td class="text-right">{% trans 'Last seen' %}</td>
-                <td>{{ object.last_login|date:"N d, Y" }}</td>
-            </tr>
-            <tr>
-                <td class="text-right">{% trans 'Gender' %}</td>
-                <td>{{ object.userprofile.get_gender_display }}</td>
-            </tr>
-            <tr>
-                <td class="text-right">{% trans 'Country' %}</td>
-                <td>{{ object.userprofile.get_country_display }}</td>
-            </tr>
-        </table>
+        <div class="text-center col-md-3">
+            <img src="{% avatar_or_default object %}" alt="{% trans 'User picture' %}" class="img-responsive"/>
+            <table class="table table-no-borders">
+                <tr>
+                    <td class="text-right">{% trans 'Joined' %}</td>
+                    <td>{{ object.date_joined|date:"N d, Y" }}</td>
+                </tr>
+                <tr>
+                    <td class="text-right">{% trans 'Last seen' %}</td>
+                    <td>{{ object.last_login|date:"N d, Y" }}</td>
+                </tr>
+                <tr>
+                    <td class="text-right">{% trans 'Gender' %}</td>
+                    <td>{{ object.userprofile.get_gender_display }}</td>
+                </tr>
+                <tr>
+                    <td class="text-right">{% trans 'Country' %}</td>
+                    <td>{{ object.userprofile.get_country_display }}</td>
+                </tr>
+            </table>
 
-        {% if object != user %}
-          <a href="{% url 'game_list_by_user' object.username %}" class="btn btn-default btn-block">{% trans 'Game list' %}</a>
-          {% user_is_friend object user as is_friend %}
-          {% if is_friend %}
-            <a href="{% url 'friend_delete' object.pk %}" class="btn btn-default btn-block">{% trans 'Remove friend' %}</a>
-          {% elif not is_friend %}
-            <a href="{% url 'friend_add' object.pk %}" class="btn btn-default btn-block">{% trans 'Add friend' %}</a>
-          {% endif %}
-        {% else %}
-          <a href="{% url 'user_profile_update' %}" class="btn btn-default btn-block">{% trans 'Edit profile' %}</a>
-        {% endif %}
-    </div>
-
-    <div class="col-md-9">
-        <ul class="nav nav-pills">
-            <li {% if detail_page %}class="active" {% endif %}><a href="{% url 'user_profile' object.username %}">{% trans 'Details' %}</a>
-            </li>
-            <li {% if reviews_page %}class="active" {% endif %}><a href="{% url 'game_review_by_user' object.username %}">{% trans 'Reviews' %}</a>
-            </li>
-            <li {% if recommendations_page %}class="active" {% endif %}><a href="{% url 'game_recommendation_by_user' object.username %}">{% trans 'Recommendations' %}</a>
-            </li>
-        </ul>
-
-        {% block user_profile_content %}
-        <section>
-            <h3>{% trans 'Reviews' %}</h3>
-            {% for obj in reviews %} {% include 'app/_review_layout.html' %} {% empty %}
-            <p>{% trans "This user hasn't written any reviews yet." %}</p>
-            {% endfor %}
-            <hr />
-        </section>
-
-        <section>
-            <h3>{% trans 'Recommendations' %}</h3>
-            {% for obj in recommendations %} {% include 'app/_recommendation_layout.html' %} {% empty %}
-            <p>{% trans "This user hasn't made any recommendations yet." %}</p>
-            {% endfor %} {% if not forloop.last %}
-            <hr />{% endif %}
-        </section>
-
-        <section>
-            <h3>{% blocktrans with username=object.username %}About {{ username }}{% endblocktrans %}</h3>
-            {% if object.profile.about %}
-                {{ object.profile.about|safe }}
+            {% if object != user %}
+                <a href="{% url 'game_list_by_user' object.username %}"
+                   class="btn btn-default btn-block">{% trans 'Game list' %}</a>
+                {% user_is_friend object user as is_friend %}
+                {% if is_friend %}
+                    <a href="{% url 'friend_delete' object.pk %}"
+                       class="btn btn-default btn-block">{% trans 'Remove friend' %}</a>
+                {% elif not is_friend %}
+                    <a href="{% url 'friend_add' object.pk %}"
+                       class="btn btn-default btn-block">{% trans 'Add friend' %}</a>
+                {% endif %}
             {% else %}
-                {% trans "This user has no bio yet." %}
+                <a href="{% url 'users:profile_update' %}"
+                   class="btn btn-default btn-block">{% trans 'Edit profile' %}</a>
             {% endif %}
-        </section>
-        {% endblock %}
-    </div>
+        </div>
 
-</div>
-<!-- /.row -->
+        <div class="col-md-9">
+            <ul class="nav nav-pills">
+                <li {% if not reviews_page and not recommendations_page %}class="active" {% endif %}><a
+                        href="{% url 'users:detail' object.username %}">{% trans 'Details' %}</a>
+                </li>
+                <li {% if reviews_page %}class="active" {% endif %}><a
+                        href="{% url 'users:reviews' object.username %}">{% trans 'Reviews' %}</a>
+                </li>
+                <li {% if recommendations_page %}class="active" {% endif %}><a
+                        href="{% url 'users:recommendations' object.username %}">{% trans 'Recommendations' %}</a>
+                </li>
+            </ul>
+
+            {% block user_profile_content %}
+                {% if reviews_page %}
+                    {% for obj in reviews %}
+                        {% include 'app/_user_review_layout.html' %}
+                    {% empty %}
+                        <p>{% trans "This user hasn't written any reviews yet." %}</p>
+                    {% endfor %}
+                {% elif recommendations_page %}
+                    {% for obj in object_list %}
+                        {% include 'app/_recommendation_layout.html' %}
+                    {% empty %}
+                        <p>{% trans "This user hasn't made any recommendations yet." %}</p>
+                    {% endfor %}
+                {% else %}
+                    <section>
+                        <h3>{% trans 'Reviews' %}</h3>
+                        {% for obj in reviews %} {% include 'app/_user_review_layout.html' %} {% empty %}
+                            <p>{% trans "This user hasn't written any reviews yet." %}</p>
+                        {% endfor %}
+                        <hr/>
+                    </section>
+
+                    <section>
+                        <h3>{% trans 'Recommendations' %}</h3>
+                        {% for obj in recommendations %}
+                            {% include 'app/_user_recommendation_layout.html' %} {% empty %}
+                            <p>{% trans "This user hasn't made any recommendations yet." %}</p>
+                        {% endfor %} {% if not forloop.last %}
+                        <hr/>{% endif %}
+                    </section>
+
+                    <section>
+                        <h3>{% blocktrans with username=object.username %}About {{ username }}{% endblocktrans %}</h3>
+                        {% if object.profile.about %}
+                            {{ object.profile.about|safe }}
+                        {% else %}
+                            {% trans "This user has no bio yet." %}
+                        {% endif %}
+                    </section>
+                {% endif %}
+            {% endblock %}
+        </div>
+
+    </div>
+    <!-- /.row -->
 
 {% endblock %}

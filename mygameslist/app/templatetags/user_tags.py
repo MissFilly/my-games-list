@@ -18,8 +18,8 @@ def user_is_friend(user_profile, request_user):
 
 
 @register.simple_tag
-def avatar_or_default(user_profile):
-    avatar = user_profile.avatar
+def avatar_or_default(user):
+    avatar = user.userprofile.avatar
     if avatar:
         return avatar.url
     else:

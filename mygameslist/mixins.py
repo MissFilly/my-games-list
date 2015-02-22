@@ -5,7 +5,7 @@ from django.core.exceptions import PermissionDenied
 from django.views.generic.detail import SingleObjectMixin
 from django.utils.decorators import method_decorator
 from django.shortcuts import get_object_or_404
-from .models import ListEntry
+from mygameslist.app.models import ListEntry
 
 
 class LoginRequiredMixin(object):

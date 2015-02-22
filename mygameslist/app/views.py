@@ -1,6 +1,6 @@
 from datetime import timedelta
 
-from django.db.models import Q, Count, Avg
+from django.db.models import Count
 from django.shortcuts import render, redirect
 from django.http import Http404
 from django.utils import timezone
@@ -8,15 +8,12 @@ from django.views.generic.base import TemplateView, View
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
-
 from gamesdb.api import API
 from social.apps.django_app.default.models import UserSocialAuth
 import steamapi
-
-from .gamesdb_manager import get_or_create_game, create_game
-from .models import *
+from .gamesdb_manager import get_or_create_game
 from .forms import *
-from .mixins import *
+from mygameslist.mixins import *
 
 gamesdb_api = API()
 
@@ -32,22 +29,6 @@ def home(request):
     context = dict(reviews=reviews, recommendations=recommendations,
                    top_month=top_month)
     return render(request, 'index.html', context)
-
-
-class UserDetailView(DetailView):
-    model = User
-    template_name = 'user_detail.html'
-    slug_field = 'username'
-
-    def get_context_data(self, *args, **kwargs):
-        context = super(UserDetailView, self).get_context_data(**kwargs)
-        user = self.object
-        context['reviews'] = GameReview.objects_with_scores \
-            .filter(entry__user=user).order_by('-date_created')[:3]
-        context['recommendations'] = GameRecommendation.objects_with_scores \
-            .filter(entry1__user=user).distinct().order_by('-date_created')[:3]
-        context['detail_page'] = True
-        return context
 
 
 class GameDetailView(DetailView):
@@ -185,22 +166,6 @@ class GameReviewDelete(PermissionMixin, DeleteView):
         return reverse('game_review_by_user',
                        kwargs={'slug': self.request.user.username, })
 
-
-class GameReviewByUserView(ListView):
-    model = GameReview
-    template_name = 'app/review_by_user.html'
-
-    def get_queryset(self):
-        self.user_profile = get_object_or_404(UserProfile, user__username=self.kwargs['slug'])
-        return GameReview.objects_with_scores.filter(entry__user=self.user_profile)
-
-    def get_context_data(self, **kwargs):
-        context = super(GameReviewByUserView, self).get_context_data(**kwargs)
-        context['user_profile'] = self.user_profile
-        context['reviews_page'] = True
-        return context
-
-
 class GameReviewByGameView(ListView):
     model = GameReview
     template_name = 'app/review_by_game.html'
@@ -237,7 +202,7 @@ class GameRecommendationCreate(EntryMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super(GameRecommendationCreate,
                         self).get_context_data(**kwargs)
-        context['game_title'] = self.entry.game_title
+        context['game_title'] = self.entry.game.title
         return context
 
     def get_success_url(self):
@@ -318,24 +283,6 @@ class SearchResultsView(TemplateView):
                 context['users'] = query
         context['search_type'] = search_type
         context['query'] = q
-        return context
-
-
-class UserProfileUpdate(LoginRequiredMixin, UpdateView):
-
-    model = UserProfile
-    form_class = UserProfileForm
-    template_name = 'app/userprofile_form.html'
-
-    def get_object(self):
-        return self.request.user.profile
-
-    def get_context_data(self, **kwargs):
-        context = super(UserProfileUpdate, self).get_context_data(**kwargs)
-        steam_account_exists = UserSocialAuth.objects.filter(
-            provider='steam',
-            user=self.request.user).exists()
-        context['steam_account_exists'] = steam_account_exists
         return context
 
 

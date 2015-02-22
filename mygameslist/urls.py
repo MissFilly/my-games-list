@@ -15,13 +15,11 @@ urlpatterns = patterns(
     url(r'^api/listentry/(?P<pk>[0-9]+)$', EntryDetail.as_view()),
     url('', include('social.apps.django_app.urls', namespace='social')),
     url(r'^summernote/', include('django_summernote.urls')),
-    url(r'^profile/edit/$', UserProfileUpdate.as_view(),
-        name='user_profile_update'),
+
     url(r'^ajax_search/', AjaxSearch.as_view(),
         name='ajax_search'),
     url(r'^votes/', include('qhonuskan_votes.urls')),
-    url(r'^profile/(?P<slug>[\w-]+)/$', UserDetailView.as_view(),
-        name='user_profile'),
+
     url(r'^admin/', include(admin.site.urls)),
     url(r'^media/(?P<path>.*)$', 'django.views.static.serve',
         {'document_root': settings.MEDIA_ROOT}),
@@ -32,7 +30,14 @@ urlpatterns = patterns(
     url(r'^search/$', SearchResultsView.as_view(),
         name='search'),
 
-    url(r'^top/', include('mygameslist.topgames.urls')),
+
+
+    url(r'^user/', include('mygameslist.users.urls', namespace='users')),
+
+    url(r'^top/', include('mygameslist.topgames.urls', namespace='top_games')),
+
+
+
 
     url(r'^(?P<slug>\d+)/$', GameDetailView.as_view(),
         name='game_detail'),
@@ -43,11 +48,11 @@ urlpatterns = patterns(
 
     url(r'^list/(?P<slug>[-_\w]+)/$', GameListByUserView.as_view(),
         name='game_list_by_user'),
-    url(r'^user/(?P<slug>[-_\w]+)/reviews$', GameReviewByUserView.as_view(),
-        name='game_review_by_user'),
-    url(r'^user/(?P<slug>[-_\w]+)/recommendations$',
-        GameRecommendationByUserView.as_view(),
-        name='game_recommendation_by_user'),
+    # url(r'^user/(?P<slug>[-_\w]+)/reviews$', GameReviewByUserView.as_view(),
+    #     name='game_review_by_user'),
+    # url(r'^user/(?P<slug>[-_\w]+)/recommendations$',
+    #     GameRecommendationByUserView.as_view(),
+    #     name='game_recommendation_by_user'),
     url(r'^(?P<slug>\d+)/entry_create/$', ListEntryCreate.as_view(),
         name='entry_create'),
 
@@ -63,7 +68,7 @@ urlpatterns = patterns(
     url(r'^review/(?P<pk>\d+)/delete/$', GameReviewDelete.as_view(),
         name='review_delete'),
     # Recommendations
-    url(r'^(?P<pk>\d+)/recommend/$', GameRecommendationCreate.as_view(),
+    url(r'^(?P<slug>\d+)/recommend/$', GameRecommendationCreate.as_view(),
         name='recommendation_create'),
     url(r'^recommendation/(?P<pk>\d+)/update/$',
         GameRecommendationUpdate.as_view(), name='recommendation_update'),

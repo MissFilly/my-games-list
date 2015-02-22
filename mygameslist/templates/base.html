@@ -52,7 +52,7 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav navbar-right">
                     <li>
-                        <a href="{% url 'top_games' %}">{% trans 'Top games' %}</a>
+                        <a href="{% url 'top_games:top_games' %}">{% trans 'Top games' %}</a>
                     </li>
                     {% if user.is_authenticated %}
                     <li class="dropdown">
@@ -62,22 +62,22 @@
                                 <a href="{% url 'game_list_by_user' user.username %}">{% trans 'My list' %}</a>
                             </li>
                             <li>
-                                <a href="{% url 'game_review_by_user' user.username %}">{% trans 'My reviews' %}</a>
+                                <a href="{% url 'users:reviews' user.username %}">{% trans 'My reviews' %}</a>
                             </li>
                             <li>
-                                <a href="{% url 'game_recommendation_by_user' user.username %}">{% trans 'My recommendations' %}</a>
+                                <a href="{% url 'users:recommendations' user.username %}">{% trans 'My recommendations' %}</a>
                             </li>
                         </ul>
                     </li>
                     <li class="dropdown">
                         {% get_notifications request.user as n %}
-                        <a href="{% url 'user_profile' user.username %}">{{ user.username }} {% if n > 0 %}<span class="badge">{{ n }}</span>{% endif %} <span class="caret"></span></a>
+                        <a href="{% url 'users:detail' user.username %}">{{ user.username }} {% if n > 0 %}<span class="badge">{{ n }}</span>{% endif %} <span class="caret"></span></a>
                         <ul class="dropdown-menu">
                             <li>
-                                <a href="{% url 'user_profile' user.username %}">{% trans 'View profile' %}</a>
+                                <a href="{% url 'users:detail' user.username %}">{% trans 'View profile' %}</a>
                             </li>
                             <li>
-                                <a href="{% url 'user_profile_update' %}">{% trans 'Edit profile' %}</a>
+                                <a href="{% url 'users:profile_update' %}">{% trans 'Edit profile' %}</a>
                             </li>
                             <li>
                                 <a href="{% url 'friend_list' %}">{% trans 'View friends' %}</a>
