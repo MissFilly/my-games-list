@@ -17,8 +17,13 @@
 
         <section>
             <h3 class="section-title">{% trans 'Latest recommendations' %}</h3>
-            {% for obj in recommendations %} {% include 'app/_recommendation_layout.html' %} {% empty %}
-            <p>{% trans 'There are no recommendations yet.' %}</p>{% endfor %}
+            {% for obj in recommendations %}
+                {% with user_profile=obj.entry1.user entry1=obj.entry1 entry2=obj.entry2 %}
+                    {% include 'app/_user_recommendation_layout.html' %}
+                {% endwith %}
+            {% empty %}
+                <p>{% trans 'There are no recommendations yet.' %}</p>
+            {% endfor %}
         </section>
     </div>
     <!-- /.col -->

@@ -12,7 +12,7 @@
     <p><a href="{% url 'game_detail' entry1.game.gamesdb_id %}">{{ entry1.game.title }}</a>
     </p>
     {% if request.get_full_path == home_url %}
-    <p>{% trans 'By' %} <a href="{{ user_profile.profile.get_absolute_url }}">{{ user_profile.username }}</a>
+    <p>{% trans 'By' %} <a href="{% url 'users:detail' user_profile.username %}">{{ user_profile.username }}</a>
     </p>
     {% endif %}
 </td>
