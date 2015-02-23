@@ -146,8 +146,7 @@ class GameReviewCreate(EntryMixin, CreateView):
         return context
 
     def get_success_url(self):
-        return reverse('game_review_by_user',
-                       kwargs={'slug': self.request.user.username, })
+        return reverse('users:detail', kwargs={'slug': self.request.user.username, })
 
 
 class GameReviewUpdate(PermissionMixin, UpdateView):
@@ -206,8 +205,7 @@ class GameRecommendationCreate(EntryMixin, CreateView):
         return context
 
     def get_success_url(self):
-        return reverse('game_recommendation_by_user',
-                       kwargs={'slug': self.request.user.username, })
+        return reverse('users:recommendations', kwargs={'slug': self.request.user.username, })
 
 
 class GameRecommendationUpdate(PermissionMixin, UpdateView):
@@ -215,34 +213,14 @@ class GameRecommendationUpdate(PermissionMixin, UpdateView):
     form_class = GameRecommendationEditForm
 
     def get_success_url(self):
-        return reverse('game_recommendation_by_user',
-                       kwargs={'slug': self.request.user.username, })
+        return reverse('users:recommendations', kwargs={'slug': self.request.user.username, })
 
 
 class GameRecommendationDelete(PermissionMixin, DeleteView):
     model = GameRecommendation
 
     def get_success_url(self):
-        return reverse('game_recommendation_by_user',
-                       kwargs={'slug': self.request.user.username, })
-
-
-class GameRecommendationByUserView(ListView):
-    model = GameRecommendation
-    template_name = 'app/recommendation_by_user.html'
-
-    def get_queryset(self):
-        self.user_profile = get_object_or_404(
-            User, username=self.kwargs['slug'])
-        return GameRecommendation.objects_with_scores.filter(
-            entry1__user=self.user_profile).distinct()
-
-    def get_context_data(self, **kwargs):
-        context = super(GameRecommendationByUserView,
-                        self).get_context_data(**kwargs)
-        context['object'] = self.user_profile
-        context['recommendations_page'] = True
-        return context
+        return reverse('users:recommendations', kwargs={'slug': self.request.user.username, })
 
 
 class GameRecommendationByGame(ListView):

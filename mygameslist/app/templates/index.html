@@ -5,8 +5,12 @@
     <div class="col-md-8">
         <section>
             <h3 class="section-title">{% trans 'Latest reviews' %}</h3>
-            {% for obj in reviews %} {% with game=obj.entry.game %} {% include 'app/_review_layout.html' %} {% endwith %} {% empty %}
-            <p>{% trans 'There are no reviews yet.' %}</p>
+            {% for obj in reviews %}
+                {% with game=obj.entry.game %}
+                    {% include 'app/_game_review_layout.html' %}
+                {% endwith %}
+            {% empty %}
+                <p>{% trans 'There are no reviews yet.' %}</p>
             {% endfor %}
             <hr />
         </section>

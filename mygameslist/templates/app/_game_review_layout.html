@@ -2,15 +2,15 @@
 {% load i18n user_tags %}
 {% block table_content %}
     <td class="col-md-1">
-        <a href="{% url 'user_profile' user_profile.username %}">
+        <a href="{% url 'users:detail' user_profile.username %}">
             <img class="img-responsive" src="{% avatar_or_default user_profile %}">
         </a>
     </td>
 
     <td class="col-md-5">
-        <p>{% trans 'By' %} <a href="{% url 'user_profile' user_profile.username %}">{{ user_profile.username }}</a>
+        <p>{% trans 'By' %} <a href="{% url 'users:detail' user_profile.username %}">{{ user_profile.username }}</a>
         </p>
-        <p><a href="{% url 'game_review_by_user' user_profile.username %}">{% trans 'View other reviews by this user' %}</a>
+        <p><a href="{% url 'users:reviews' user_profile.username %}">{% trans 'View other reviews by this user' %}</a>
         </p>
     </td>
 {% endblock %}

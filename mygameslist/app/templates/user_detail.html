@@ -64,11 +64,21 @@
                     {% endfor %}
                 {% elif recommendations_page %}
                     {% for obj in object_list %}
-                        {% include 'app/_recommendation_layout.html' %}
+                        {% with user_profile=obj.entry1.user entry1=obj.entry1 entry2=obj.entry2 %}
+                            {% include 'app/_user_recommendation_layout.html' %}
+                        {% endwith %}
                     {% empty %}
                         <p>{% trans "This user hasn't made any recommendations yet." %}</p>
                     {% endfor %}
                 {% else %}
+                    <section>
+                        <h3>{% trans 'Last list updates' %}</h3>
+                        {% for obj in reviews %} {% include 'app/_user_review_layout.html' %} {% empty %}
+                            <p>{% trans "This user hasn't written any reviews yet." %}</p>
+                        {% endfor %}
+                        <hr/>
+                    </section>
+
                     <section>
                         <h3>{% trans 'Reviews' %}</h3>
                         {% for obj in reviews %} {% include 'app/_user_review_layout.html' %} {% empty %}
@@ -80,7 +90,10 @@
                     <section>
                         <h3>{% trans 'Recommendations' %}</h3>
                         {% for obj in recommendations %}
-                            {% include 'app/_user_recommendation_layout.html' %} {% empty %}
+                            {% with user_profile=obj.entry1.user entry1=obj.entry1 entry2=obj.entry2 %}
+                                {% include 'app/_user_recommendation_layout.html' %}
+                            {% endwith %}
+                        {% empty %}
                             <p>{% trans "This user hasn't made any recommendations yet." %}</p>
                         {% endfor %} {% if not forloop.last %}
                         <hr/>{% endif %}

@@ -6,9 +6,6 @@ from django.core.urlresolvers import reverse
 from django_countries.fields import CountryField
 from django.db import models
 from django.utils.translation import ugettext as _
-
-from imagekit.models import ProcessedImageField
-from imagekit.processors import ResizeToFit
 from qhonuskan_votes.models import (VotesField, ObjectsWithScoresManager,
                                     SortByScoresManager)
 
