@@ -6,9 +6,7 @@
         <section>
             <h3 class="section-title">{% trans 'Latest reviews' %}</h3>
             {% for obj in reviews %}
-                {% with game=obj.entry.game %}
-                    {% include 'app/_game_review_layout.html' %}
-                {% endwith %}
+                {% include 'app/_user_review_layout.html' %}
             {% empty %}
                 <p>{% trans 'There are no reviews yet.' %}</p>
             {% endfor %}
