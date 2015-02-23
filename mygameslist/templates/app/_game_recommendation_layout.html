@@ -1,18 +1,18 @@
-{% extends '_recommendation_layout.html' %}
+{% extends 'app/_recommendation_layout.html' %}
 {% load i18n %}
 {% block table_content %}
     <td class="col-md-1">
-        <a href="{% url 'game_detail' similar.game_id %}">
-            <img class="img-responsive" src="{% if similar.game_thumb_url %}{{ similar.game_thumb_url }}{% endif %}">
+        <a href="{% url 'game_detail' similar.game.gamesdb_id %}">
+            <img class="img-responsive" src="{% if similar.game.thumb_url %}{{ similar.game.thumb_url }}{% endif %}">
         </a>
     </td>
 
     <td class="col-md-11">
-        <p><a href="{% url 'game_detail' similar.game_id %}">{{ similar.game_title }}</a>
+        <p><a href="{% url 'game_detail' similar.game.gamesdb_id %}">{{ similar.game.title }}</a>
         </p>
-        <p>{% trans 'By' %} <a href="{% url 'user_profile' user_profile.username %}">{{ user_profile.username }}</a>
+        <p>{% trans 'By' %} <a href="{% url 'users:detail' user_profile.username %}">{{ user_profile.username }}</a>
         </p>
-        <p><a href="{% url 'game_recommendation_by_user' user_profile.username %}">{% trans 'View other recommendations by this user' %}</a>
+        <p><a href="{% url 'users:recommendations' user_profile.username %}">{% trans 'View other recommendations by this user' %}</a>
         </p>
     </td>
 {% endblock %}

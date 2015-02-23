@@ -165,9 +165,10 @@ class GameReviewDelete(PermissionMixin, DeleteView):
         return reverse('game_review_by_user',
                        kwargs={'slug': self.request.user.username, })
 
+
 class GameReviewByGameView(ListView):
     model = GameReview
-    template_name = 'app/review_by_game.html'
+    template_name = 'game_detail.html'
 
     def get_queryset(self):
         self.game = get_or_create_game(self.kwargs['slug'])
@@ -225,7 +226,7 @@ class GameRecommendationDelete(PermissionMixin, DeleteView):
 
 class GameRecommendationByGame(ListView):
     model = GameRecommendation
-    template_name = 'app/recommendation_by_game.html'
+    template_name = 'game_detail.html'
 
     def get_queryset(self):
         self.game = get_or_create_game(self.kwargs['slug'])

@@ -6,110 +6,142 @@
 
 {% block content %}
 
-<div class="row">
+    <div class="row">
 
-  <div class="col-md-3">
-      <img class="img-responsive" src="{% if object.thumb_url %}{{ object.thumb_url }}{% endif %}" alt="">
-      <table class="table table-no-borders">
-        <tr>
-          <td class="text-right col-md-6">{% trans 'Genre' %}</td>
-          <td class="col-md-6">
-            {% for genre in object.genre.all %}
-              {{ genre }}
-            {% endfor %}
-          </td>
-        </tr>
-        <tr>
-          <td class="text-right">{% trans 'Platform' %}</td>
-          <td>
-            {% for platform in object.platform.all %}
-              {{ platform }}
-            {% endfor %}
-          </td>
-        </tr>
-        <tr>
-          <td class="text-right">{% trans 'Developer' %}</td>
-          <td>
-            {% for developer in object.developer.all %}
-              {{ developer.name }}
-            {% endfor %}
-          </td>
-        </tr>
-        <tr>
-          <td class="text-right">{% trans 'Publisher' %}</td>
-          <td>
-            {% for publisher in object.publisher.all %}
-              {{ publisher }}
-            {% endfor %}
-          </td>
-        </tr>
-        <tr>
-          <td class="text-right">{% trans 'Release date' %}</td>
-          <td>{{ object.release_date }}</td>
-        </tr>
-      </table>
-      {% user_game_entry user object.gamesdb_id as entry %}
-      {% if not entry %}
-      <a href="{% url 'entry_create' object.gamesdb_id %}" class="btn btn-default btn-block">{% trans 'Add to my list' %}</a>
-      {% else %}
-        {% if not entry.gamereview %}
-          <a href="{% url 'review_create' object.gamesdb_id %}" class="btn btn-default btn-block">{% trans 'Write review' %}</a>
-        {% else %}
-          <a href="{% url 'review_update' entry.gamereview.pk %}" class="btn btn-default btn-block">{% trans 'Edit my review' %}</a>
-        {% endif %}
-        <a href="{% url 'recommendation_create' entry.game.gamesdb_id %}" class="btn btn-default btn-block">{% trans 'Make a recommendation' %}</a>
-      {% endif %}
-  </div>
-
-  <div class="col-md-9">
-    <ul class="nav nav-pills">
-      <li {% if detail_page %}class="active"{% endif %}><a href="{% url 'game_detail' object.gamesdb_id %}">{% trans 'Details' %}</a></li>
-      <li {% if reviews_page %}class="active"{% endif %}><a href="{% url 'game_review_by_game' object.gamesdb_id %}">{% trans 'Reviews' %}</a></li>
-      <li {% if recommendations_page %}class="active"{% endif %}><a href="{% url 'game_recommendation_by_game' object.gamesdb_id %}">{% trans 'Recommendations' %}</a></li>
-    </ul>
-    {% block game_content %}
-      <section>
-        <h3 class="section-title">{% trans 'Overview' %}</h3>
-        <p>{{ object.overview }}</p>
-        <hr />
-      </section>
-      
-      <section>
-        <h3 class="section-title">{% trans 'Latest reviews' %}</h3>
-          {% for obj in reviews %}
-            {% include "app/_review_layout.html" %}
-          {% empty %}
-            <p>{% trans 'There are no reviews for this game yet.' %}</p>
-          {% endfor %}
-        <hr />
-      </section>
-
-      <section>
-        <h3 class="section-title">{% trans 'Latest recommendations' %}</h3>
-          {% for obj in recommendations %}
-
-            {% if obj.entry1.game_id != object.id|add:"0" %}
-              {% with similar=obj.entry1 %}
-                {% include 'app/_recommendation_layout.html' %}
-              {% endwith %}
-
-            {% elif obj.entry2.game_id != object.id|add:"0" %}
-
-              {% with similar=obj.entry2 %}
-                {% include 'app/_recommendation_layout.html' %}
-              {% endwith %}
-
+        <div class="col-md-3">
+            <img class="img-responsive" src="{% if object.thumb_url %}{{ object.thumb_url }}{% endif %}" alt="">
+            <table class="table table-no-borders">
+                <tr>
+                    <td class="text-right col-md-6">{% trans 'Genre' %}</td>
+                    <td class="col-md-6">
+                        {% for genre in object.genre.all %}
+                            {{ genre }}
+                        {% endfor %}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-right">{% trans 'Platform' %}</td>
+                    <td>
+                        {% for platform in object.platform.all %}
+                            {{ platform }}
+                        {% endfor %}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-right">{% trans 'Developer' %}</td>
+                    <td>
+                        {% for developer in object.developer.all %}
+                            {{ developer.name }}
+                        {% endfor %}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-right">{% trans 'Publisher' %}</td>
+                    <td>
+                        {% for publisher in object.publisher.all %}
+                            {{ publisher }}
+                        {% endfor %}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="text-right">{% trans 'Release date' %}</td>
+                    <td>{{ object.release_date }}</td>
+                </tr>
+            </table>
+            {% user_game_entry user object.gamesdb_id as entry %}
+            {% if not entry %}
+                <a href="{% url 'entry_create' object.gamesdb_id %}"
+                   class="btn btn-default btn-block">{% trans 'Add to my list' %}</a>
+            {% else %}
+                {% if not entry.gamereview %}
+                    <a href="{% url 'review_create' object.gamesdb_id %}"
+                       class="btn btn-default btn-block">{% trans 'Write review' %}</a>
+                {% else %}
+                    <a href="{% url 'review_update' entry.gamereview.pk %}"
+                       class="btn btn-default btn-block">{% trans 'Edit my review' %}</a>
+                {% endif %}
+                <a href="{% url 'recommendation_create' entry.game.gamesdb_id %}"
+                   class="btn btn-default btn-block">{% trans 'Make a recommendation' %}</a>
             {% endif %}
-            
-            {% if not forloop.last %}<hr />{% endif %}
-            
-          {% empty %}
-                <p>{% trans 'There are no recommendations for this game yet.' %}</p>
-          {% endfor %}
-      </section>
-    {% endblock %}
-  </div>
-</div>
-<!-- /.row -->
+        </div>
+
+        <div class="col-md-9">
+            <ul class="nav nav-pills">
+                <li {% if detail_page %}class="active"{% endif %}><a
+                        href="{% url 'game_detail' object.gamesdb_id %}">{% trans 'Details' %}</a></li>
+                <li {% if reviews_page %}class="active"{% endif %}><a
+                        href="{% url 'game_review_by_game' object.gamesdb_id %}">{% trans 'Reviews' %}</a></li>
+                <li {% if recommendations_page %}class="active"{% endif %}><a
+                        href="{% url 'game_recommendation_by_game' object.gamesdb_id %}">{% trans 'Recommendations' %}</a>
+                </li>
+            </ul>
+            {% block game_content %}
+                {% if reviews_page %}
+                    {% for obj in object_list %}
+                        {% include 'app/_game_review_layout.html' %}
+                    {% empty %}
+                        <p>{% trans "There are no reviews for this game yet." %}</p>
+                    {% endfor %}
+                {% elif recommendations_page %}
+                    {% for obj in object_list %}
+                        {% with user_profile=obj.entry1.user entry1=obj.entry1 entry2=obj.entry2 %}
+                            {% if obj.entry1.game_id != game.id|add:"0" %}
+                                {% with similar=obj.entry1 %}
+                                    {% include 'app/_game_recommendation_layout.html' %}
+                                {% endwith %}
+
+                            {% elif obj.entry2.game_id != game.id|add:"0" %}
+                                {% with similar=obj.entry2 %}
+                                    {% include 'app/_game_recommendation_layout.html' %}
+                                {% endwith %}
+
+                            {% endif %}
+                        {% endwith %}
+                    {% empty %}
+                        <p>{% trans "There are no recommendations for this game yet." %}</p>
+                    {% endfor %}
+                {% else %}
+                    <section>
+                        <h3 class="section-title">{% trans 'Overview' %}</h3>
+
+                        <p>{{ object.overview }}</p>
+                        <hr/>
+                    </section>
+
+                    <section>
+                        <h3 class="section-title">{% trans 'Latest reviews' %}</h3>
+                        {% for obj in reviews %}
+                            {% include 'app/_game_review_layout.html' %}
+                        {% empty %}
+                            <p>{% trans "There are no reviews for this game yet." %}</p>
+                        {% endfor %}
+                        <hr/>
+                    </section>
+
+                    <section>
+                        <h3 class="section-title">{% trans 'Latest recommendations' %}</h3>
+                        {% for obj in recommendations %}
+                            {% with user_profile=obj.entry1.user entry1=obj.entry1 entry2=obj.entry2 %}
+                                {% if obj.entry1.game_id != game.id|add:"0" %}
+                                    {% with similar=obj.entry1 %}
+                                        {% include 'app/_game_recommendation_layout.html' %}
+                                    {% endwith %}
+
+                                {% elif obj.entry2.game_id != game.id|add:"0" %}
+                                    {% with similar=obj.entry2 %}
+                                        {% include 'app/_game_recommendation_layout.html' %}
+                                    {% endwith %}
+
+                                {% endif %}
+                            {% endwith %}
+                        {% empty %}
+                            <p>{% trans "There are no recommendations for this game yet." %}</p>
+                        {% endfor %}
+                    </section>
+                {% endif %}
+            {% endblock %}
+        </div>
+    </div>
+    <!-- /.row -->
 
 {% endblock %}
