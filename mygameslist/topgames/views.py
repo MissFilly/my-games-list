@@ -25,5 +25,5 @@ class TopGames(ListView):
 
     def get_context_data(self, **kwargs):
         context = super(TopGames, self).get_context_data(**kwargs)
-        context['platform_form'] = PlatformForm()
+        context['platform_form'] = PlatformForm(self.request.GET)
         return context

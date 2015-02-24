@@ -6,8 +6,8 @@ from mygameslist.app.models import Platform, Genre
 
 
 class PlatformForm(forms.Form):
-    platform = forms.ModelChoiceField(queryset=Platform.objects.all())
-    genre = forms.ModelChoiceField(queryset=Genre.objects.all())
+    platform = forms.ModelChoiceField(queryset=Platform.objects.all(), required=False)
+    genre = forms.ModelChoiceField(queryset=Genre.objects.all(), required=False)
 
     def __init__(self, *args, **kwargs):
         super(PlatformForm, self).__init__(*args, **kwargs)
