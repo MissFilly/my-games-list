@@ -1,0 +1,39 @@
+{% load i18n %} {% load url from future %} {% load i18n qhonuskan_votes staticfiles user_tags %} {% url 'home' as home_url %}
+{% with user_profile=obj.entry.user %}
+    <section>
+        <table class="table table-no-borders">
+            <tr>
+                <td class="col-md-1">
+                    <a href="{% url 'game_detail' obj.game.gamesdb_id %}">
+                        <img class="img-responsive"
+                             src="{% if obj.game.thumb_url %}{{ obj.game.thumb_url }}{% endif %}">
+                    </a>
+                </td>
+                <td class="col-md-5">
+                    <p>
+                        <a href="{% url 'game_detail' obj.game.gamesdb_id %}">{{ obj.game.title }}</a>
+                    </p>
+                </td>
+
+                <td class="text-right col-md-6">
+                    <p>
+                        {% blocktrans with status=obj.get_status_display %} Status:
+                            {{ status }} {% endblocktrans %}
+                    </p>
+
+                    <p>
+                        {% blocktrans with score=obj.score %} Given score: {{ score }} {% endblocktrans %}
+                    </p>
+                </td>
+            </tr>
+        </table>
+        {{ obj.text|linebreaks }}
+        {% if user_profile == user %}
+            <div class="text-right">
+                <a href="{% url 'entry_update' obj.pk %}" class="btn btn-default btn-xs">{% trans 'Edit' %}</a>
+                <a href="{% url 'entry_delete' obj.pk %}" class="btn btn-default btn-xs">{% trans 'Delete' %}</a>
+            </div>
+        {% endif %} {% if not forloop.last %}
+        <hr/>{% endif %}
+    </section>
+{% endwith %}

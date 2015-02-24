@@ -5,7 +5,7 @@ from django.shortcuts import get_object_or_404
 from social.apps.django_app.default.models import UserSocialAuth
 
 from mygameslist.mixins import LoginRequiredMixin
-from mygameslist.app.models import GameReview, GameRecommendation
+from mygameslist.app.models import GameReview, GameRecommendation, ListEntry
 from .models import User, UserProfile
 from .forms import UserProfileForm
 
@@ -29,6 +29,7 @@ class UserDetailView(DetailView):
             context['detail_page'] = True
             reviews = reviews[:3]
             recommendations = recommendations[:3]
+            context['updates'] = ListEntry.objects.filter(user=self.object).order_by('-last_modified')
         context['reviews'] = reviews
         context['recommendations'] = recommendations
         return context

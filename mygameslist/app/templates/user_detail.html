@@ -73,8 +73,8 @@
                 {% else %}
                     <section>
                         <h3>{% trans 'Last list updates' %}</h3>
-                        {% for obj in reviews %} {% include 'app/_user_review_layout.html' %} {% empty %}
-                            <p>{% trans "This user hasn't written any reviews yet." %}</p>
+                        {% for obj in updates %} {% include 'app/_user_entry_layout.html' %} {% empty %}
+                            <p>{% trans "This user hasn't added any games to their list yet." %}</p>
                         {% endfor %}
                         <hr/>
                     </section>
