@@ -1,0 +1,771 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2015-02-24 20:36-0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: app/forms.py:14 users/forms.py:39
+msgid "Save"
+msgstr "Guardar"
+
+#: app/forms.py:16
+msgid "Reset"
+msgstr "Limpiar"
+
+#: app/forms.py:28 app/forms.py:58 app/forms.py:74
+msgid "Submit"
+msgstr "Enviar"
+
+#: app/forms.py:43
+msgid "Similar recommendation"
+msgstr "Recomendación similar"
+
+#: app/models.py:52
+msgid "Masterpiece"
+msgstr "Obra maestra"
+
+#: app/models.py:53
+msgid "Great"
+msgstr "Magnífico"
+
+#: app/models.py:54
+msgid "Very good"
+msgstr "Muy bueno"
+
+#: app/models.py:55
+msgid "Good"
+msgstr "Bueno"
+
+#: app/models.py:56
+msgid "Fine"
+msgstr "Bien"
+
+#: app/models.py:57
+msgid "Average"
+msgstr "Mediocre"
+
+#: app/models.py:58
+msgid "Bad"
+msgstr "Malo"
+
+#: app/models.py:59
+msgid "Very bad"
+msgstr "Muy malo"
+
+#: app/models.py:60
+msgid "Horrible"
+msgstr "Horrible"
+
+#: app/models.py:61
+msgid "Appalling"
+msgstr "Espantoso"
+
+#: app/models.py:64
+msgid "Very high"
+msgstr "Muy alta"
+
+#: app/models.py:65
+msgid "High"
+msgstr "Alta"
+
+#: app/models.py:66
+msgid "Medium"
+msgstr "Media"
+
+#: app/models.py:67
+msgid "Low"
+msgstr "Baja"
+
+#: app/models.py:68
+msgid "Very low"
+msgstr "Muy baja"
+
+#: app/models.py:71
+msgid "Playing"
+msgstr "Jugando"
+
+#: app/models.py:72
+msgid "Completed"
+msgstr "Completado"
+
+#: app/models.py:73
+msgid "On-hold"
+msgstr "En espera"
+
+#: app/models.py:74
+msgid "Dropped"
+msgstr "Abandonado"
+
+#: app/models.py:75
+msgid "Want to play"
+msgstr "Desea jugar"
+
+#: app/models.py:79
+msgid "Status"
+msgstr "Estado"
+
+#: app/models.py:81 app/templates/game_list_by_user.html:26
+msgid "Score"
+msgstr "Puntaje"
+
+#: app/models.py:83 app/templates/game_list_by_user.html:25
+msgid "Replay value"
+msgstr "Rejugabilidad"
+
+#: app/models.py:100 app/models.py:115
+msgid "Text"
+msgstr "Texto"
+
+#: app/templates/game_detail.html:15 topgames/forms.py:12
+msgid "Genre"
+msgstr "Género"
+
+#: app/templates/game_detail.html:23 topgames/forms.py:10
+msgid "Platform"
+msgstr "Plataforma"
+
+#: app/templates/game_detail.html:31
+msgid "Developer"
+msgstr "Desarrollador"
+
+#: app/templates/game_detail.html:39
+msgid "Publisher"
+msgstr "Distribuidora"
+
+#: app/templates/game_detail.html:47
+msgid "Release date"
+msgstr "Fecha de lanzamiento"
+
+#: app/templates/game_detail.html:54
+msgid "Add to my list"
+msgstr "Agregar a mi lista"
+
+#: app/templates/game_detail.html:58
+msgid "Write review"
+msgstr "Escribir reseña"
+
+#: app/templates/game_detail.html:61
+msgid "Edit my review"
+msgstr "Editar mi reseña"
+
+#: app/templates/game_detail.html:64
+msgid "Make a recommendation"
+msgstr "Hacer una recomendación"
+
+#: app/templates/game_detail.html:71 app/templates/user_detail.html:48
+msgid "Details"
+msgstr "Detalles"
+
+#: app/templates/game_detail.html:73 app/templates/user_detail.html:51
+#: app/templates/user_detail.html.py:83
+msgid "Reviews"
+msgstr "Reseñas"
+
+#: app/templates/game_detail.html:75 app/templates/user_detail.html:54
+#: app/templates/user_detail.html.py:91
+msgid "Recommendations"
+msgstr "Recomendaciones"
+
+#: app/templates/game_detail.html:83 app/templates/game_detail.html.py:116
+#: templates/app/review_by_game.html:14
+msgid "There are no reviews for this game yet."
+msgstr "Todavía no hay reseñas para este juego."
+
+#: app/templates/game_detail.html:101 app/templates/game_detail.html.py:138
+#: templates/app/recommendation_by_game.html:27
+msgid "There are no recommendations for this game yet."
+msgstr "Todavía no hay recomendaciones para este juego"
+
+#: app/templates/game_detail.html:105
+msgid "Overview"
+msgstr "Sinopsis"
+
+#: app/templates/game_detail.html:112 app/templates/index.html:7
+msgid "Latest reviews"
+msgstr "Últimas reseñas"
+
+#: app/templates/game_detail.html:122 app/templates/index.html:17
+msgid "Latest recommendations"
+msgstr "Últimas recomendaciones"
+
+#: app/templates/game_list_by_user.html:1
+#, python-format
+msgid " %(username)s's games list "
+msgstr " Lista de juegos de %(username)s "
+
+#: app/templates/game_list_by_user.html:8 templates/app/search_results.html:10
+msgid "All"
+msgstr "Todo"
+
+#: app/templates/game_list_by_user.html:24
+msgid "Game title"
+msgstr "Título del juego"
+
+#: app/templates/game_list_by_user.html:41
+#: templates/app/_recommendation_layout.html:11
+#: templates/app/_review_layout.html:20
+#: templates/app/_user_entry_layout.html:33
+msgid "Edit"
+msgstr "Editar"
+
+#: app/templates/game_list_by_user.html:42
+msgid "Remove"
+msgstr "Eliminar"
+
+#: app/templates/game_list_by_user.html:51
+msgid "This user hasn't added any video games to their list yet."
+msgstr "Este usuario no ha agregado ningún videojuego a su lista."
+
+#: app/templates/index.html:1
+msgid "Recent activity"
+msgstr "Actividad reciente"
+
+#: app/templates/index.html:11
+msgid "There are no reviews yet."
+msgstr "Todavía no hay reseñas."
+
+#: app/templates/index.html:23
+msgid "There are no recommendations yet."
+msgstr "Todavía no hay recomendaciones."
+
+#: app/templates/index.html:31
+msgid "Top games this month"
+msgstr "Mejores juegos del mes"
+
+#: app/templates/index.html:44
+#, python-format
+msgid "Added %(c)s times in the last 30 days"
+msgstr "Agregado %(c)s veces en los últimos 30 días"
+
+#: app/templates/index.html:49
+msgid "No entries were added this month."
+msgstr "No se añadieron entradas este mes."
+
+#: app/templates/user_detail.html:2
+#, python-format
+msgid " %(username)s's profile "
+msgstr " Perfil de %(username)s "
+
+#: app/templates/user_detail.html:8
+msgid "User picture"
+msgstr "Imagen de usuario"
+
+#: app/templates/user_detail.html:11
+msgid "Joined"
+msgstr "Registrado"
+
+#: app/templates/user_detail.html:15
+msgid "Last seen"
+msgstr "Última conexión"
+
+#: app/templates/user_detail.html:19 users/models.py:30
+msgid "Gender"
+msgstr "Género"
+
+#: app/templates/user_detail.html:23
+msgid "Country"
+msgstr "País"
+
+#: app/templates/user_detail.html:30
+msgid "Game list"
+msgstr "Lista de juegos"
+
+#: app/templates/user_detail.html:34 templates/app/search_results.html:65
+#: templates/friends/friend_confirm_delete.html:5
+#: templates/friends/friends_list.html:34
+msgid "Remove friend"
+msgstr "Eliminar amigo"
+
+#: app/templates/user_detail.html:37 templates/app/search_results.html:63
+msgid "Add friend"
+msgstr "Agregar amigo"
+
+#: app/templates/user_detail.html:41 templates/app/userprofile_form.html:1
+#: templates/base.html:80
+msgid "Edit profile"
+msgstr "Editar perfil"
+
+#: app/templates/user_detail.html:63 app/templates/user_detail.html.py:85
+msgid "This user hasn't written any reviews yet."
+msgstr "Este usuario no ha escrito ninguna reseña."
+
+#: app/templates/user_detail.html:71 app/templates/user_detail.html.py:97
+msgid "This user hasn't made any recommendations yet."
+msgstr "Este usuario no ha hecho ninguna recomendación."
+
+#: app/templates/user_detail.html:75
+msgid "Last list updates"
+msgstr "Última actualización de lista"
+
+#: app/templates/user_detail.html:77
+msgid "This user hasn't added any games to their list yet."
+msgstr "Este usuario no ha agregado ningún juego a su lista."
+
+#: app/templates/user_detail.html:103
+#, python-format
+msgid "About %(username)s"
+msgstr "Acerca de %(username)s"
+
+#: app/templates/user_detail.html:107
+msgid "This user has no bio yet."
+msgstr "Este usuario no ha escrito una biografía."
+
+#: friends/forms.py:10
+msgid "Hi, I would like to add you to my friends list."
+msgstr "Hola, me gustaría agregarte a mi lista de amigos."
+
+#: friends/forms.py:16
+msgid "Send"
+msgstr "Enviar"
+
+#: friends/views.py:37
+msgid "You already sent a request to this user."
+msgstr "Ya has enviado una solicitud a este usuario."
+
+#: settings.py:100
+msgid "English"
+msgstr "Inglés"
+
+#: settings.py:101
+msgid "Spanish"
+msgstr "Español"
+
+#: templates/account/email_confirm.html:1
+msgid "Confirm e-mail address"
+msgstr "Confirmar dirección de correo electrónico"
+
+#: templates/account/email_confirm.html:8
+#, python-format
+msgid ""
+"Please confirm that <a href=\"mailto:%(email)s\">%(email)s</a> is an e-mail "
+"address for user %(user_display)s."
+msgstr ""
+"Por favor, confirme que <a href=\"mailto:%(email)s\">%(email)s</a> es una "
+"dirección de correo electrónico  del usuario %(user_display)s."
+
+#: templates/account/email_confirm.html:13
+#: templates/app/gamerecommendation_confirm_delete.html:15
+#: templates/app/gamereview_confirm_delete.html:15
+#: templates/app/listentry_confirm_delete.html:15
+#: templates/friends/friend_confirm_delete.html:15
+msgid "Confirm"
+msgstr "Confirmar"
+
+#: templates/account/email_confirm.html:16
+#, python-format
+msgid ""
+"This e-mail confirmation link expired or is invalid. Please <a href="
+"\"%(email_url)s\">issue a new e-mail confirmation request</a>."
+msgstr ""
+"Este enlace de confirmación de correo ha expirado o es inválido. Favor <a "
+"href=\"%(email_url)s\">envíe una nueva solicitud de confirmación</a>."
+
+#: templates/account/login.html:1 templates/account/login.html.py:38
+#: templates/base.html:95
+msgid "Login"
+msgstr "Iniciar sesión"
+
+#: templates/account/login.html:11
+msgid "Using a third party account:"
+msgstr "Utilizando un servicio externo:"
+
+#: templates/account/login.html:18 templates/app/userprofile_form.html:19
+msgid "Sign in through Steam"
+msgstr "Registrarse a través de Steam"
+
+#: templates/account/login.html:35
+msgid "Using My Games List account:"
+msgstr "Usando mi cuenta de My Games List:"
+
+#: templates/account/signup.html:6 templates/base.html:98
+#: templates/socialaccount/signup.html:1
+msgid "Signup"
+msgstr "Registrarse"
+
+#: templates/account/signup.html:21 templates/socialaccount/signup.html:11
+msgid "Sign up"
+msgstr "Registrarse"
+
+#: templates/account/verification_sent.html:1
+msgid "Verify your e-mail address"
+msgstr "Verificar tu cuenta de correo electrónico"
+
+#: templates/account/verification_sent.html:7
+msgid ""
+"We have sent an e-mail to you for verification. Follow the link provided to "
+"finalize the signup process. Please contact us if you do not receive it "
+"within a few minutes."
+msgstr ""
+"Te hemos envidado un correo de verificación. Haz click en el link provisto "
+"para finalizar el proceso de registro. Por favor, contactáctenos en caso de "
+"no recibirlo en el transcurso de unos minutos."
+
+#: templates/app/_game_recommendation_layout.html:13
+#: templates/app/_game_review_layout.html:11
+#: templates/app/_user_recommendation_layout.html:15
+#: templates/app/_user_review_layout.html:13
+msgid "By"
+msgstr "Por"
+
+#: templates/app/_game_recommendation_layout.html:15
+msgid "View other recommendations by this user"
+msgstr "Ver otras recomendaciones de este usuario"
+
+#: templates/app/_game_review_layout.html:13
+msgid "View other reviews by this user"
+msgstr "Ver otras reseñas de este usuario"
+
+#: templates/app/_recommendation_layout.html:12
+#: templates/app/_review_layout.html:21
+#: templates/app/_user_entry_layout.html:34
+msgid "Delete"
+msgstr "Eliminar"
+
+#: templates/app/_review_layout.html:10
+#, python-format
+msgid " Status: %(status)s "
+msgstr " Estado: %(status)s "
+
+#: templates/app/_review_layout.html:13
+#: templates/app/_user_entry_layout.html:25
+#, python-format
+msgid " Given score: %(score)s "
+msgstr " Puntaje dado: %(score)s "
+
+#: templates/app/_user_entry_layout.html:20
+#, python-format
+msgid ""
+" Status:\n"
+"                            %(status)s "
+msgstr ""
+" Estado:\n"
+"                            %(status)s "
+
+#: templates/app/_user_recommendation_layout.html:11
+msgid "If you liked"
+msgstr "Si te gustó"
+
+#: templates/app/_user_recommendation_layout.html:20
+msgid "... then you might like"
+msgstr "... quizás te guste"
+
+#: templates/app/_user_review_layout.html:16
+msgid "View other reviews for this game"
+msgstr "Ver otras reseñas de este juego"
+
+#: templates/app/gamerecommendation_confirm_delete.html:5
+msgid "Delete recommendation"
+msgstr "Eliminar recomendación"
+
+#: templates/app/gamerecommendation_confirm_delete.html:14
+msgid "Are you sure you want to delete this recommendation?"
+msgstr "¿Estás seguro de que quieres eliminar esta recomendación?"
+
+#: templates/app/gamerecommendation_confirm_delete.html:16
+#: templates/app/gamereview_confirm_delete.html:16
+#: templates/app/listentry_confirm_delete.html:16
+#: templates/friends/friend_confirm_delete.html:16
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: templates/app/gamerecommendation_form.html:6
+#, python-format
+msgid ""
+"\n"
+"\t\t\tWrite recommendation for %(game_title)s\n"
+"\t\t"
+msgstr ""
+"\n"
+"\t\t\tEscribir recomendación para %(game_title)s\n"
+"\t\t"
+
+#: templates/app/gamerecommendation_form.html:10
+#, fuzzy, python-format
+#| msgid ""
+#| "\n"
+#| "\t\t\tEdit recommendation for %(game1)s y %(game2)s\n"
+#| "\t\t"
+msgid ""
+"\n"
+"\t\t\tEdit recommendation for %(game1)s and %(game2)s\n"
+"\t\t"
+msgstr ""
+"\n"
+"\t\t\tEditar recomendación para %(game1)s y %(game2)s\n"
+"\t\t"
+
+#: templates/app/gamereview_confirm_delete.html:5
+msgid "Delete review"
+msgstr "Eliminar reseña"
+
+#: templates/app/gamereview_confirm_delete.html:14
+msgid "Are you sure you want to delete this review?"
+msgstr "¿Estás seguro de que deseas eliminar esta reseña?"
+
+#: templates/app/gamereview_form.html:6
+#, python-format
+msgid ""
+"\n"
+"\t\t\tWrite review for %(game_title)s\n"
+"\t\t"
+msgstr ""
+"\n"
+"\t\t\tEscribir reseña para %(game_title)s\n"
+"\t\t"
+
+#: templates/app/gamereview_form.html:10
+#, python-format
+msgid ""
+"\n"
+"\t\t\tEdit review for %(game_title)s\n"
+"\t\t"
+msgstr ""
+"\n"
+"\t\t\tEditar reseña para %(game_title)s\n"
+"\t\t"
+
+#: templates/app/listentry_confirm_delete.html:5
+msgid "Remove video game from list"
+msgstr "Eliminar juego de la lista"
+
+#: templates/app/listentry_confirm_delete.html:14
+msgid "Are you sure you want to remove this video game from your list?"
+msgstr "¿Estás seguro de que deseas eliminar este juego de tu lista?"
+
+#: templates/app/listentry_form.html:6
+#, python-format
+msgid ""
+"\n"
+"      Add %(game_title)s to my list\n"
+"    "
+msgstr ""
+"\n"
+"      Agregar %(game_title)s a mi lista\n"
+"    "
+
+#: templates/app/listentry_form.html:10
+#, python-format
+msgid ""
+"\n"
+"      Edit %(game_title)s in my list\n"
+"    "
+msgstr ""
+"\n"
+"      Editar %(game_title)s en mi lista\n"
+"    "
+
+#: templates/app/recommendation_by_game.html:5
+#, python-format
+msgid ""
+"\n"
+"    Recommendations for %(title)s\n"
+"  "
+msgstr ""
+"\n"
+"    Recomendaciones para %(title)s\n"
+"  "
+
+#: templates/app/review_by_game.html:5
+#, python-format
+msgid ""
+"\n"
+"    Reviews for %(title)s\n"
+"  "
+msgstr ""
+"\n"
+"    Reseñas para %(title)s\n"
+"  "
+
+#: templates/app/search_results.html:1
+msgid "Search results"
+msgstr "Resultados de búsqueda"
+
+#: templates/app/search_results.html:7
+msgid "Filter by platform"
+msgstr "Filtrar por plataforma"
+
+#: templates/app/search_results.html:57 templates/friends/friends_list.html:31
+msgid "Last seen:"
+msgstr "Última conexión:"
+
+#: templates/app/search_results.html:81
+msgid "Your search did not produce any results."
+msgstr "Tu búsqueda no produjo resultados."
+
+#: templates/app/top_games.html:1 templates/base.html:55
+msgid "Top games"
+msgstr "Mejores juegos"
+
+#: templates/app/top_games.html:26
+#, python-format
+msgid "Scored %(avg)s"
+msgstr "Puntuación %(avg)s"
+
+#: templates/app/top_games.html:28
+#, python-format
+msgid ""
+"Added %(c)s time\n"
+"                            %(plural)s"
+msgstr ""
+"Agregado %(c)s veces\n"
+"                            %(plural)s"
+
+#: templates/app/top_games.html:36
+msgid "No entries were added for this platform."
+msgstr "No hay entradas para esta platadorma."
+
+#: templates/app/userprofile_form.html:16
+msgid "Add your Steam account"
+msgstr "Conecta tu cuenta de Steam"
+
+#: templates/app/userprofile_form.html:24
+msgid "Import your Steam games"
+msgstr "Importar tus juegos de Steam"
+
+#: templates/base.html:59 templates/base.html.py:62
+msgid "My list"
+msgstr "Mi lista"
+
+#: templates/base.html:65
+msgid "My reviews"
+msgstr "Mis reseñas"
+
+#: templates/base.html:68
+msgid "My recommendations"
+msgstr "Mis recomendaciones"
+
+#: templates/base.html:77
+msgid "View profile"
+msgstr "Ver perfil"
+
+#: templates/base.html:83
+msgid "View friends"
+msgstr "Ver amigos"
+
+#: templates/base.html:86
+msgid "Pending requests"
+msgstr "Solicitudes pendientes"
+
+#: templates/base.html:91
+msgid "Logout"
+msgstr "Cerrar sesión"
+
+#: templates/base.html:114 templates/base.html.py:119 templates/base.html:127
+msgid "Users"
+msgstr "Usuarios"
+
+#: templates/base.html:114 templates/base.html.py:118 templates/base.html:125
+msgid "Games"
+msgstr "Juegos"
+
+#: templates/base.html:132
+msgid "Search&#8230;"
+msgstr "Buscar&#8230;"
+
+#: templates/base.html:168
+msgid "By Filly"
+msgstr "Por Filly"
+
+#: templates/base.html:170
+msgid "Source code"
+msgstr "Código fuente"
+
+#: templates/friends/friend_confirm_delete.html:14
+#, python-format
+msgid "Are you sure you want to remove %(object)s from your friends list?"
+msgstr "¿Estás seguro que deseas eliminar a %(object)s de tu lista de amigos?"
+
+#: templates/friends/friends_list.html:6
+msgid "My friends"
+msgstr "Mis amigos"
+
+#: templates/friends/friends_list.html:46
+msgid "There are no friends in your list."
+msgstr "No hay amigos en tu lista."
+
+#: templates/friends/request.html:6
+#, python-format
+msgid "Send %(username)s a friend request"
+msgstr "Enviar a %(username)s una solicitud de amistad"
+
+#: templates/friends/requests.html:1
+msgid "Pending friend requests"
+msgstr "Solicitudes de amistad pendientes"
+
+#: templates/friends/requests.html:19
+msgid "From"
+msgstr "De"
+
+#: templates/friends/requests.html:25
+msgid "Message:"
+msgstr "Mensaje:"
+
+#: templates/friends/requests.html:36
+msgid "Accept"
+msgstr "Aceptar"
+
+#: templates/friends/requests.html:43
+msgid "Ignore"
+msgstr "Ignorar"
+
+#: templates/friends/requests.html:50
+msgid "Reject"
+msgstr "Rechazar"
+
+#: templates/friends/requests.html:65
+msgid "You have no pending friend requests."
+msgstr "No tienes solicitudes de amistad pendientes."
+
+#: templates/qhonuskan/vote_buttons.html:3
+msgid "Helpful"
+msgstr "Útil"
+
+#: templates/qhonuskan/vote_buttons.html:4
+msgid "Not helpful"
+msgstr "Poco útil"
+
+#: templates/qhonuskan/vote_buttons.html:5
+msgid "Recommendation score:"
+msgstr "Puntaje de recomendación:"
+
+#: topgames/forms.py:31
+msgid "Filter"
+msgstr "Filtrar"
+
+#: users/forms.py:10
+msgid "First name"
+msgstr "Nombre"
+
+#: users/forms.py:11
+msgid "Last name"
+msgstr "Apellido"
+
+#: users/models.py:21
+msgid "Female"
+msgstr "Femenino"
+
+#: users/models.py:21
+msgid "Male"
+msgstr "Masculino"
+
+#: users/models.py:27
+msgid "Avatar"
+msgstr "Avatar"
+
+#: users/models.py:32
+msgid "About"
+msgstr "Acerca"

@@ -3,7 +3,8 @@ from datetime import timedelta
 from django.db.models import Count
 from django.shortcuts import render, redirect
 from django.http import Http404
-from django.utils import timezone
+from django.utils import timezone, translation
+from django.utils.translation import get_language
 from django.views.generic.base import TemplateView, View
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.views.generic.detail import DetailView
@@ -69,6 +70,8 @@ class GameListByUserView(ListView):
     def get_context_data(self, **kwargs):
         context = super(GameListByUserView, self).get_context_data(**kwargs)
         context['user_profile'] = self.user_profile
+        lang_info = translation.get_language_info(get_language())
+        context['lang'] = lang_info.get('name')
         return context
 
 

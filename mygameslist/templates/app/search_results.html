@@ -42,14 +42,14 @@
               <div class="panel-body">
 
                   <div class="col-md-3">
-                      <a href="{% url 'user_profile' u.username %}">
+                      <a href="{% url 'users:detail' u.username %}">
                           <img class="img-responsive" src="{% avatar_or_default u %}">
                       </a>
                   </div>
 
                   <div class="col-md-9">
                       <p>
-                          <a href="{% url 'user_profile' u.username %}">
+                          <a href="{% url 'users:detail' u.username %}">
                               {{ u.username }}
                           </a>
                       </p>

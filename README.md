@@ -53,3 +53,7 @@ Start the local server either running `foreman start` or `foreman run ./manage.p
     S3_BUCKET_NAME='my_bucket_name'
     
     STEAM_API_KEY='my_steam_api_key'
+
+### Generate `.po` files
+
+    $ cd mygameslist && foreman run -e ../.env ../manage.py makemessages -l es

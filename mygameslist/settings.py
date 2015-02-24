@@ -12,6 +12,9 @@ https://docs.djangoproject.com/en/dev/ref/settings/
 import os
 import steamapi
 import dj_database_url
+
+from django.utils.translation import ugettext_lazy as _
+
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 BASE_PROJ = os.path.join(BASE_DIR, 'mygameslist')
 
@@ -67,6 +70,7 @@ INSTALLED_APPS = (
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -91,6 +95,15 @@ DATABASES = {
 # https://docs.djangoproject.com/en/dev/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
+
+LANGUAGES = [
+  ('en', _('English')),
+  ('es', _('Spanish')),
+]
+
+LOCALE_PATHS = (
+    os.path.join(BASE_PROJ, 'locale'),
+)
 
 TIME_ZONE = 'UTC'
 

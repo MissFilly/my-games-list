@@ -16,14 +16,14 @@
             <div class="panel-body">
 
                 <div class="col-md-3">
-                    <a href="{% url 'user_profile' f.username %}">
+                    <a href="{% url 'users:detail' f.username %}">
                         <img class="img-responsive" src="{% avatar_or_default f %}">
                     </a>
                 </div>
 
                 <div class="col-md-9">
                     <p>
-                        <a href="{% url 'user_profile' f.username %}">
+                        <a href="{% url 'users:detail' f.username %}">
                             {{ f.username }}
                         </a>
                     </p>

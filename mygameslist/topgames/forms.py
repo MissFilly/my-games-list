@@ -1,13 +1,15 @@
 from django import forms
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Fieldset, Layout, ButtonHolder, Div
 from mygameslist.app.models import Platform, Genre
 
 
 class PlatformForm(forms.Form):
-    platform = forms.ModelChoiceField(queryset=Platform.objects.all(), required=False)
-    genre = forms.ModelChoiceField(queryset=Genre.objects.all(), required=False)
+    platform = forms.ModelChoiceField(queryset=Platform.objects.all(), required=False,
+                                      label=_('Platform'))
+    genre = forms.ModelChoiceField(queryset=Genre.objects.all(), required=False,
+                                   label=_('Genre'))
 
     def __init__(self, *args, **kwargs):
         super(PlatformForm, self).__init__(*args, **kwargs)
