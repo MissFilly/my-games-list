@@ -49,16 +49,16 @@ class Game(models.Model):
 
 class ListEntry(models.Model):
     SCORE_CHOICES = (
-        (10, '(10) {0}'.format(_('Masterpiece'))),
-        (9, '(9) {0}'.format(_('Great'))),
-        (8, '(8) {0}'.format(_('Very good'))),
-        (7, '(7) {0}'.format(_('Good'))),
-        (6, '(6) {0}'.format(_('Fine'))),
-        (5, '(5) {0}'.format(_('Average'))),
-        (4, '(4) {0}'.format(_('Bad'))),
-        (3, '(3) {0}'.format(_('Very bad'))),
-        (2, '(2) {0}'.format(_('Horrible'))),
-        (1, '(1) {0}'.format(_('Appalling'))),
+        (10, _('(10) Masterpiece')),
+        (9, _('(9) Great')),
+        (8, _('(8) Very good')),
+        (7, _('(7) Good')),
+        (6, _('(6) Fine')),
+        (5, _('(5) Average')),
+        (4, _('(4) Bad')),
+        (3, _('(3) Very bad')),
+        (2, _('(2) Horrible')),
+        (1, _('(1) Appalling')),
     )
     REPLAY_VALUE_CHOICES = (
         ('VH', _('Very high')),

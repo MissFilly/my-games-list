@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2015-02-24 20:36-0300\n"
+"POT-Creation-Date: 2015-02-24 21:06-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -35,44 +35,44 @@ msgid "Similar recommendation"
 msgstr "Recomendación similar"
 
 #: app/models.py:52
-msgid "Masterpiece"
-msgstr "Obra maestra"
+msgid "(10) Masterpiece"
+msgstr "(10) Obra maestra"
 
 #: app/models.py:53
-msgid "Great"
-msgstr "Magnífico"
+msgid "(9) Great"
+msgstr "(9) Magnífico"
 
 #: app/models.py:54
-msgid "Very good"
-msgstr "Muy bueno"
+msgid "(8) Very good"
+msgstr "(8) Muy bueno"
 
 #: app/models.py:55
-msgid "Good"
-msgstr "Bueno"
+msgid "(7) Good"
+msgstr "(7) Bueno"
 
 #: app/models.py:56
-msgid "Fine"
-msgstr "Bien"
+msgid "(6) Fine"
+msgstr "(6) Bien"
 
 #: app/models.py:57
-msgid "Average"
-msgstr "Mediocre"
+msgid "(5) Average"
+msgstr "(5) Mediocre"
 
 #: app/models.py:58
-msgid "Bad"
-msgstr "Malo"
+msgid "(4) Bad"
+msgstr "(4) Malo"
 
 #: app/models.py:59
-msgid "Very bad"
-msgstr "Muy malo"
+msgid "(3) Very bad"
+msgstr "(3) Muy malo"
 
 #: app/models.py:60
-msgid "Horrible"
-msgstr "Horrible"
+msgid "(2) Horrible"
+msgstr "(2) Horrible"
 
 #: app/models.py:61
-msgid "Appalling"
-msgstr "Espantoso"
+msgid "(1) Appalling"
+msgstr "(1) Espantoso"
 
 #: app/models.py:64
 msgid "Very high"
