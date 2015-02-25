@@ -139,7 +139,7 @@ COMPRESS_PRECOMPILERS = (
 
 # If in production
 if not 'COMPRESS_OFFLINE' in os.environ:
-    COMPRESS_OFFLINE = True
+    # COMPRESS_OFFLINE = True
     AWS_QUERYSTRING_AUTH = False
     AWS_ACCESS_KEY_ID = os.environ['AWS_ACCESS_KEY_ID']
     AWS_SECRET_ACCESS_KEY = os.environ['AWS_SECRET_ACCESS_KEY']
