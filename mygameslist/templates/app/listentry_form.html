@@ -7,7 +7,7 @@
       Add {{ game_title }} to my list
     {% endblocktrans %}
   {% else %}
-    {% blocktrans with game_title=form.instance.game_title %}
+    {% blocktrans with game_title=form.instance.game.title %}
       Edit {{ game_title }} in my list
     {% endblocktrans %}
   {% endif %}

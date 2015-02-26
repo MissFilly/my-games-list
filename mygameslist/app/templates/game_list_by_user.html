@@ -62,7 +62,7 @@
 <script type="text/javascript" src="//cdn.datatables.net/plug-ins/380cb78f450/integration/bootstrap/3/dataTables.bootstrap.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
-    $('.table').DataTable({% if lang != 'english' %}{
+    $('.table').DataTable({% if lang != 'English' %}{
             "language": {
                 {% with 'json/dataTables_'|add:lang|add:'.json' as lang_file %}
                   "url": "{% static lang_file %}"

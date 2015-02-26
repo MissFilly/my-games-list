@@ -12,7 +12,7 @@ from django.views.generic.list import ListView
 from gamesdb.api import API
 from social.apps.django_app.default.models import UserSocialAuth
 import steamapi
-from .gamesdb_manager import get_or_create_game
+from .gamesdb_manager import get_or_create_game, create_game
 from .forms import *
 from mygameslist.mixins import *
 
@@ -288,30 +288,86 @@ class ImportSteamGames(View):
             steam_account = UserSocialAuth.objects.get(provider='steam',
                                                        user=self.request.user)
             steam_id = steam_account.extra_data['player']['steamid']
-            games = steamapi.user.SteamUser(int(steam_id)).games
+            steam_games = steamapi.user.SteamUser(int(steam_id)).games
             platform, created = Platform.objects.get_or_create(name='PC')
-            for steam_game in games:
-                game = None
-                try:
-                    entry = ListEntry.objects.get(user=request.user,
-                                                  game__title=steam_game.name,
-                                                  game__platform=platform)
-                    game = entry.game
-                except ListEntry.DoesNotExist:
-                    gl = gamesdb_api.get_game(name=steam_game.name, platform='PC')
-                    if gl:
-                        if not isinstance(gl, list):
-                            if gl.title == steam_game.name:
-                                game = get_or_create_game(gl.id)
-                        else:
-                            for x in gl:
-                                if x.title == steam_game.name:
-                                    game = get_or_create_game(x.id)
-                                    break
-                if game is not None:
-                    game.steam_id = steam_game.appid
-                    game.save()
-                    ListEntry.objects.create(user=request.user, game=game, status='CO')
+            # Get relevant data from Steam games (name and Steam ID)
+            steam_data = {steam_game.name: steam_game.appid for steam_game in steam_games}
+
+            try:
+                steam_ids = steam_data.values()
+                entries = Game.objects.values_list('steam_id', flat=True)\
+                                      .filter(listentry__user=request.user, platform=platform, steam_id__in=steam_ids)
+                # entries = ListEntry.object.values_list('steam_id', flat=True)\
+                #                           .filter(user=request.user, game__steam_id__in=steam_ids)
+                # Get Steam IDs that weren't included in user's list
+                unknown_steam_ids = list(set(steam_ids)-set(entries))
+
+                if unknown_steam_ids:
+                    games_with_steam_id = Game.objects.values('id', 'steam_id')\
+                                                      .filter(steam_id__in=unknown_steam_ids)
+                    # Create a ListEntry for games that weren't in user's list but have `steam_id` not null
+                    for game in games_with_steam_id:
+                        ListEntry.objects.create(user=request.user, game_id=game['id'], status='CO')
+                        unknown_steam_ids.remove(game['steam_id'])
+
+                    if unknown_steam_ids:
+                        known_steam_ids = list(set(steam_ids)-set(unknown_steam_ids))
+                        # Get Games that don't have a Steam ID
+                        games_without_steam_id = Game.objects.filter(title__in=steam_data.keys(), platform=platform)\
+                                                             .exclude(steam_id__in=known_steam_ids)
+                        for game in games_without_steam_id:
+                            title = game.title
+                            steam_id = steam_data.get(title)
+                            game.steam_id = steam_id
+                            game.save()
+                            ListEntry.objects.get_or_create(user=request.user,
+                                                            game=game, defaults={'status': 'CO'})
+                            unknown_steam_ids.remove(steam_id)
+
+                        if unknown_steam_ids:
+                            unknown = {steam_name: steam_id for steam_name, steam_id in steam_data.items()
+                                       if steam_id in unknown_steam_ids}
+                            for steam_name, steam_id in unknown.items():
+                                game = None
+                                gl = gamesdb_api.get_game(name=steam_name, platform='PC')
+                                if gl:
+                                    if not isinstance(gl, list):
+                                        gl = [gl]
+                                    for x in gl:
+                                        if x.title == steam_name:
+                                            game = create_game(x)
+                                            break
+                                    if game is not None:
+                                        game.steam_id = steam_id
+                                        game.save()
+                                        ListEntry.objects.create(user=request.user, game=game, status='CO')
+
+            except UserSocialAuth.DoesNotExist:
+                pass
+            return redirect('/')
+
+            # for steam_game in games:
+            #     game = entry = None
+            #     try:
+            #         entry = ListEntry.objects.get(user=request.user,
+            #                                       game__title=steam_game.name,
+            #                                       game__platform=platform)
+            #         game = entry.game
+            #     except ListEntry.DoesNotExist:
+            #         gl = gamesdb_api.get_game(name=steam_game.name, platform='PC')
+            #         if gl:
+            #             if not isinstance(gl, list):
+            #                 if gl.title == steam_game.name:
+            #                     game = get_or_create_game(gl.id)
+            #             else:
+            #                 for x in gl:
+            #                     if x.title == steam_game.name:
+            #                         game = get_or_create_game(x.id)
+            #                         break
+            #     if game is not None:
+            #         game.steam_id = steam_game.appid
+            #         game.save()
+            #         ListEntry.objects.create(user=request.user, game=game, status='CO')
         except UserSocialAuth.DoesNotExist:
             pass
         return redirect('/')

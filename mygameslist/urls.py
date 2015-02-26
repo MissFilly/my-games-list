@@ -1,11 +1,12 @@
 from django.conf import settings
-from django.conf.urls import patterns, include, url
+from django.conf.urls import include, url
+from django.conf.urls.i18n import i18n_patterns
 from django.contrib import admin
 from .app.views import *
 from .api import *
 from .friends.views import *
 
-urlpatterns = patterns(
+urlpatterns = i18n_patterns(
     '',
     url(r'^$', 'mygameslist.app.views.home', name='home'),
     url(r'^accounts/logout/$',
