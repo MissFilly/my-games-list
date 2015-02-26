@@ -29,7 +29,7 @@ class UserDetailView(DetailView):
             context['detail_page'] = True
             reviews = reviews[:3]
             recommendations = recommendations[:3]
-            context['updates'] = ListEntry.objects.filter(user=self.object).order_by('-last_modified')
+            context['updates'] = ListEntry.objects.filter(user=self.object).order_by('-last_modified')[:3]
         context['reviews'] = reviews
         context['recommendations'] = recommendations
         return context

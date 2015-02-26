@@ -13,10 +13,16 @@
     <form action="" method="POST">{% csrf_token %}
       <p>{% blocktrans %}Are you sure you want to remove {{ object }} from your friends list?{% endblocktrans %}</p>
       <input class="btn btn-primary" type="submit" value="{% trans 'Confirm' %}" />
-      <a href="{% url 'friend_list' %}" class="btn btn-default">{% trans 'Cancel' %}</a>
+      <a href="{% url 'friend_list' %}" class="btn btn-default" id="cancel">{% trans 'Cancel' %}</a>
     </form>
   </div>
 
+  <script type="text/javascript">
+        $('#cancel').click(function (e) {
+            e.preventDefault();
+            history.back();
+        });
+    </script>
 </div>
 
 {% endblock %}

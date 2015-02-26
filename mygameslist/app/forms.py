@@ -52,7 +52,8 @@ class GameRecommendationForm(forms.ModelForm):
                      Q(recommendation_entry1__entry2=entry) |
                      Q(recommendation_entry2__entry1=entry) |
                      Q(recommendation_entry2__entry2=entry)) \
-            .exclude(pk=entry.pk)
+            .exclude(pk=entry.pk)\
+            .order_by('game__title')
         self.entry = entry
         self.helper = FormHelper()
         self.helper.add_input(Submit('submit', _('Submit')))

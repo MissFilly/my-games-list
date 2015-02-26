@@ -157,16 +157,14 @@ class GameReviewUpdate(PermissionMixin, UpdateView):
     form_class = GameReviewForm
 
     def get_success_url(self):
-        return reverse('game_review_by_user',
-                       kwargs={'slug': self.request.user.username, })
+        return reverse('users:reviews', kwargs={'slug': self.request.user.username, })
 
 
 class GameReviewDelete(PermissionMixin, DeleteView):
     model = GameReview
 
     def get_success_url(self):
-        return reverse('game_review_by_user',
-                       kwargs={'slug': self.request.user.username, })
+        return reverse('users:reviews', kwargs={'slug': self.request.user.username, })
 
 
 class GameReviewByGameView(ListView):

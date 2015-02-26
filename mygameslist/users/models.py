@@ -42,6 +42,6 @@ class UserProfile(models.Model):
         super(UserProfile, self).save(*args, **kwargs)
 
     def get_absolute_url(self):
-        return reverse('user_profile', kwargs={'slug': self.user.username})
+        return reverse('users:detail', kwargs={'slug': self.user.username})
 
 User.profile = property(lambda u: UserProfile.objects.get_or_create(user=u)[0])
