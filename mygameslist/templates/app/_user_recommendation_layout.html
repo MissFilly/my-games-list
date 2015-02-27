@@ -23,7 +23,7 @@
 </td>
 
 <td class="col-md-1">
-    <a href="{% url 'game_detail' entry2.game_id %}">
+    <a href="{% url 'game_detail' entry2.game.gamesdb_id %}">
         <img class="img-responsive" src="{% if entry2.game.thumb_url %}{{ entry2.game.thumb_url }}{% endif %}">
     </a>
 </td>

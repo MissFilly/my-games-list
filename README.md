@@ -1,6 +1,6 @@
 ### Install the required system libraries:
 
-    $ sudo apt-get install curl npm libpq-dev python3-dev build-essential g++ libmemcached-dev
+    $ sudo apt-get install curl npm libpq-dev python3-dev build-essential g++ libmemcached-dev libjpeg-dev
 
 Install PostgreSQL:
 
